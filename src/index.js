@@ -56,9 +56,15 @@ class Start extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Home}/>
+          <Route exact path="/profile" render={() => (
+            this.state.loggedIn == true ? (
+              <Profile/>) : (
+                <Redirect to="/login"/>
+              ) 
+          )}/>
           <Route exact path="/login" render={() => (
             this.state.loggedIn == true ? (
-               <Redirect to="/"/>
+              <Redirect to="/profile"/>
             ) : (
               <FacebookButton onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
             )

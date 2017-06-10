@@ -1,9 +1,19 @@
 import React,{Component} from 'react';
 
 export default class Profile extends Component {
-  render() {
-    return (
-      <h1>Profile Page</h1>
-    );
-  }
+
+	facebookLogout(){
+		console.log("facebook logout called");
+		localStorage.removeItem("loggedIn");
+		window.location = '/';
+	}
+
+	render() {
+		return (
+			<div>
+				<h1>Profile Page</h1>
+				<button onClick={this.facebookLogout}>Log out</button>
+			</div>
+		);
+	}
 }
