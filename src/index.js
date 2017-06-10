@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import FacebookLogin from 'react-facebook-login';
 
 import {
   BrowserRouter as Router,
@@ -9,54 +8,61 @@ import {
   Link
 } from 'react-router-dom'
 
+// Importing components
+import FacebookButton from './components/facebookButton';
+import Home from './components/home';
+import Profile from './components/profile';
+
 // Importing CSS files
 import './index.css';
 
-// Importing components
-import App from './App';
-
-console.log("Running index.js right now");
-
-// ReactDOM.render(<FacebookButton/>, document.getElementById('root'));
-
-const responseFacebook = (response) => {
-  console.log("response is: ", response);
-}
-
-class FacebookButton extends Component {
-  render() {
-    return (
-      <div>
-        <FacebookLogin
-          appId="1830088130643938"
-          autoLoad={false}
-          fields="name,email,picture"
-          callback={responseFacebook}
-          icon="fa-facebook"/>
-      </div>
-    );
-  }
-}
-
-class Test extends Component {
-  render() {
-    return (
-      <h1>Test page</h1>
-    );
-  }
-}
+console.log("Running index.js right now.");
 
 class Start extends Component {
   constructor(props) {
+    console.log("On constructor");
     super(props);
-    this.state = {loggedIn: false};
+   
+    if (typeof(Storage) !== "undefined") {  // Check browser support
+      if ((localStorage.getItem("loggedIn") == null) || (localStorage.getItem("loggedIn") == "")) {
+        console.log("loggedIn doesnt exist");
+        this.state = {
+          loggedIn: false
+        };
+      }
+      else { // Retrieve
+        var value = localStorage.getItem("loggedIn");
+        console.log("loggedIn exists and is: ", value);
+        this.state = {
+        loggedIn: true
+      };
+      }
+    } 
+    else {
+      console.log("Sorry, your browser does not support Web Storage...");
+      this.state = {
+        loggedIn: false
+      };
+    }    
   }
+
+  changeLoginStatus(status){
+    console.log("called at changeLoginStatus");
+    this.setState({ loggedIn: true});
+  }
+
   render() {
     return(
       <Router>
         <div>
-          <Route exact path="/" component={Test}/>
-          <Route exact path="/login" loggedIn = {this.state.loggedIn} component={Test}/>
+          <Route exact path="/" component={Home}/>
+          <Route exact path="/login" render={() => (
+            this.state.loggedIn == true ? (
+               <Redirect to="/"/>
+            ) : (
+              <FacebookButton onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
+            )
+          )}/>
         </div>
       </Router>
     )
