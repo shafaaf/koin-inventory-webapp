@@ -5,6 +5,7 @@ import FacebookLogin from 'react-facebook-login';
 import {
   BrowserRouter as Router,
   Route,
+  Redirect,
   Link
 } from 'react-router-dom'
 
@@ -13,22 +14,19 @@ import './index.css';
 
 // Importing components
 import App from './App';
-import FacebookButton from './components/facebookButton';
 
 console.log("Running index.js right now");
 
 // ReactDOM.render(<FacebookButton/>, document.getElementById('root'));
 
-
 const responseFacebook = (response) => {
-  console.log(response);
+  console.log("response is: ", response);
 }
 
-class Base extends Component {
+class FacebookButton extends Component {
   render() {
     return (
       <div>
-        <Link to="/dummy">Route to dummy page</Link>
         <FacebookLogin
           appId="1830088130643938"
           autoLoad={false}
@@ -40,35 +38,30 @@ class Base extends Component {
   }
 }
 
-class Dummy extends Component {
+class Test extends Component {
   render() {
     return (
-      <div>
-        <Link to="/">Back</Link>
-        <h1>
-          This is just a dummy page to test the button<br />
-          <a href="https://github.com/keppelen/react-facebook-login/pull/76#issuecomment-262098946">
-          survives back and forth routing</a>
-        </h1>
-      </div>
+      <h1>Test page</h1>
     );
   }
 }
 
-
 class Start extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {loggedIn: false};
+  }
   render() {
     return(
       <Router>
         <div>
-          <Route path="/" component={Base}/>
-          <Route path="/dummy" component={Dummy}/>
+          <Route exact path="/" component={Test}/>
+          <Route exact path="/login" loggedIn = {this.state.loggedIn} component={Test}/>
         </div>
       </Router>
     )
   }
 }
-
 
 ReactDOM.render(<Start/>, document.getElementById('demo'));
 
