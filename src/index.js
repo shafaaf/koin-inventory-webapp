@@ -23,9 +23,10 @@ class Start extends Component {
     console.log("On constructor");
     super(props);
    
+    // First load in session token which say whether logged in session or not.
     if (typeof(Storage) !== "undefined") {  // Check browser support
       if ((localStorage.getItem("loggedIn") == null) || (localStorage.getItem("loggedIn") == "")) {
-        console.log("loggedIn doesnt exist");
+        console.log("se doesnt exist");
         this.state = {
           loggedIn: false
         };
