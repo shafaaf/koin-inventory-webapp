@@ -52,7 +52,6 @@ class Start extends Component {
 
   // Change the login state based on Koin Token
   // To login the user, pass in the Koin server session token
-  // To logout user, pass in null
   changeLoginStatus(stateKoinToken){
     console.log("changeLoginStatus with a stateKoinToken of: ", stateKoinToken);
     this.setState({ koinToken: stateKoinToken});

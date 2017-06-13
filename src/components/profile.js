@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 
 export default class Profile extends Component {
 
@@ -12,9 +13,9 @@ export default class Profile extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className = "container">
 				<h1>Profile Page</h1>
-				<button onClick={this.facebookLogout.bind(this)}>Log out</button>
+				<Button onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
 			</div>
 		);
 	}
