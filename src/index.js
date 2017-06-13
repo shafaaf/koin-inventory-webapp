@@ -19,21 +19,22 @@ import './index.css';
 console.log("Running index.js right now.");
 
 class Start extends Component {
+  // Initialization
   constructor(props) {
     console.log("On constructor");
     super(props);
    
-    // First load in session token which say whether logged in session or not.
+    // Load in Koin session token which say whether user logged in session or not.
     if (typeof(Storage) !== "undefined") {  // Check browser support
-      if ((localStorage.getItem("loggedIn") == null) || (localStorage.getItem("loggedIn") == "")) {
-        console.log("se doesnt exist");
+      if ((localStorage.getItem("koinToken") == null) || (localStorage.getItem("koinToken") == "")) {
+        console.log("koinToken doesnt exist");
         this.state = {
           loggedIn: false
         };
       }
-      else { // Retrieve
-        var value = localStorage.getItem("loggedIn");
-        console.log("loggedIn exists and is: ", value);
+      else { // Retrieve the Koin token
+        var value = localStorage.getItem("koinToken");
+        console.log("koinToken exists and is: ", value);
         this.state = {
         loggedIn: true
       };
@@ -47,8 +48,9 @@ class Start extends Component {
     }    
   }
 
+  // Change the login state
   changeLoginStatus(status){
-    console.log("called at changeLoginStatus");
+    console.log("called at changeLoginStatus with a status of: ", status);
     this.setState({ loggedIn: true});
   }
 

@@ -4,7 +4,7 @@ export default class Profile extends Component {
 
 	facebookLogout(){
 		console.log("facebook logout called");
-		localStorage.removeItem("loggedIn");
+		localStorage.removeItem("koinToken");
 		window.location = '/';
 	}
 

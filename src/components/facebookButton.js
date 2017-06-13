@@ -30,12 +30,12 @@ export default class FacebookButton extends Component {
           }
           // Examine the text in the response  
           response.json().then(function(data) {  
-            console.log("data from server is: ", data);  
+            console.log("data from server is: ", data);
+            var koinToken = data["session_token"]
+            localStorage.setItem("koinToken", koinToken);
           });
         });
-
-
-    localStorage.setItem("loggedIn", true);
+    console.log("this is: ", this);
     this.props.onChangeLoginStatus(true);
   }
 
