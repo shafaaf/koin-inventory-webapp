@@ -3,28 +3,37 @@ import FacebookLogin from 'react-facebook-login';
 
 export default class FacebookButton extends Component {
   responseFacebook(response) {
-    console.log("new response location is: ", response);
-    //console.log("this inside responseFacebook is: ", this);
-    //Get session token from Koin server
-    //Get current bixi data to display on map
-
+    console.log("response from Facebook is: ", response);
     var fbAccessToken =response.accessToken
     console.log("fbAccessToken is: ", fbAccessToken);
-    
-    $.ajax({
-      url: "http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/merchant/auth/facebook",
-      type: "post",
-      dataType: "json",
-      data: {
-        access_token: fbAccessToken
-      },
-      success: function (data){
-        console.log("Success received back is: ", data);
-      },
-      error: function(error){
-        console.log("Error received back is: ", error);
-      }
-    }); 
+
+    //Requesting session token from Koin server
+    var data = JSON.stringify({
+      "access_token": fbAccessToken
+    });
+    console.log("data to send is: ", data);
+    var request = new Request('http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/merchant/auth/facebook', {
+      method: 'POST',
+      body: data,
+      mode: 'cors',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    });
+
+    fetch(request)
+    .then(
+        function(response) {
+          if (response.status !== 200) {   
+            console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+            return;  
+          }
+          // Examine the text in the response  
+          response.json().then(function(data) {  
+            console.log("data from server is: ", data);  
+          });
+        });
+
 
     localStorage.setItem("loggedIn", true);
     this.props.onChangeLoginStatus(true);
