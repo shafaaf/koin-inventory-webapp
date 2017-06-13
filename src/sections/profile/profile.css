@@ -1,6 +1,10 @@
 #logoutButton{
 	color:blue;
 }
+
+body{
+    background-color:#ffffff;
+}
 .sidenav {
     height: 100%;
     width: 0;

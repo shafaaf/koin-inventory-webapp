@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 
 // Import styles
-import './styles.css';
+import './profile.css';
 
 var spanStyles = {
   fontSize:'30px',

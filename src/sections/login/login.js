@@ -1,18 +1,32 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
-
 import FacebookButton from './facebookButton';
+
+import { Grid, Row, Col } from 'react-bootstrap';
+
+
+import './login.css';
 
 console.log("Running login.js right now.");
 
+var divStyle = {
+
+};
+
+{{"display:block;margin:auto;"}}
 
 export default class Login extends Component {
 	render() {
     	return(
     		<div className = "container">
-    			<h1>Login Page</h1>
-    			<FacebookButton onChangeLoginStatus = {this.props.onChangeLoginStatus}/>
+    			<img id = "koinLogo"  src = {require('./logo.svg')}  alt="Image here"/>
+				<Grid>
+					<Row className="show-grid">
+						<Col md={6} mdPush={6} style = {{ textAlign: 'center'}}><FacebookButton onChangeLoginStatus = {this.props.onChangeLoginStatus}/></Col>
+						<Col md={6} mdPull={6} style = {{ textAlign: 'center'}}><FacebookButton onChangeLoginStatus = {this.props.onChangeLoginStatus}/></Col>
+    				</Row>
+    			</Grid>
     		</div>
     	)
 	}
