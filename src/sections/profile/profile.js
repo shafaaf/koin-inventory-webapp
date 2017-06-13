@@ -20,7 +20,7 @@ export default class Profile extends Component {
 	mySidenavStyles(){
 		if(this.state.showNavBar){
 			return {
-				width: "250px"
+				width: "30%"
 			}
 		}
 		else{
@@ -33,7 +33,7 @@ export default class Profile extends Component {
 	mainStyles(){
 		if(this.state.showNavBar){
 			return {
-				marginLeft: "250px"
+				marginLeft: "30%"
 			}
 		}
 		else{
@@ -61,6 +61,20 @@ export default class Profile extends Component {
 		this.setState({ showNavBar: false});
 	}
 
+	renderMenuToggle(){
+		if(this.state.showNavBar){
+			return(
+				<span style={spanStyles} onClick={this.closeNav.bind(this)}>&#9776; close</span>
+
+			)
+		}
+		else{
+			return(
+				<span style={spanStyles} onClick={this.openNav.bind(this)}>&#9776; open</span>
+			)
+		}
+	}
+
 	render() {
 		return (
 			<div className = "container">
@@ -74,7 +88,7 @@ export default class Profile extends Component {
 				<div id="main" style = {this.mainStyles()}>
 					<h2>Sidenav Push Example</h2>
 					<p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
-					<span style={spanStyles} onClick={this.openNav.bind(this)}>&#9776; open</span>
+					{this.renderMenuToggle()}
 					<h1>Profile Page</h1>
 					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
 				</div>
