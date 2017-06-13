@@ -2,17 +2,19 @@ import React,{Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
 
 export default class FacebookButton extends Component {
+
+  // Handle response from user when he decides to login
   responseFacebook(response) {
-    console.log("response from Facebook is: ", response);
-    var fbAccessToken =response.accessToken
+    var fbAccessToken = response.accessToken
     console.log("fbAccessToken is: ", fbAccessToken);
 
     //Requesting session token from Koin server
     var data = JSON.stringify({
       "access_token": fbAccessToken
     });
-    console.log("data to send is: ", data);
-    var request = new Request('http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/merchant/auth/facebook', {
+    console.log("data to send to Koin server is: ", data);
+    var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/merchant/auth/facebook';
+    var request = new Request(url, {
       method: 'POST',
       body: data,
       mode: 'cors',
@@ -20,7 +22,7 @@ export default class FacebookButton extends Component {
         'Content-Type': 'application/json'
       })
     });
-
+    var thisContext = this; // To keep track of this context within promise callback
     fetch(request)
     .then(
         function(response) {
@@ -28,15 +30,16 @@ export default class FacebookButton extends Component {
             console.log('Looks like there was a problem. Status Code: ' +  response.status);  
             return;  
           }
-          // Examine the text in the response  
+          // Examine the text in the response from Koin server
           response.json().then(function(data) {  
             console.log("data from server is: ", data);
             var koinToken = data["session_token"]
             localStorage.setItem("koinToken", koinToken);
+            console.log("thisContext is: ", thisContext);
+            thisContext.props.onChangeLoginStatus(koinToken);
           });
         });
-    console.log("this is: ", this);
-    this.props.onChangeLoginStatus(true);
+    console.log("After promise section.");
   }
 
   render() {
