@@ -75,10 +75,10 @@ export default class Profile extends Component {
 					<h2>Sidenav Push Example</h2>
 					<p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
 					<span style={spanStyles} onClick={this.openNav.bind(this)}>&#9776; open</span>
+					<h1>Profile Page</h1>
+					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
 				</div>
-				<h1>Profile Page</h1>
-				<Button bsStyle="danger" onClick={this.openNav.bind(this)}>open</Button>
-				<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
+				
 			</div>
 		);
 	}
