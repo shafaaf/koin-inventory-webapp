@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 
+import SideMenu from './sideMenu';
+
 // Import styles
 import './profile.css';
 
@@ -15,22 +17,17 @@ export default class Profile extends Component {
 		this.state = {
 			showNavBar: false
 		};
+	}	
+
+	facebookLogout(){
+		// 1. Remove koinToken from storage
+		// 2. Change state to null to render again
+		console.log("facebook logout called");
+		localStorage.removeItem("koinToken");
+		this.props.onChangeLoginStatus(null);
 	}
 
-	mySidenavStyles(){
-		if(this.state.showNavBar){
-			return {
-				width: "30%"
-			}
-		}
-		else{
-			return{
-				width: 0
-			}
-		}
-	}
-
-	mainStyles(){
+	mainStyles(){	//styles for the main div
 		if(this.state.showNavBar){
 			return {
 				marginLeft: "30%"
@@ -41,15 +38,7 @@ export default class Profile extends Component {
 				marginLeft: 0
 			}
 		}
-	}
-
-	facebookLogout(){
-		// 1. Remove koinToken from storage
-		// 2. Change state to null to render again
-		console.log("facebook logout called");
-		localStorage.removeItem("koinToken");
-		this.props.onChangeLoginStatus(null);
-	}
+	}	
 
 	openNav(){
 		console.log("At openNav");
@@ -64,13 +53,12 @@ export default class Profile extends Component {
 	renderMenuToggle(){
 		if(this.state.showNavBar){
 			return(
-				<span style={spanStyles} onClick={this.closeNav.bind(this)}>&#9776; close</span>
-
+				<span style={spanStyles} onClick={this.closeNav.bind(this)}>&#9776; Close</span>
 			)
 		}
 		else{
 			return(
-				<span style={spanStyles} onClick={this.openNav.bind(this)}>&#9776; open</span>
+				<span style={spanStyles} onClick={this.openNav.bind(this)}>&#9776; Open</span>
 			)
 		}
 	}
@@ -78,18 +66,12 @@ export default class Profile extends Component {
 	render() {
 		return (
 			<div className = "container">
-				<div id="mySidenav" className="sidenav" style = {this.mySidenavStyles()}>
-					<a href="javascript:void(0)" className="closebtn" onClick={this.closeNav.bind(this)}>&times;</a>
-					<a href="#">About</a>
-					<a href="#">Services</a>
-					<a href="#">Clients</a>
-					<a href="#">Contact</a>
-				</div>
+				<SideMenu showNavBar = {this.state.showNavBar} closeNav = {this.closeNav.bind(this)}/>
 				<div id="main" style = {this.mainStyles()}>
-					<h2>Sidenav Push Example</h2>
-					<p>Click on the element below to open the side navigation menu, and push this content to the right.</p>
+					<h2>Welcome to your dashboard</h2>
+					<p>Fell free to move around using the side navigation bar!</p>
 					{this.renderMenuToggle()}
-					<h1>Profile Page</h1>
+					<br/>
 					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
 				</div>
 				
