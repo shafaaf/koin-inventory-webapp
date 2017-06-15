@@ -1,7 +1,18 @@
 import React,{Component} from 'react';
 import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Link,
+  Switch
+} from 'react-router-dom'
+
+//Importing other components
 import SideMenu from './sideMenu';
+import DashboardIntro from './dashboardIntro.js';
+import Inventory from './inventory.js';
 
 // Import styles
 import './profile.css';
@@ -68,13 +79,16 @@ export default class Profile extends Component {
 			<div className = "container">
 				<SideMenu showNavBar = {this.state.showNavBar} closeNav = {this.closeNav.bind(this)}/>
 				<div id="main" style = {this.mainStyles()}>
-					<h2>Welcome to your dashboard</h2>
-					<p>Fell free to move around using the side navigation bar!</p>
+					
+					<Switch>
+						<Route exact path='/profile' component={DashboardIntro}/>
+						<Route path='/profile/inventory' component={Inventory}/>
+					</Switch>
+
 					{this.renderMenuToggle()}
 					<br/>
 					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
-				</div>
-				
+				</div>	
 			</div>
 		);
 	}

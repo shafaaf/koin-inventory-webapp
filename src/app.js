@@ -54,28 +54,44 @@ export default class App extends Component {
     this.setState({ koinToken: stateKoinToken});
   }
 
+  profilePageVerification(){
+    if(this.state.koinToken){
+      console.log("checkLoginForProfile: logged in so sending to profile");
+      return(
+        <Profile onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
+      );
+    }
+    else{
+      console.log("checkLoginForProfile: not logged in so sending to login");
+      return(
+        <Redirect to="/login"/>
+      );
+    }
+  }
+
+  redirectToProfile(){
+    if(this.state.koinToken){
+      return (
+        <Redirect to="/profile"/>
+      );
+    }
+    else{
+      return (
+        <Login onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
+      );
+    }
+  }
+
   render() {
     return(
       <Router>
         <div>
           <Route exact path="/" component={Home}/>
-          <Route exact path="/profile" render={() => (
-            this.state.koinToken != null ? (
-              <Profile onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
-            ) : (
-              <Redirect to="/login"/>
-            ) 
-          )}/>
-          <Route exact path="/login" render={() => (
-            this.state.koinToken != null ? (
-              <Redirect to="/profile"/>
-            ) : (
-              <Login onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
-            )
-          )}/>
+          <Route path="/profile" component = {this.profilePageVerification.bind(this)}/>
+          <Route path="/login" component = {this.redirectToProfile.bind(this)}/>
         </div>
       </Router>
-    )
+    );
   }
 }
 
