@@ -13,6 +13,8 @@ import {
 import SideMenu from './sideMenu';
 import DashboardIntro from './dashboardIntro.js';
 import Inventory from './inventory.js';
+import Settings from './settings.js';
+import Transactions from './transactions.js';
 
 // Import styles
 import './profile.css';
@@ -79,12 +81,14 @@ export default class Profile extends Component {
 			<div className = "container">
 				<SideMenu showNavBar = {this.state.showNavBar} closeNav = {this.closeNav.bind(this)}/>
 				<div id="main" style = {this.mainStyles()}>
-					
 					<Switch>
 						<Route exact path='/profile' component={DashboardIntro}/>
 						<Route path='/profile/inventory' component={Inventory}/>
+						<Route path='/profile/settings' component={Settings}/>
+						<Route path='/profile/transactions' component={Transactions}/>
+						
+						
 					</Switch>
-
 					{this.renderMenuToggle()}
 					<br/>
 					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>

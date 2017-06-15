@@ -13,8 +13,6 @@ import Home from './sections/home/home';
 import Login from './sections/login/login';
 import Profile from './sections/profile/profile';
 
-console.log("Running app.js right now.");
-
 //----------------------------------------------------------------
 
 export default class App extends Component {
@@ -54,6 +52,8 @@ export default class App extends Component {
     this.setState({ koinToken: stateKoinToken});
   }
 
+
+  // If user tries to visit profile, redirect user to login page
   profilePageVerification(){
     if(this.state.koinToken){
       console.log("checkLoginForProfile: logged in so sending to profile");
@@ -69,6 +69,8 @@ export default class App extends Component {
     }
   }
 
+  /* If user tries to visit login while logged, 
+    redirect her/him to login page*/
   redirectToProfile(){
     if(this.state.koinToken){
       return (

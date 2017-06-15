@@ -35,6 +35,7 @@ export default class SideMenu extends Component {
 				<a className = "menuItem" href="javascript:void(0)" className="closebtn" onClick={this.props.closeNav}>&times;</a>
 				<Link className = "menuItem" to= '/profile'>Home</Link>
 				<Link className = "menuItem" to='/profile/inventory'>Inventory</Link>
+				<Link className = "menuItem" to='/profile/transactions'>Transactions</Link>
 				<Link className = "menuItem" to='/profile/settings'>Settings</Link>
 				<Link className = "menuItem" to='/profile/contactus'>Contact Us</Link>
 			</div>
