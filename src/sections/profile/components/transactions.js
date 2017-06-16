@@ -78,7 +78,7 @@ export default class Transactions extends Component {
   	console.log("Rendering transactions component.");
     
     if(this.state.transactionsArray.length <= 0){	// loading screen when getting data
-    	return <h1>Loading your data ..</h1>;
+    	return <h2>Loading your transactions ..</h2>;
     }
     else{	//show transactions data
 	    return (

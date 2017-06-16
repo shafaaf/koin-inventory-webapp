@@ -16,7 +16,6 @@ import Profile from './sections/profile/profile';
 //----------------------------------------------------------------
 
 export default class App extends Component {
-  // Initialization
   constructor(props) {
     console.log("On constructor");
     super(props);

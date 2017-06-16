@@ -1,6 +1,4 @@
 import React,{Component} from 'react';
-import { Navbar, Jumbotron, Button } from 'react-bootstrap';
-
 import {
   BrowserRouter as Router,
   Route,
@@ -8,17 +6,20 @@ import {
   Link,
   Switch
 } from 'react-router-dom'
+import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 
 //Importing other components
-import SideMenu from './sideMenu';
-import DashboardIntro from './dashboardIntro.js';
-import Inventory from './inventory.js';
-import Settings from './settings.js';
-import Transactions from './transactions.js';
+import SideMenu from './components/sideMenu';
+import DashboardIntro from './components/dashboardIntro.js';
+import Inventory from './components/inventory.js';
+import Settings from './components/settings.js';
+import Transactions from './components/transactions.js';
 
 // Import styles
 import './profile.css';
 
+
+// Some styles
 var spanStyles = {
   fontSize:'30px',
   cursor:'pointer'

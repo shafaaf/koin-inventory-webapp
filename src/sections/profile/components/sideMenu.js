@@ -6,8 +6,8 @@ import {
   Link
 } from 'react-router-dom'
 
-// Import styles
-import './profile.css';
+// Import styles. Fix this
+import '../profile.css';
 
 const Test = () => (
   <div>
