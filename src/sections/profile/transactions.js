@@ -1,10 +1,22 @@
 import React,{Component} from 'react';
 
 export default class Transactions extends Component {
-  render() {
-  	console.log("Rendering transactions.");
+  constructor(props){
+  	super(props);
+  	 this.state = {
+      transactions: {}
+    };
+  }
+
+  componentWillMount(){
+  	console.log("componentWillMount here.");
+  	//heard not good
+  }
+  
+  componentDidMount(){	// Fetch merchant's transactions
+  	console.log("componentDidMount here. Going to fetch transactions");
   	//Requesting transaction info from Koin server
-	// Hard coded to get from Zen's token
+	// Todo: Hard coded right now using Zen's session token
 	var data = JSON.stringify({});
 	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list';
 	var request = new Request(url, {
@@ -25,12 +37,18 @@ export default class Transactions extends Component {
 			}
 			// Examine the text in the response from Koin server
 			response.json().then(function(data) {  
-			console.log("data from server is: ", data);
+				console.log("transaction data from server is: ", data);
+				console.log("setting state for transactions now.");
+				thisContext.setState({ transactions: data });
 			});
 		}
 	);
-	console.log("After promise section.");
+	console.log("After promise section in transactions fetch.");
 
+  }
+
+  render() {
+  	console.log("Rendering transactions component.");
     return (
     	<div className = "container">
 			<h2>Your Transactions!</h2>
