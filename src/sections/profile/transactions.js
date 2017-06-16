@@ -4,7 +4,8 @@ export default class Transactions extends Component {
   constructor(props){
   	super(props);
   	 this.state = {
-      transactions: {}
+      transactions: {},
+      transactionsArray: []
     };
   }
 
@@ -39,7 +40,11 @@ export default class Transactions extends Component {
 			response.json().then(function(data) {  
 				console.log("transaction data from server is: ", data);
 				console.log("setting state for transactions now.");
-				thisContext.setState({ transactions: data });
+				thisContext.setState({ 
+					transactions: data,
+					transactionsArray: data["transactions"]
+				 });
+
 			});
 		}
 	);
@@ -47,12 +52,28 @@ export default class Transactions extends Component {
 
   }
 
+  renderTransactions(){
+  	console.log("rendering transactions data");
+  	var myTransactions = this.state.transactionsArray;
+  	console.log("myTransactions is: ", myTransactions);
+  	var myTransactionsItems  = myTransactions.map((singleTransactions) =>
+  		<li>{singleTransactions.amount}</li>
+  	);
+   return myTransactionsItems;
+  }
+
+
   render() {
   	console.log("Rendering transactions component.");
     return (
     	<div className = "container">
 			<h2>Your Transactions!</h2>
 			<p>Fell free to check out your transactions!</p>
+			<ul>
+				{this.state.transactionsArray.map((transaction, key) =>
+            	<li>{transaction.amount}</li>
+          )}
+        	</ul>
 		</div>
     );
   }
