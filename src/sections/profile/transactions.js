@@ -46,10 +46,15 @@ export default class Transactions extends Component {
 			response.json().then(function(data) {  
 				console.log("transaction data from server is: ", data);
 				console.log("setting state for transactions now.");
-				thisContext.setState({ 
-					transactions: data,
-					transactionsArray: data["transactions"]
-				 });
+				setTimeout(function(){ 
+					console.log("timer ended"); }, 5000);
+					// Todo: get warning of setting state when component not mounted
+					// Happens when click away to another section and state for old component
+					// is being set
+					thisContext.setState({ 
+						transactions: data,
+						transactionsArray: data["transactions"]
+					 });
 
 			});
 		}
@@ -71,35 +76,41 @@ export default class Transactions extends Component {
 
   render() {
   	console.log("Rendering transactions component.");
-    return (
-    	<div>
-			<h2>Your Transactions!</h2>
-			<p>Fell free to check out your transactions!</p>
-			<Table striped bordered condensed hover>
-				<thead>
-					<tr>
-						<th>amount</th>
-						<th>created_at</th>
-						<th>state</th>
-						<th>store_location</th>
-						<th>store_name</th>
-						<th>store_type</th>
-					</tr>
-				</thead>
-				<tbody>
-				{this.state.transactionsArray.map((transaction, key) =>
-            		<tr>
-            			<td>{transaction.amount}</td>
-            			<td>{transaction.created_at}</td>
-            			<td>{transaction.state}</td>
-            			<td>{transaction.merchant.store_location}</td>
-            			<td>{transaction.merchant.store_name}</td>
-            			<td>{transaction.merchant.store_type}</td>            			            		           		            			
-            		</tr>
-          		)}
-          		</tbody>
-			</Table>
-		</div>
-    );
+    
+    if(this.state.transactionsArray.length <= 0){	// loading screen when getting data
+    	return <h1>Loading your data ..</h1>;
+    }
+    else{	//show transactions data
+	    return (
+	    	<div>
+				<h2>Your Transactions!</h2>
+				<p>Fell free to check out your transactions!</p>
+				<Table striped bordered condensed hover>
+					<thead>
+						<tr>
+							<th>amount</th>
+							<th>created_at</th>
+							<th>state</th>
+							<th>store_location</th>
+							<th>store_name</th>
+							<th>store_type</th>
+						</tr>
+					</thead>
+					<tbody>
+					{this.state.transactionsArray.map((transaction, key) =>
+	            		<tr>
+	            			<td>{transaction.amount}</td>
+	            			<td>{transaction.created_at}</td>
+	            			<td>{transaction.state}</td>
+	            			<td>{transaction.merchant.store_location}</td>
+	            			<td>{transaction.merchant.store_name}</td>
+	            			<td>{transaction.merchant.store_type}</td>            			            		           		            			
+	            		</tr>
+	          		)}
+	          		</tbody>
+				</Table>
+			</div>
+	    );
+	}
   }
 }
