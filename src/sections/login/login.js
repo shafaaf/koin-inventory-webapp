@@ -14,7 +14,7 @@ export default class Login extends Component {
     	return(
     		<div className = "container">
     			<img id = "koinLogo"  src = {require('./logo2.svg')}  alt="Image here"/>
-				<Grid>
+				<Grid id = "socialButtonsGrid">
 					<Row className="show-grid">
 						<Col md={6} mdPush={6} style = {{ textAlign: 'center'}}><FacebookButton onChangeLoginStatus = {this.props.onChangeLoginStatus}/></Col>
 						<Col md={6} mdPull={6} style = {{ textAlign: 'center'}}><FacebookButton onChangeLoginStatus = {this.props.onChangeLoginStatus}/></Col>
