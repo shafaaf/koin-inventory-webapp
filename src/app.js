@@ -11,7 +11,7 @@ import {
 // Importing sections
 import Home from './sections/home/home';
 import Login from './sections/login/login';
-import Profile from './sections/profile/profile';
+import Dashboard from './sections/dashboard/dashboard';
 
 //----------------------------------------------------------------
 
@@ -52,16 +52,16 @@ export default class App extends Component {
   }
 
 
-  // If user tries to visit profile, redirect user to login page
-  profilePageVerification(){
+  // If user tries to visit dashboard, redirect user to login page
+  dashboardPageVerification(){
     if(this.state.koinToken){
-      console.log("checkLoginForProfile: logged in so sending to profile");
+      console.log("dashboardPageVerification: logged in so sending to dashboard");
       return(
-        <Profile onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
+        <Dashboard onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
       );
     }
     else{
-      console.log("checkLoginForProfile: not logged in so sending to login");
+      console.log("dashboardPageVerification: not logged in so sending to login");
       return(
         <Redirect to="/login"/>
       );
@@ -70,10 +70,10 @@ export default class App extends Component {
 
   /* If user tries to visit login while logged, 
     redirect her/him to login page*/
-  redirectToProfile(){
+  redirectToDashboard(){
     if(this.state.koinToken){
       return (
-        <Redirect to="/profile"/>
+        <Redirect to="/dashboard"/>
       );
     }
     else{
@@ -88,8 +88,8 @@ export default class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Home}/>
-          <Route path="/profile" component = {this.profilePageVerification.bind(this)}/>
-          <Route path="/login" component = {this.redirectToProfile.bind(this)}/>
+          <Route path="/dashboard" component = {this.dashboardPageVerification.bind(this)}/>
+          <Route path="/login" component = {this.redirectToDashboard.bind(this)}/>
         </div>
       </Router>
     );
@@ -97,4 +97,3 @@ export default class App extends Component {
 }
 
 ReactDOM.render(<App/>, document.getElementById('app'));
-

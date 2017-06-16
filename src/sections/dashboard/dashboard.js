@@ -16,7 +16,7 @@ import Settings from './components/settings.js';
 import Transactions from './components/transactions.js';
 
 // Import styles
-import './profile.css';
+import './dashboard.css';
 
 
 // Some styles
@@ -30,7 +30,7 @@ var textAlignCenter = {
 	textAlign:"center"
 };
 
-export default class Profile extends Component {
+export default class Dashboard extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -96,10 +96,10 @@ export default class Profile extends Component {
 					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
 					
 					<Switch>
-						<Route exact path='/profile' component={DashboardIntro}/>
-						<Route path='/profile/inventory' component={Inventory}/>
-						<Route path='/profile/settings' component={Settings}/>
-						<Route path='/profile/transactions' component={Transactions}/>
+						<Route exact path='/dashboard' component={DashboardIntro}/>
+						<Route path='/dashboard/inventory' component={Inventory}/>
+						<Route path='/dashboard/settings' component={Settings}/>
+						<Route path='/dashboard/transactions' component={Transactions}/>
 					</Switch>
 				</div>	
 			</div>
