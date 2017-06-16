@@ -47,7 +47,7 @@ export default class Dashboard extends Component {
 	}
 
 	mainStyles(){	//styles for the main div
-		if(this.state.showNavBar){
+		if(this.state.showNavBar){ //when theres a sidebar
 			return {
 				marginLeft: "30%",
 				overflowY: "hidden",
@@ -55,10 +55,10 @@ export default class Dashboard extends Component {
 			}
 		}
 		else{
-			return{
-				marginLeft: 0
-				// overflowY: "hidden",
-				// overflowX: "hidden"
+			return{	//when no sidebar
+				marginLeft: 0,
+				overflowY: "hidden",
+				overflowX: "hidden"
 			}
 		}
 	}	

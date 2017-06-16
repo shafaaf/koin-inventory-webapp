@@ -1,10 +1,34 @@
 import React,{Component} from 'react';
-import { Table } from 'react-bootstrap';
+// import { Table } from 'react-bootstrap';
+import { Chart } from 'react-google-charts';
+
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
+
 
 var tableStyles = {
 	overflowY: "hidden",
-	overflowX: "hidden"
+	overflowX: "hidden",
+	borderSpacing: "15px",
+	padding: "5px"
 };
+
+class MyTable extends Component {
+	render(){
+		console.log("this is MyTable");
+		return (
+			<div className={'my-pretty-chart-container'}>
+				<Chart chartType="ScatterChart" 
+					data={[['Age', 'Weight'], [8, 12], [4, 5.5]]}
+					options={{}}
+					graph_id="ScatterChart"
+					width="100%"
+					height="400px"
+				legend_toggle/>
+			</div>
+    	);
+	}
+}
 
 export default class Transactions extends Component {
   constructor(props){
@@ -85,30 +109,33 @@ export default class Transactions extends Component {
 	    	<div>
 				<h2>Your Transactions!</h2>
 				<p>Fell free to check out your transactions!</p>
-				<Table striped bordered condensed hover>
-					<thead>
-						<tr>
-							<th>amount</th>
-							<th>created_at</th>
-							<th>state</th>
-							<th>store_location</th>
-							<th>store_name</th>
-							<th>store_type</th>
-						</tr>
-					</thead>
-					<tbody>
+				<Table style = {tableStyles}>
+					<Thead>
+						<Tr>
+							<Th>amount</Th>
+							<Th>created_at</Th>
+							<Th>state</Th>
+							<Th>store_location</Th>
+							<Th>store_name</Th>
+							<Th>store_type</Th>
+						</Tr>
+					</Thead>
+					<Tbody>
 					{this.state.transactionsArray.map((transaction, key) =>
-	            		<tr>
-	            			<td>{transaction.amount}</td>
-	            			<td>{transaction.created_at}</td>
-	            			<td>{transaction.state}</td>
-	            			<td>{transaction.merchant.store_location}</td>
-	            			<td>{transaction.merchant.store_name}</td>
-	            			<td>{transaction.merchant.store_type}</td>            			            		           		            			
-	            		</tr>
+	            		<Tr>
+	            			<Td>{transaction.amount}</Td>
+	            			<Td>{transaction.created_at}</Td>
+	            			<Td>{transaction.state}</Td>
+	            			<Td>{transaction.merchant.store_location}</Td>
+	            			<Td>{transaction.merchant.store_name}</Td>
+	            			<Td>{transaction.merchant.store_type}</Td>            			            		           		            			
+	            		</Tr>
 	          		)}
-	          		</tbody>
+	          		</Tbody>
 				</Table>
+
+
+				<MyTable/>
 			</div>
 	    );
 	}
