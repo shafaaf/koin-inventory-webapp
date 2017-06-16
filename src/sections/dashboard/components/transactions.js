@@ -17,7 +17,8 @@ export default class Transactions extends Component {
   	 this.state = {
       transactions: {},
       transactionsArray: [],
-      currentTransactionPage: null
+      currentTransactionPage: null,
+      hasNextPage: null
     };
   }
 
@@ -58,7 +59,8 @@ export default class Transactions extends Component {
 				thisContext.setState({ 
 					transactions: data,
 					transactionsArray: data["transactions"],
-					currentTransactionPage: 1
+					currentTransactionPage: 1,
+					hasNextPage: data["has_next_page"]
 				 });
 
 			});
@@ -86,9 +88,17 @@ export default class Transactions extends Component {
   	// Todo: perform checks to see if possible or not to get other index
   	if(direction == "prev"){
   		currentIndex = currentIndex - 1;
+  		if(currentIndex < 1){
+  			console.log("currentIndex<1 so returning");
+  			return;
+  		}
   	}
   	else if(direction == "next"){
   		currentIndex = currentIndex + 1;
+  		if(!this.state.hasNextPage){
+  			console.log("Theres no more pages.");
+  			return;
+  		}
   	}
   	else{
   		console.log("Some weird error!");
@@ -122,15 +132,13 @@ export default class Transactions extends Component {
 				thisContext.setState({ 
 					transactions: data,
 					transactionsArray: data["transactions"],
-					currentTransactionPage: currentIndex
+					currentTransactionPage: currentIndex,
+					hasNextPage: data["has_next_page"]
 				 });
 
 			});
 		}
 	);
-
-
-
   }
 
 
@@ -175,4 +183,5 @@ export default class Transactions extends Component {
 	    );
 	}
   }
+
 }
