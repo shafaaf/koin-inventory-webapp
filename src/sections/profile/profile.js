@@ -66,12 +66,12 @@ export default class Profile extends Component {
 	renderMenuToggle(){
 		if(this.state.showNavBar){
 			return(
-				<span style={spanStyles} onClick={this.closeNav.bind(this)}>&#9776; Close</span>
+				<span style={spanStyles} onClick={this.closeNav.bind(this)}>&#9776; Close Menu</span>
 			)
 		}
 		else{
 			return(
-				<span style={spanStyles} onClick={this.openNav.bind(this)}>&#9776; Open</span>
+				<span style={spanStyles} onClick={this.openNav.bind(this)}>&#9776; Open Menu</span>
 			)
 		}
 	}
@@ -81,16 +81,18 @@ export default class Profile extends Component {
 			<div className = "container">
 				<SideMenu showNavBar = {this.state.showNavBar} closeNav = {this.closeNav.bind(this)}/>
 				<div id="main" style = {this.mainStyles()}>
-					<Switch>
-						<Route exact path='/profile' component={DashboardIntro}/>
-						<Route path='/profile/inventory' component={Inventory}/>
-						<Route path='/profile/settings' component={Settings}/>
-						<Route path='/profile/transactions' component={Transactions}/>
-						
-					</Switch>
 					{this.renderMenuToggle()}
 					<br/>
 					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
+					<div className = "container">
+						<Switch>
+							<Route exact path='/profile' component={DashboardIntro}/>
+							<Route path='/profile/inventory' component={Inventory}/>
+							<Route path='/profile/settings' component={Settings}/>
+							<Route path='/profile/transactions' component={Transactions}/>
+						</Switch>
+					</div>
+					
 				</div>	
 			</div>
 		);

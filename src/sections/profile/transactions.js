@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-
+import { Table } from 'react-bootstrap';
 
 var tableStyle = {
   width:"100%"
@@ -76,31 +76,30 @@ export default class Transactions extends Component {
     	<div className = "container">
 			<h2>Your Transactions!</h2>
 			<p>Fell free to check out your transactions!</p>
-			<table style={tableStyle}>
-				<tr>
-					<th>amount</th>
-					<th>created_at</th>
-					<th>state</th>
-					<th>token</th>
-					<th>merchant_id</th>
-					<th>store_location</th>
-					<th>store_name</th>
-					<th>store_type</th>
-				</tr>
+			<Table striped bordered condensed hover>
+				<thead>
+					<tr>
+						<th>amount</th>
+						<th>created_at</th>
+						<th>state</th>
+						<th>store_location</th>
+						<th>store_name</th>
+						<th>store_type</th>
+					</tr>
+				</thead>
+				<tbody>
 				{this.state.transactionsArray.map((transaction, key) =>
             		<tr>
             			<td>{transaction.amount}</td>
             			<td>{transaction.created_at}</td>
             			<td>{transaction.state}</td>
-            			<td>{transaction.token}</td>
-            			<td>{transaction.merchant.merchant_id}</td>
-						<td>{transaction.merchant.store_location}</td>
+            			<td>{transaction.merchant.store_location}</td>
             			<td>{transaction.merchant.store_name}</td>
             			<td>{transaction.merchant.store_type}</td>            			            		           		            			
             		</tr>
           		)}
-
-			</table>
+          		</tbody>
+			</Table>
 
 		</div>
     );
