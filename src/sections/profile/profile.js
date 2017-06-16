@@ -24,6 +24,11 @@ var spanStyles = {
   cursor:'pointer'
 };
 
+
+var textAlignCenter = {
+	textAlign:"center"
+};
+
 export default class Profile extends Component {
 	constructor(props){
 		super(props);
