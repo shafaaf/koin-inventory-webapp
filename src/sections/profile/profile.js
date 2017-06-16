@@ -51,6 +51,8 @@ export default class Profile extends Component {
 		else{
 			return{
 				marginLeft: 0
+				// overflowY: "hidden",
+				// overflowX: "hidden"
 			}
 		}
 	}	
@@ -93,8 +95,6 @@ export default class Profile extends Component {
 						<Route path='/profile/settings' component={Settings}/>
 						<Route path='/profile/transactions' component={Transactions}/>
 					</Switch>
-				
-					
 				</div>	
 			</div>
 		);

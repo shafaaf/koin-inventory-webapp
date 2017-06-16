@@ -1,11 +1,10 @@
 import React,{Component} from 'react';
 import { Table } from 'react-bootstrap';
 
-var tableStyle = {
-  width:"100%"
+var tableStyles = {
+	overflowY: "hidden",
+	overflowX: "hidden"
 };
-
-
 
 export default class Transactions extends Component {
   constructor(props){
@@ -100,7 +99,6 @@ export default class Transactions extends Component {
           		)}
           		</tbody>
 			</Table>
-
 		</div>
     );
   }
