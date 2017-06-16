@@ -1,10 +1,8 @@
 import React,{Component} from 'react';
 // import { Table } from 'react-bootstrap';
-import { Chart } from 'react-google-charts';
 
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
-
 
 var tableStyles = {
 	overflowY: "hidden",
@@ -13,29 +11,13 @@ var tableStyles = {
 	padding: "5px"
 };
 
-class MyTable extends Component {
-	render(){
-		console.log("this is MyTable");
-		return (
-			<div className={'my-pretty-chart-container'}>
-				<Chart chartType="ScatterChart" 
-					data={[['Age', 'Weight'], [8, 12], [4, 5.5]]}
-					options={{}}
-					graph_id="ScatterChart"
-					width="100%"
-					height="400px"
-				legend_toggle/>
-			</div>
-    	);
-	}
-}
-
 export default class Transactions extends Component {
   constructor(props){
   	super(props);
   	 this.state = {
       transactions: {},
-      transactionsArray: []
+      transactionsArray: [],
+      currentTransactionPage: null
     };
   }
 
@@ -70,15 +52,14 @@ export default class Transactions extends Component {
 			response.json().then(function(data) {  
 				console.log("transaction data from server is: ", data);
 				console.log("setting state for transactions now.");
-				setTimeout(function(){ 
-					console.log("timer ended"); }, 5000);
-					// Todo: get warning of setting state when component not mounted
-					// Happens when click away to another section and state for old component
-					// is being set
-					thisContext.setState({ 
-						transactions: data,
-						transactionsArray: data["transactions"]
-					 });
+				// Todo: get warning of setting state when component not mounted
+				// Happens when click away to another section and state for old component
+				// is being set
+				thisContext.setState({ 
+					transactions: data,
+					transactionsArray: data["transactions"],
+					currentTransactionPage: 1
+				 });
 
 			});
 		}
@@ -95,6 +76,61 @@ export default class Transactions extends Component {
   		<li>{singleTransactions.amount}</li>
   	);
    return myTransactionsItems;
+  }
+
+  fetchDifferentIndexTransactions(direction){	
+  	console.log("fetchDifferentIndexTransactions: direction is: ", direction);
+  	console.log("current index is: ", this.state.currentTransactionPage);
+  	var currentIndex = this.state.currentTransactionPage;
+  	
+  	// Todo: perform checks to see if possible or not to get other index
+  	if(direction == "prev"){
+  		currentIndex = currentIndex - 1;
+  	}
+  	else if(direction == "next"){
+  		currentIndex = currentIndex + 1;
+  	}
+  	else{
+  		console.log("Some weird error!");
+  	}
+
+  	var data = JSON.stringify({});
+	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list?page=' + currentIndex;
+	var request = new Request(url, {
+		method: 'POST',
+		body: data,
+		mode: 'cors',
+		headers: new Headers({
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'
+		})
+	});
+	var thisContext = this; // To keep track of this context within promise callback
+	fetch(request).then(
+		function(response) {
+			if (response.status !== 200) {   
+				console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+				return;  
+			}
+			// Examine the text in the response from Koin server
+			response.json().then(function(data) {  
+				console.log("transaction data from server is: ", data);
+				console.log("setting state for transactions now.");
+				// Todo: get warning of setting state when component not mounted
+				// Happens when click away to another section and state for old component
+				// is being set
+				thisContext.setState({ 
+					transactions: data,
+					transactionsArray: data["transactions"],
+					currentTransactionPage: currentIndex
+				 });
+
+			});
+		}
+	);
+
+
+
   }
 
 
@@ -133,9 +169,8 @@ export default class Transactions extends Component {
 	          		)}
 	          		</Tbody>
 				</Table>
-
-
-				<MyTable/>
+				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
+				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 			</div>
 	    );
 	}
