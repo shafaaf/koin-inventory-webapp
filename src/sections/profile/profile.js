@@ -87,7 +87,6 @@ export default class Profile extends Component {
 						<Route path='/profile/settings' component={Settings}/>
 						<Route path='/profile/transactions' component={Transactions}/>
 						
-						
 					</Switch>
 					{this.renderMenuToggle()}
 					<br/>

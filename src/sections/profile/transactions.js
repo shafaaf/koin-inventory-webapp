@@ -1,5 +1,12 @@
 import React,{Component} from 'react';
 
+
+var tableStyle = {
+  width:"100%"
+};
+
+
+
 export default class Transactions extends Component {
   constructor(props){
   	super(props);
@@ -69,11 +76,32 @@ export default class Transactions extends Component {
     	<div className = "container">
 			<h2>Your Transactions!</h2>
 			<p>Fell free to check out your transactions!</p>
-			<ul>
+			<table style={tableStyle}>
+				<tr>
+					<th>amount</th>
+					<th>created_at</th>
+					<th>state</th>
+					<th>token</th>
+					<th>merchant_id</th>
+					<th>store_location</th>
+					<th>store_name</th>
+					<th>store_type</th>
+				</tr>
 				{this.state.transactionsArray.map((transaction, key) =>
-            	<li>{transaction.amount}</li>
-          )}
-        	</ul>
+            		<tr>
+            			<td>{transaction.amount}</td>
+            			<td>{transaction.created_at}</td>
+            			<td>{transaction.state}</td>
+            			<td>{transaction.token}</td>
+            			<td>{transaction.merchant.merchant_id}</td>
+						<td>{transaction.merchant.store_location}</td>
+            			<td>{transaction.merchant.store_name}</td>
+            			<td>{transaction.merchant.store_type}</td>            			            		           		            			
+            		</tr>
+          		)}
+
+			</table>
+
 		</div>
     );
   }
