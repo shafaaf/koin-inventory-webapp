@@ -43,7 +43,9 @@ export default class Profile extends Component {
 	mainStyles(){	//styles for the main div
 		if(this.state.showNavBar){
 			return {
-				marginLeft: "30%"
+				marginLeft: "30%",
+				overflowY: "scroll",
+				overflowX: "hidden"
 			}
 		}
 		else{
