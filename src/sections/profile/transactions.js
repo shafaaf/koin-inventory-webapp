@@ -73,7 +73,7 @@ export default class Transactions extends Component {
   render() {
   	console.log("Rendering transactions component.");
     return (
-    	<div className = "container">
+    	<div>
 			<h2>Your Transactions!</h2>
 			<p>Fell free to check out your transactions!</p>
 			<Table striped bordered condensed hover>

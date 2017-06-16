@@ -44,7 +44,7 @@ export default class Profile extends Component {
 		if(this.state.showNavBar){
 			return {
 				marginLeft: "30%",
-				overflowY: "scroll",
+				overflowY: "hidden",
 				overflowX: "hidden"
 			}
 		}
@@ -86,14 +86,14 @@ export default class Profile extends Component {
 					{this.renderMenuToggle()}
 					<br/>
 					<Button id = "logoutButton" onClick={this.facebookLogout.bind(this)} bsSize="small" bsStyle="danger">Log outz</Button>
-					<div className = "container">
-						<Switch>
-							<Route exact path='/profile' component={DashboardIntro}/>
-							<Route path='/profile/inventory' component={Inventory}/>
-							<Route path='/profile/settings' component={Settings}/>
-							<Route path='/profile/transactions' component={Transactions}/>
-						</Switch>
-					</div>
+					
+					<Switch>
+						<Route exact path='/profile' component={DashboardIntro}/>
+						<Route path='/profile/inventory' component={Inventory}/>
+						<Route path='/profile/settings' component={Settings}/>
+						<Route path='/profile/transactions' component={Transactions}/>
+					</Switch>
+				
 					
 				</div>	
 			</div>
