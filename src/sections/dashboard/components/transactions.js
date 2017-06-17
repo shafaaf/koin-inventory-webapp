@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 // import { Table } from 'react-bootstrap';
 
+import Moment from 'react-moment';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
 
@@ -14,12 +15,12 @@ var tableStyles = {
 export default class Transactions extends Component {
   constructor(props){
   	super(props);
-  	 this.state = {
-      transactions: {},
-      transactionsArray: [],
-      currentTransactionPage: null,
-      hasNextPage: null
-    };
+	this.state = {
+		transactions: {},
+		transactionsArray: [],
+		currentTransactionPage: null,
+		hasNextPage: null
+	};
   }
 
   componentWillMount(){
@@ -156,23 +157,25 @@ export default class Transactions extends Component {
 				<Table style = {tableStyles}>
 					<Thead>
 						<Tr>
-							<Th>amount</Th>
-							<Th>created_at</Th>
-							<Th>state</Th>
-							<Th>store_location</Th>
-							<Th>store_name</Th>
-							<Th>store_type</Th>
+							<Th>Amount</Th>
+							<Th>Created At</Th>
+							<Th>State</Th>
+							<Th>Store Location</Th>
+							<Th>Store Name</Th>
+							<Th>Store Type</Th>
 						</Tr>
 					</Thead>
 					<Tbody>
 					{this.state.transactionsArray.map((transaction, key) =>
 	            		<Tr>
 	            			<Td>{transaction.amount}</Td>
-	            			<Td>{transaction.created_at}</Td>
+	            			<Td>
+	            				<Moment unix>{transaction.created_at}</Moment>
+	            			</Td>	
 	            			<Td>{transaction.state}</Td>
 	            			<Td>{transaction.merchant.store_location}</Td>
 	            			<Td>{transaction.merchant.store_name}</Td>
-	            			<Td>{transaction.merchant.store_type}</Td>            			            		           		            			
+	            			<Td>{transaction.merchant.store_type}</Td>          			            		           		            			
 	            		</Tr>
 	          		)}
 	          		</Tbody>
