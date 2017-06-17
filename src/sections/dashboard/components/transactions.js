@@ -16,6 +16,7 @@ export default class Transactions extends Component {
   constructor(props){
   	super(props);
 	this.state = {
+		loading: true,
 		transactions: {},
 		transactionsArray: [],
 		currentTransactionPage: null,
@@ -57,7 +58,8 @@ export default class Transactions extends Component {
 				// Todo: get warning of setting state when component not mounted
 				// Happens when click away to another section and state for old component
 				// is being set
-				thisContext.setState({ 
+				thisContext.setState({
+					loading: false,
 					transactions: data,
 					transactionsArray: data["transactions"],
 					currentTransactionPage: 1,
@@ -67,21 +69,12 @@ export default class Transactions extends Component {
 			});
 		}
 	);
-	console.log("After promise section in transactions fetch.");
+	console.log("After promise section in componentDidMount transactions fetch.");
 
   }
+  
 
-  renderTransactions(){
-  	console.log("rendering transactions data");
-  	var myTransactions = this.state.transactionsArray;
-  	console.log("myTransactions is: ", myTransactions);
-  	var myTransactionsItems  = myTransactions.map((singleTransactions) =>
-  		<li>{singleTransactions.amount}</li>
-  	);
-   return myTransactionsItems;
-  }
-
-  fetchDifferentIndexTransactions(direction){	
+  fetchDifferentIndexTransactions(direction){
   	console.log("fetchDifferentIndexTransactions: direction is: ", direction);
   	console.log("current index is: ", this.state.currentTransactionPage);
   	var currentIndex = this.state.currentTransactionPage;
@@ -104,7 +97,6 @@ export default class Transactions extends Component {
   	else{
   		console.log("Some weird error!");
   	}
-
   	var data = JSON.stringify({});
 	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list?page=' + currentIndex;
 	var request = new Request(url, {
@@ -130,7 +122,8 @@ export default class Transactions extends Component {
 				// Todo: get warning of setting state when component not mounted
 				// Happens when click away to another section and state for old component
 				// is being set
-				thisContext.setState({ 
+				thisContext.setState({
+					loading: false,
 					transactions: data,
 					transactionsArray: data["transactions"],
 					currentTransactionPage: currentIndex,
@@ -138,15 +131,19 @@ export default class Transactions extends Component {
 				 });
 
 			});
+			console.log("after then statement");
 		}
 	);
+	console.log("after fetch");
+	thisContext.setState({
+		loading: true
+	});
   }
 
 
   render() {
   	console.log("Rendering transactions component.");
-    
-    if(this.state.transactionsArray.length <= 0){	// loading screen when getting data
+    if(this.state.loading){	// loading screen when getting data
     	return <h2>Loading your transactions ..</h2>;
     }
     else{	//show transactions data
