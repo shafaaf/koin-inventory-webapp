@@ -8,10 +8,10 @@ import {
   Link
 } from 'react-router-dom'
 
-// Importing sections
-import Home from './sections/home/home';
-import Login from './sections/login/login';
-import Dashboard from './sections/dashboard/dashboard';
+// Importing different screen components
+import Home from './screens/home/home';
+import Login from './screens/login/login';
+import Dashboard from './screens/dashboard/dashboard';
 
 //----------------------------------------------------------------
 

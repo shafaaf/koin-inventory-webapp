@@ -1,0 +1,14 @@
+body{
+	background-color:#FFFFFF;
+}
+
+#koinLogo{
+	display: block;
+	margin: auto;
+	width:100%;
+	margin-top: -10%;
+}
+
+#socialButtonsGrid{
+	margin-top: -15%;
+}
