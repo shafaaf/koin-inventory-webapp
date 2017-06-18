@@ -15,6 +15,11 @@ export default class ContactUs extends Component {
 			<div>
 				<h2>Contact Us!</h2>
 				<button onClick = {this.emailConactUs}>Click here</button>
+				<br/>
+				<br/>
+				<div>
+					<Form/>
+				</div>
 			</div>
 		);
 	}
