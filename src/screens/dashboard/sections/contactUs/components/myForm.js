@@ -18,18 +18,22 @@ export default class myForm extends Component {
         this.state = {
             firstNameValue: '',
             firstNameError: 'init',
+
+            lastNameValue: '',
+            lastNameError: 'init'
+
         };
     }
 
     /* ------------------ First Name verification checks ------------------------------- */
-    getValidationState(){
+    firstNameGetValidationState(){
         var firstNameError = this.state.firstNameError;
         if (firstNameError == '') {return 'success';}   //no error - success
         else if(firstNameError == 'init') {return 'warning';}   //initial state - warning
         else {return 'error';}  //error
     }
 
-    handleChangeFirstName(e) {  //after entering something, will detect changes
+    firstNameHandleChange(e) {  //after entering something, will detect changes
         var firstName = e.target.value;
         if(firstName == ''){    //empty string after writing something not init
             this.setState({ 
@@ -43,7 +47,6 @@ export default class myForm extends Component {
                 firstNameError: 'spaces'
             });
         }
-        
         else{   //no error
             this.setState({ 
                 firstNameValue: firstName,
@@ -57,8 +60,42 @@ export default class myForm extends Component {
         else if(this.state.firstNameError == 'spaces'){return <p>You passed in spaces!</p>;}
         else{return null;}
     }
+
     /* -------------------- Last Name verification checks---------------------------------*/
-    
+    lastNameGetValidationState(){
+        var lastNameError = this.state.lastNameError;
+        if (lastNameError == '') {return 'success';}   //no error - success
+        else if(lastNameError == 'init') {return 'warning';}   //initial state - warning
+        else {return 'error';}  //error
+    }
+
+    lastNameHandleChange(e) {  //after entering something, will detect changes
+        var lastName = e.target.value;
+        if(lastName == ''){    //empty string after writing something not init
+            this.setState({ 
+                lastNameValue: lastName,
+                lastNameError: 'empty'
+            });
+        }
+        else if(lastName.indexOf(' ') >= 0){   // user passes in spaces
+            this.setState({ 
+                lastNameValue: lastName,
+                lastNameError: 'spaces'
+            });
+        }
+        else{   //no error
+            this.setState({ 
+                lastNameValue: lastName,
+                lastNameError: ''
+            });
+        }
+    }
+
+    lastNameHelpMessage(){
+        if(this.state.lastNameError == 'empty'){return <p>Need to enter something</p>;}
+        else if(this.state.lastNameError == 'spaces'){return <p>You passed in spaces!</p>;}
+        else{return null;}
+    }
     
     /* ---------------------------------------------------------------------------------- */
     
@@ -66,18 +103,19 @@ export default class myForm extends Component {
         return (
             <form>
                 {/* First Name*/}
-                <FormGroup controlId="formBasicText" validationState={this.getValidationState()}>
+                <FormGroup controlId="formBasicText" validationState={this.firstNameGetValidationState()}>
                     <ControlLabel>First Name</ControlLabel>
-                    <FormControl type="text" value={this.state.firstNameValue} placeholder="Enter text" onChange={this.handleChangeFirstName.bind(this)}/>
+                    <FormControl type="text" value={this.state.firstNameValue} placeholder="Enter text" onChange={this.firstNameHandleChange.bind(this)}/>
                     <FormControl.Feedback/>
                     <HelpBlock> {this.firstNameHelpMessage()}</HelpBlock>
                 </FormGroup>
             
                 {/* Last Name*/}
-                <FormGroup controlId="formBasicText">
+                <FormGroup controlId="formBasicText" validationState={this.lastNameGetValidationState()}>
                     <ControlLabel>Last Name</ControlLabel>
-                    <FormControl type="text" placeholder="Enter text"/>
+                    <FormControl type="text" value={this.state.lastNameValue} placeholder="Enter text" onChange={this.lastNameHandleChange.bind(this)}/>
                     <FormControl.Feedback/>
+                    <HelpBlock> {this.lastNameHelpMessage()}</HelpBlock>
                 </FormGroup>
 
                 {/* Email*/}
