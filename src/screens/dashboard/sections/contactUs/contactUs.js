@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 
 // Importing other sections
-import Form from './components/form';
+import MyForm from './components/myForm';
+
 
 export default class ContactUs extends Component {
 
@@ -18,7 +19,7 @@ export default class ContactUs extends Component {
 				<br/>
 				<br/>
 				<div>
-					<Form/>
+					<MyForm/>
 				</div>
 			</div>
 		);
