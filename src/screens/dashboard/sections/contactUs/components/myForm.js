@@ -2,12 +2,17 @@ import React,{Component} from 'react';
 
 
 // // Bootstrap components
-import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
 
 // Form Validation components
 import { ButtonInput } from 'react-bootstrap';
 
-export default class Form extends Component {
+var style = {
+    textAlign: 'center'
+};
+
+
+export default class myForm extends Component {
     constructor(props) {
         console.log("On constructor");
         super(props);
@@ -56,11 +61,32 @@ export default class Form extends Component {
     render() {
         return (
             <form>
+                {/* First Name*/}
                 <FormGroup controlId="formBasicText" validationState={this.getValidationState()}>
                     <ControlLabel>First Name</ControlLabel>
                     <FormControl type="text" value={this.state.firstNameValue} placeholder="Enter text" onChange={this.handleChangeFirstName.bind(this)}/>
                     <FormControl.Feedback/>
                     <HelpBlock> {this.firstNameHelpMessage()}</HelpBlock>
+                </FormGroup>
+            
+                {/* Last Name*/}
+                <FormGroup controlId="formBasicText">
+                    <ControlLabel>Last Name</ControlLabel>
+                    <FormControl type="text" placeholder="Enter text"/>
+                    <FormControl.Feedback/>
+                </FormGroup>
+
+                {/* Email*/}
+                <FormGroup controlId="formBasicText">
+                    <ControlLabel>Email</ControlLabel>
+                    <FormControl type="text" placeholder="Enter text"/>
+                    <FormControl.Feedback/>
+                </FormGroup>
+
+                {/* Text Area */}
+                <FormGroup controlId="formControlsTextarea">
+                    <ControlLabel>My Message</ControlLabel>
+                    <FormControl componentClass="textarea" placeholder="Message" />
                 </FormGroup>
             </form>
         );
