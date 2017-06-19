@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 
 // // Bootstrap components
-import { FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col, Button } from 'react-bootstrap';
 
 // Form Validation components
 import { ButtonInput } from 'react-bootstrap';
@@ -10,7 +10,6 @@ import { ButtonInput } from 'react-bootstrap';
 var style = {
     textAlign: 'center'
 };
-
 
 export default class myForm extends Component {
     constructor(props) {
@@ -22,6 +21,7 @@ export default class myForm extends Component {
         };
     }
 
+    /* ------------------ First Name verification checks ------------------------------- */
     getValidationState(){
         var firstNameError = this.state.firstNameError;
         if (firstNameError == '') {return 'success';}   //no error - success
@@ -57,7 +57,11 @@ export default class myForm extends Component {
         else if(this.state.firstNameError == 'spaces'){return <p>You passed in spaces!</p>;}
         else{return null;}
     }
-
+    /* -------------------- Last Name verification checks---------------------------------*/
+    
+    
+    /* ---------------------------------------------------------------------------------- */
+    
     render() {
         return (
             <form>
@@ -88,6 +92,8 @@ export default class myForm extends Component {
                     <ControlLabel>My Message</ControlLabel>
                     <FormControl componentClass="textarea" placeholder="Message" />
                 </FormGroup>
+
+                 <Button bsStyle="primary" bsSize="large" block>Submit</Button>
             </form>
         );
     }

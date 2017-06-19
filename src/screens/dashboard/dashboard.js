@@ -19,7 +19,6 @@ import ContactUs from './sections/contactUs/contactUs.js';
 // Import styles
 import './dashboard.css';
 
-
 // Some styles
 var spanStyles = {
   fontSize:'30px',
