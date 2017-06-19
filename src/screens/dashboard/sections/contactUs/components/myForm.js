@@ -20,12 +20,15 @@ export default class myForm extends Component {
             firstNameError: 'init',
 
             lastNameValue: '',
-            lastNameError: 'init'
+            lastNameError: 'init',
 
+            emailValue: '',
+            emailError: 'init',
         };
     }
 
     /* ------------------ First Name verification checks ------------------------------- */
+    
     firstNameGetValidationState(){
         var firstNameError = this.state.firstNameError;
         if (firstNameError == '') {return 'success';}   //no error - success
@@ -57,11 +60,12 @@ export default class myForm extends Component {
 
     firstNameHelpMessage(){
         if(this.state.firstNameError == 'empty'){return <p>Need to enter something</p>;}
-        else if(this.state.firstNameError == 'spaces'){return <p>You passed in spaces!</p>;}
+        else if(this.state.firstNameError == 'spaces'){return <p>You passed in spaces.</p>;}
         else{return null;}
     }
 
     /* -------------------- Last Name verification checks---------------------------------*/
+    
     lastNameGetValidationState(){
         var lastNameError = this.state.lastNameError;
         if (lastNameError == '') {return 'success';}   //no error - success
@@ -93,11 +97,53 @@ export default class myForm extends Component {
 
     lastNameHelpMessage(){
         if(this.state.lastNameError == 'empty'){return <p>Need to enter something</p>;}
-        else if(this.state.lastNameError == 'spaces'){return <p>You passed in spaces!</p>;}
+        else if(this.state.lastNameError == 'spaces'){return <p>You passed in spaces.</p>;}
         else{return null;}
     }
     
-    /* ---------------------------------------------------------------------------------- */
+    /* ---------------------- Email checks---------------------------------------- */
+    
+    emailGetValidationState(){
+        var emailError = this.state.emailError;
+        if (emailError == '') {return 'success';}   //no error - success
+        else if(emailError == 'init') {return 'warning';}   //initial state - warning
+        else {return 'error';}  //error
+    }
+
+    validateEmail(email){
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    emailHandleChange(e) {  //after entering something, will detect changes
+        var email = e.target.value;
+        if(email == ''){    //empty string after writing something not init
+            this.setState({ 
+                emailValue: email,
+                emailError: 'empty'
+            });
+        }
+        else if(!this.validateEmail(email)){   // user does have proper email
+            this.setState({ 
+                emailValue: email,
+                emailError: 'notProperEmail'
+            });
+        }
+        else{   //no error
+            this.setState({ 
+                emailValue: email,
+                emailError: ''
+            });
+        }
+    }
+
+    emailHelpMessage(){
+        if(this.state.emailError == 'empty'){return <p>Need to enter something</p>;}
+        else if(this.state.emailError == 'notProperEmail'){return <p>Not a proper email address.</p>;}
+        else{return null;}
+    }
+
+    /* --------------------------------------------------------------------------- */
     
     render() {
         return (
@@ -119,10 +165,11 @@ export default class myForm extends Component {
                 </FormGroup>
 
                 {/* Email*/}
-                <FormGroup controlId="formBasicText">
+                <FormGroup controlId="formBasicText" validationState={this.emailGetValidationState()}>
                     <ControlLabel>Email</ControlLabel>
-                    <FormControl type="text" placeholder="Enter text"/>
+                    <FormControl type="text" value={this.state.emailValue} placeholder="Enter text" onChange={this.emailHandleChange.bind(this)}/>
                     <FormControl.Feedback/>
+                    <HelpBlock> {this.emailHelpMessage()}</HelpBlock>
                 </FormGroup>
 
                 {/* Text Area */}
