@@ -5,15 +5,14 @@ import {
   Redirect,
   Link,
   Switch
-} from 'react-router-dom'
-import {Button} from 'react-bootstrap';
+} from 'react-router-dom';
 
-//Importing other sections
+// Importing other page sections
 import Navbar from './myNavBar.js';
 import DashboardIntro from './sections/dashboardIntro.js';
 import Inventory from './sections/inventory/inventory.js';
-import Settings from './sections/settings.js';
 import Transactions from './sections/transactions.js';
+import Settings from './sections/settings.js';
 import ContactUs from './sections/contactUs/contactUs.js';
 
 
@@ -39,7 +38,7 @@ export default class Dashboard extends Component {
 				<Navbar onLogOut = {this.facebookLogout.bind(this)}/>
 				<div className = "container">
 					<br/>
-					<Switch>
+					<Switch> {/*Content for each different section*/}
 						<Route exact path='/dashboard' component={DashboardIntro}/>
 						<Route path='/dashboard/inventory' component={Inventory}/>
 						<Route path='/dashboard/transactions' component={Transactions}/>
