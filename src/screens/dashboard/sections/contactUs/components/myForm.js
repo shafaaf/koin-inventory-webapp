@@ -183,8 +183,6 @@ export default class myForm extends Component {
                             <FormGroup controlId="formBasicText">
                                 <ControlLabel>Phone number</ControlLabel>
                                 <FormControl type="text" placeholder="Enter text"/>
-                                <FormControl.Feedback/>
-                                <HelpBlock> {this.emailHelpMessage()}</HelpBlock>
                             </FormGroup>
                         </Col>
                     </Row>

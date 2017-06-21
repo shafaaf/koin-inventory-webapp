@@ -26,10 +26,14 @@ export default class MyNavBar extends Component {
 							<Link className = "menuItem" to='/dashboard/transactions'>My Transactions</Link>
 						</NavItem>
 						<NavDropdown eventKey={3} title="My Inventory" id="basic-nav-dropdown">
+							
 							<MenuItem eventKey={3.1}>
-								<Link className = "menuItem" to='/dashboard/inventory'>Current List</Link>
+								<Link className = "menuItem" to='/dashboard/inventory/'>Current list</Link>
 							</MenuItem>
-							<MenuItem eventKey={3.2}>Add an item</MenuItem>
+
+							<MenuItem eventKey={3.2}>
+								<Link className = "menuItem" to='/dashboard/inventory/add'>Add an item</Link>
+							</MenuItem>
 							<MenuItem eventKey={3.3}>Something else here</MenuItem>
 							<MenuItem divider />
 							<MenuItem eventKey={3.3}>Separated link</MenuItem>
