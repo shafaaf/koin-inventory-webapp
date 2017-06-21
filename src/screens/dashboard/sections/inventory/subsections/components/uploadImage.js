@@ -7,6 +7,8 @@ import request from 'superagent';
 import {Grid, Row, Col, Image} from 'react-bootstrap';
 
 import Gallery from 'react-grid-gallery';
+import Lightbox from 'react-images';
+
 
 
 const CLOUDINARY_UPLOAD_PRESET = 'ydrh63nt';
@@ -106,17 +108,24 @@ export default class UploadImage extends Component {
 		}
 		else{
 			console.log("this.state.imagesArray is: ", this.state.imagesArray);
+			
+			var testImages = [];
+			var myObj = {};
+			myObj["src"] = "https://www.apple.com/ac/structured-data/images/knowledge_graph_logo.png?201703170823";
+			testImages.push(myObj);
+			var myObj2 = {};
+			myObj2["src"] = "https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg";
+			testImages.push(myObj2);
+			
 			return  (
 					<div>
 						<p>{this.state.rendering}</p>
-						<Gallery images = {this.state.imagesArray}/>
+						<Lightbox images={testImages}
+						isOpen={this.state.lightboxIsOpen}
+						onClickPrev={this.gotoPrevious}
+						onClickNext={this.gotoNext} onClose={this.closeLightbox}/>
 					</div>
 				);
-			// return (
-			// 	<div>
-			// 		<Image src= {uploadedFiles[0]["uploadedFile"]["preview"]} responsive alt = "why not"/>
-			// 	</div>
-			// );
 		}
 	}
 
