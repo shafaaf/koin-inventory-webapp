@@ -7,8 +7,9 @@ const CLOUDINARY_UPLOAD_URL = '	https://api.cloudinary.com/v1_1/sendkoin/upload'
 
 var textAlign = {
 	textAlign: 'center',
-	border: '1px dotted #6F7279',
-	padding: '20px'
+	border: '2px dotted #000000',
+	padding: '20px',
+	backgroundColor: '#f6f5f5'
 }
 
 export default class UploadImage extends Component {
@@ -63,7 +64,7 @@ export default class UploadImage extends Component {
 					<div style = {{textAlign: "center"}}>
 						{this.state.uploadedFileCloudinaryUrl === '' ? null :
 						<div>
-							<p>{this.state.uploadedFile.name}</p>
+							<p>{this.state.uploadedFile.name} or Cross out</p>
 							<img src={this.state.uploadedFileCloudinaryUrl} />
 						</div>}
 					</div>
