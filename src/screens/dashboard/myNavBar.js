@@ -36,7 +36,6 @@ export default class MyNavBar extends Component {
 						</NavDropdown>
 					</Nav>
 					<Nav pullRight>
-						<NavItem eventKey={1} href="#">Settings</NavItem>
 						<NavItem eventKey={1}>
 							<Link className = "menuItem" to='/dashboard/contactus'>Contact Us</Link>
 						</NavItem>
