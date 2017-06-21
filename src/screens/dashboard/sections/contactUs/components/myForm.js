@@ -7,9 +7,6 @@ import { FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col, Button
 // Form Validation components
 import { ButtonInput } from 'react-bootstrap';
 
-var style = {
-    textAlign: 'center'
-};
 
 export default class myForm extends Component {
     constructor(props) {
@@ -150,7 +147,7 @@ export default class myForm extends Component {
             <form>
                 <Grid>
                     <Row className="show-grid">
-                        <Col style = {style} md={6}>
+                        <Col md={6}>
                             {/* First Name*/}
                             <FormGroup controlId="formBasicText" validationState={this.firstNameGetValidationState()}>
                                 <ControlLabel>First Name</ControlLabel>
@@ -160,7 +157,7 @@ export default class myForm extends Component {
                             </FormGroup>
                         </Col>
 
-                        <Col style = {style} md={6}> 
+                        <Col md={6}> 
                             {/* Last Name*/}
                             <FormGroup controlId="formBasicText" validationState={this.lastNameGetValidationState()}>
                                 <ControlLabel>Last Name</ControlLabel>
@@ -172,7 +169,7 @@ export default class myForm extends Component {
                     </Row>
 
                     <Row className="show-grid">
-                        <Col style = {style} md={6}> 
+                        <Col md={6}> 
                             {/* Email*/}
                             <FormGroup controlId="formBasicText" validationState={this.emailGetValidationState()}>
                                 <ControlLabel>Email</ControlLabel>
@@ -181,7 +178,7 @@ export default class myForm extends Component {
                                 <HelpBlock> {this.emailHelpMessage()}</HelpBlock>
                             </FormGroup>
                         </Col>
-                        <Col style = {style} md={6}>
+                        <Col md={6}>
                             {/* Phone number */}
                             <FormGroup controlId="formBasicText">
                                 <ControlLabel>Phone number</ControlLabel>

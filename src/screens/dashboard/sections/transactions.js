@@ -144,11 +144,13 @@ export default class Transactions extends Component {
     if(this.state.loading){	// loading screen when getting data
     	return <h2>Loading your transactions ..</h2>;
     }
-    else{	//show transactions data
+    else{	// Show transactions data
 	    return (
 	    	<div>
 				<h2>Your Transactions!</h2>
 				<p>Fell free to check out your transactions!</p>
+				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
+				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 				<Table style = {tableStyles}>
 					<Thead>
 						<Tr>
