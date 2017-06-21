@@ -71,8 +71,16 @@ export default class UploadImage extends Component {
 					</Dropzone>
 				</div>
 			</form>
-			{this.renderImages()}
+			<Sample images = {this.state.images}/>
 		</div>
     );
   }
+}
+
+export class Sample extends React.Component {
+    render() {
+    return (
+        <Gallery photos={this.props.images} onClickPhoto={this.openLightbox}/>
+    );
+    }
 }
