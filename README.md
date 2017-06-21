@@ -5,3 +5,4 @@ Todos:
 - Change sidenav bar or make it a navigation bar
 - Make transaction tab responsive
 - In contact us, add server support to receive input
+- In contact us, validation for phone number

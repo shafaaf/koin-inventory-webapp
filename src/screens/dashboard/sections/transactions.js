@@ -5,13 +5,6 @@ import Moment from 'react-moment';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
 
-var tableStyles = {
-	overflowY: "hidden",
-	overflowX: "hidden",
-	borderSpacing: "15px",
-	padding: "5px"
-};
-
 export default class Transactions extends Component {
   constructor(props){
   	super(props);
@@ -151,7 +144,7 @@ export default class Transactions extends Component {
 	    	<div>
 				<h2>Your Transactions!</h2>
 				<p>Fell free to check out your transactions!</p>
-				<Table style = {tableStyles}>
+				<Table>
 					<Thead>
 						<Tr>
 							<Th>Amount</Th>

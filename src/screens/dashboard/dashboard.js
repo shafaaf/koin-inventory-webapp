@@ -15,7 +15,6 @@ import Transactions from './sections/transactions.js';
 import Settings from './sections/settings.js';
 import ContactUs from './sections/contactUs/contactUs.js';
 
-
 export default class Dashboard extends Component {
 	constructor(props){
 		super(props);

@@ -1,7 +1,7 @@
+
 import React,{Component} from 'react';
 
-
-// // Bootstrap components
+// Bootstrap components
 import { FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col, Button } from 'react-bootstrap';
 
 // Form Validation components
@@ -148,37 +148,60 @@ export default class myForm extends Component {
     render() {
         return (
             <form>
-                {/* First Name*/}
-                <FormGroup controlId="formBasicText" validationState={this.firstNameGetValidationState()}>
-                    <ControlLabel>First Name</ControlLabel>
-                    <FormControl type="text" value={this.state.firstNameValue} placeholder="Enter text" onChange={this.firstNameHandleChange.bind(this)}/>
-                    <FormControl.Feedback/>
-                    <HelpBlock> {this.firstNameHelpMessage()}</HelpBlock>
-                </FormGroup>
-            
-                {/* Last Name*/}
-                <FormGroup controlId="formBasicText" validationState={this.lastNameGetValidationState()}>
-                    <ControlLabel>Last Name</ControlLabel>
-                    <FormControl type="text" value={this.state.lastNameValue} placeholder="Enter text" onChange={this.lastNameHandleChange.bind(this)}/>
-                    <FormControl.Feedback/>
-                    <HelpBlock> {this.lastNameHelpMessage()}</HelpBlock>
-                </FormGroup>
+                <Grid>
+                    <Row className="show-grid">
+                        <Col style = {style} md={6}>
+                            {/* First Name*/}
+                            <FormGroup controlId="formBasicText" validationState={this.firstNameGetValidationState()}>
+                                <ControlLabel>First Name</ControlLabel>
+                                <FormControl type="text" value={this.state.firstNameValue} placeholder="Enter text" onChange={this.firstNameHandleChange.bind(this)}/>
+                                <FormControl.Feedback/>
+                                <HelpBlock> {this.firstNameHelpMessage()}</HelpBlock>
+                            </FormGroup>
+                        </Col>
 
-                {/* Email*/}
-                <FormGroup controlId="formBasicText" validationState={this.emailGetValidationState()}>
-                    <ControlLabel>Email</ControlLabel>
-                    <FormControl type="text" value={this.state.emailValue} placeholder="Enter text" onChange={this.emailHandleChange.bind(this)}/>
-                    <FormControl.Feedback/>
-                    <HelpBlock> {this.emailHelpMessage()}</HelpBlock>
-                </FormGroup>
+                        <Col style = {style} md={6}> 
+                            {/* Last Name*/}
+                            <FormGroup controlId="formBasicText" validationState={this.lastNameGetValidationState()}>
+                                <ControlLabel>Last Name</ControlLabel>
+                                <FormControl type="text" value={this.state.lastNameValue} placeholder="Enter text" onChange={this.lastNameHandleChange.bind(this)}/>
+                                <FormControl.Feedback/>
+                                <HelpBlock> {this.lastNameHelpMessage()}</HelpBlock>
+                            </FormGroup>
+                        </Col>
+                    </Row>
 
-                {/* Text Area */}
-                <FormGroup controlId="formControlsTextarea">
-                    <ControlLabel>My Message</ControlLabel>
-                    <FormControl componentClass="textarea" placeholder="Message" />
-                </FormGroup>
+                    <Row className="show-grid">
+                        <Col style = {style} md={6}> 
+                            {/* Email*/}
+                            <FormGroup controlId="formBasicText" validationState={this.emailGetValidationState()}>
+                                <ControlLabel>Email</ControlLabel>
+                                <FormControl type="text" value={this.state.emailValue} placeholder="Enter text" onChange={this.emailHandleChange.bind(this)}/>
+                                <FormControl.Feedback/>
+                                <HelpBlock> {this.emailHelpMessage()}</HelpBlock>
+                            </FormGroup>
+                        </Col>
+                        <Col style = {style} md={6}>
+                            {/* Phone number */}
+                            <FormGroup controlId="formBasicText">
+                                <ControlLabel>Phone number</ControlLabel>
+                                <FormControl type="text" placeholder="Enter text"/>
+                                <FormControl.Feedback/>
+                                <HelpBlock> {this.emailHelpMessage()}</HelpBlock>
+                            </FormGroup>
+                        </Col>
+                    </Row>
 
-                 <Button bsStyle="primary" bsSize="large" block>Submit</Button>
+                    {/* Text Area */}
+                    <FormGroup controlId="formControlsTextarea">
+                        <ControlLabel>My Message</ControlLabel>
+                        <FormControl componentClass="textarea" placeholder="Message" />
+                    </FormGroup>
+                    <Button bsStyle="primary" bsSize="large" block>Submit</Button>
+                </Grid>
+
+
+                 
             </form>
         );
     }
