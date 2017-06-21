@@ -15,6 +15,9 @@ import Transactions from './sections/transactions.js';
 import Settings from './sections/settings.js';
 import ContactUs from './sections/contactUs/contactUs.js';
 
+// Importing styles
+import './dashboard.css';
+
 export default class Dashboard extends Component {
 	constructor(props){
 		super(props);
@@ -34,8 +37,10 @@ export default class Dashboard extends Component {
 	render() {
 		return (
 			<div>
-				<Navbar onLogOut = {this.facebookLogout.bind(this)}/>
-				<div className = "container">
+				<div class = "container">
+					<Navbar onLogOut = {this.facebookLogout.bind(this)}/>
+				</div>
+				<div className = "container" style={{ }}>
 					<br/>
 					<Switch> {/*Content for each different section*/}
 						<Route exact path='/dashboard' component={DashboardIntro}/>

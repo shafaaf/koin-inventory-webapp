@@ -12,7 +12,7 @@ export default class MyNavBar extends Component {
   render() {
     return (
     	<div>
-			<Navbar inverse collapseOnSelect>
+			<Navbar inverse fixedTop collapseOnSelect>
 				<Navbar.Header>
 					<Navbar.Brand>
 						<Link className = "menuItem" to= '/dashboard'>Koin Dashboard</Link>

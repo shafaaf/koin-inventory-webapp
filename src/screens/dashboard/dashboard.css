@@ -1,0 +1,3 @@
+body {	/* To prevent clash of navbar with content */
+	padding-top: 70px; 
+}
