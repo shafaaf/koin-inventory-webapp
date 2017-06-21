@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import Dropzone from 'react-dropzone';
 
-import Lightbox from 'react-images';
+import Gallery from 'react-photo-gallery';
 
 var textAlign = {
 	textAlign: 'center',
@@ -28,7 +28,9 @@ export default class UploadImage extends Component {
 		
 		for (var i = 0; i < filesLength; i++) {
 			var imagesObject = {};
-			imagesObject["src"] = files[i]["preview"]
+			imagesObject["src"] = files[i]["preview"];
+			imagesObject["width"] = 681;
+			imagesObject["height"] = 1024;
 			images.push(imagesObject);
 		}
 		this.setState({ 
@@ -43,13 +45,15 @@ export default class UploadImage extends Component {
   		}
   		else{
   			console.log("images is: ", images);
-  			var images2 = [{src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg' }, { src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg'}];
+  			var images2 = [
+  				{src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
+  					height: 1024}, 
+  				{ src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
+    				height: 1024}
+    		];
+
   			return (
-  				<Lightbox
-			        images={[{ src: 'http://example.com/img1.jpg' }, { src: 'http://example.com/img2.jpg' }]}
-			        isOpen={this.state.lightboxIsOpen}
-			        onClickPrev={this.gotoPrevious}
-			        onClickNext={this.gotoNext} onClose={this.closeLightbox} />
+  				<Gallery photos={images} onClickPhoto={this.openLightbox}/>
   			);
   		}
   	}
