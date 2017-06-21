@@ -17,12 +17,13 @@ export default class UploadImage extends Component {
 	    super(props);
 
 	    this.state = {
-	      uploadedFile: null,
-	      uploadedFileCloudinaryUrl: ''
+			uploadedFile: null,
+			uploadedFileCloudinaryUrl: ''
 	    };
   	}
 
 	onImageDrop(files) {
+		console.log("files is: ", files);
 	    this.setState({
 	      uploadedFile: files[0]
 	    });
@@ -52,10 +53,10 @@ export default class UploadImage extends Component {
 		return (
 			<div>
 				<form>
-					<div className="FileUpload">
+					<div className="FileUpload" style = {{cursor:"pointer"}}>
 						<Dropzone style = {textAlign}
 							onDrop={this.onImageDrop.bind(this)}
-							multiple={false}
+							multiple={true}
 							accept="image/*">
 							<div>Drop an image or click to select a file to upload.</div>
 						</Dropzone>
@@ -64,8 +65,9 @@ export default class UploadImage extends Component {
 					<div style = {{textAlign: "center"}}>
 						{this.state.uploadedFileCloudinaryUrl === '' ? null :
 						<div>
-							<p>{this.state.uploadedFile.name} or Cross out</p>
-							<img src={this.state.uploadedFileCloudinaryUrl} />
+							<p>{this.state.uploadedFile.name} <span className = "glyphicon glyphicon-remove"></span></p>
+							<img src={this.state.uploadedFileCloudinaryUrl} responsive/>
+
 						</div>}
 					</div>
 				</form>
