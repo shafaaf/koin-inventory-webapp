@@ -41,7 +41,7 @@ export default class UploadImages extends Component {
   	renderImages(){
   		var images = this.state.images;
   		if(images === undefined || images.length == 0){
-  			return <p>No Images uploaded</p>;
+  			return <p style = {{textAlign: "center"}}>No Images uploaded</p>;
   		}
   		else{
   			console.log("images is: ", images);
@@ -68,7 +68,7 @@ export default class UploadImages extends Component {
 						onDrop={this.onImageDrop.bind(this)}
 						multiple={true}
 						accept="image/*">
-						<div>Drop an image or click to select a file to upload.</div>
+						<div><span className="glyphicon glyphicon-plus"></span> Upload pictures of food item!</div>
 					</Dropzone>
 				</div>
 			</form>

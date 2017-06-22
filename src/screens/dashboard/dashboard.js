@@ -14,7 +14,6 @@ import DashboardIntro from './sections/dashboardIntro.js';
 import Inventory from './sections/inventory/subsections/inventory.js';
 import AddInventory from './sections/inventory/subsections/addInventory';
 
-
 import Transactions from './sections/transactions.js';
 import Settings from './sections/settings.js';
 import ContactUs from './sections/contactUs/contactUs.js';
