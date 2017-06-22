@@ -6,11 +6,9 @@ import UploadImages from './components/uploadImages.js';
 import ItemInfo from './components/itemInfo.js';
 import {Grid, Row, Col} from 'react-bootstrap';
 
-
 export default class AddInventory extends Component {
 	render() {
-		return (
-			<div>
+		return (			<div>
 				<h2 style = {{textAlign: "center"}}>Item Information</h2>
 				<Grid>
 					<Row className="show-grid">

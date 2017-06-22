@@ -34,17 +34,17 @@ export default class ItemInfo extends Component {
 				</FormGroup>
 
 				 <FormGroup controlId="formHorizontalDescription">
-      				<Col componentClass={ControlLabel} sm={2}>
+      				<Col componentClass={ControlLabel} sm={2} md={2}>
 						Description
 					</Col>
-					<Col sm={10}>
+					<Col sm={10} md={10}>
 						<FormControl componentClass="textarea" rows="4" placeholder="Description" />
 					</Col>
     			</FormGroup>
 
     			 <FormGroup controlId="formHorizontalAdditionalNotes">
       				<Col componentClass={ControlLabel} sm={2}>
-						Additional Notes
+				 		Notes
 					</Col>
 					<Col sm={10}>
 						<FormControl componentClass="textarea" rows="4" placeholder="Notes" />

@@ -38,6 +38,10 @@ export default class UploadImages extends Component {
 		});
   	}
 
+  	openLightbox(){
+  		console.log("openLightbox");
+  	}
+
   	renderImages(){
   		var images = this.state.images;
   		if(images === undefined || images.length == 0){
