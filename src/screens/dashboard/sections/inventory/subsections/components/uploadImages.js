@@ -10,7 +10,7 @@ var textAlign = {
 	backgroundColor: '#f6f5f5'
 }
 
-export default class UploadImage extends Component {
+export default class UploadImages extends Component {
   constructor(props) {
 	    super(props);
 	    this.state = {
@@ -29,8 +29,8 @@ export default class UploadImage extends Component {
 		for (var i = 0; i < filesLength; i++) {
 			var imagesObject = {};
 			imagesObject["src"] = files[i]["preview"];
-			imagesObject["width"] = 681;
-			imagesObject["height"] = 1024;
+			imagesObject["width"] = 600;
+			imagesObject["height"] = 600;
 			images.push(imagesObject);
 		}
 		this.setState({ 
@@ -45,15 +45,16 @@ export default class UploadImage extends Component {
   		}
   		else{
   			console.log("images is: ", images);
+  			// For testing purposes
   			var images2 = [
   				{src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
   					height: 1024}, 
   				{ src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
     				height: 1024}
     		];
-
+    		
   			return (
-  				<Gallery photos={images} onClickPhoto={this.openLightbox}/>
+  				<Gallery cols = {2} photos={images} onClickPhoto={this.openLightbox}/>
   			);
   		}
   	}
@@ -71,7 +72,7 @@ export default class UploadImage extends Component {
 					</Dropzone>
 				</div>
 			</form>
-			<Sample images = {this.state.images}/>
+			{this.renderImages()}
 		</div>
     );
   }
