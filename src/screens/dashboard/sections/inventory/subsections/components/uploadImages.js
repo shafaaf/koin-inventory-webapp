@@ -58,8 +58,10 @@ export default class UploadImages extends Component {
     		];
     		
   			return (
-  				<Gallery cols = {2} photos={images} onClickPhoto={this.openLightbox}/>
-  			);
+          <div>
+  				  <Gallery cols = {2} photos={images} onClickPhoto={this.openLightbox}/>
+  			  </div>
+        );
   		}
   	}
 
