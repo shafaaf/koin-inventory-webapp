@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 
 // Importing other page sections
-import Navbar from './myNavBar.js';
+import Navbar from './components/myNavBar.js';
 import DashboardIntro from './sections/dashboardIntro.js';
 
 import Inventory from './sections/inventory/subsections/inventory.js';
@@ -22,13 +22,6 @@ import ContactUs from './sections/contactUs/contactUs.js';
 import './dashboard.css';
 
 export default class Dashboard extends Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			showNavBar: false
-		};
-	}	
-
 	facebookLogout(){
 		// 1. Remove koinToken from storage
 		// 2. Change state to null to render again

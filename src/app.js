@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
+  Switch,
   Link
 } from 'react-router-dom'
 
@@ -12,6 +13,7 @@ import {
 import Home from './screens/home/home';
 import Login from './screens/login/login';
 import Dashboard from './screens/dashboard/dashboard';
+import NoPageFound from './screens/noPageFound';
 
 //----------------------------------------------------------------
 
@@ -87,9 +89,12 @@ export default class App extends Component {
     return(
       <Router>
         <div>
-          <Route exact path="/" component={Home}/>
-          <Route path="/dashboard" component = {this.dashboardPageVerification.bind(this)}/>
-          <Route path="/login" component = {this.redirectToDashboard.bind(this)}/>
+          <Switch>        
+            <Route exact path="/" component={Home}/>
+            <Route path="/dashboard" component = {this.dashboardPageVerification.bind(this)}/>
+            <Route path="/login" component = {this.redirectToDashboard.bind(this)}/>
+            <Route component ={NoPageFound}/>
+          </Switch>
         </div>
       </Router>
     );
