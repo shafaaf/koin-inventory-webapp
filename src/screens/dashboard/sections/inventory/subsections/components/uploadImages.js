@@ -53,13 +53,13 @@ export default class UploadImages extends Component {
   			var images2 = [
   				{src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
   					height: 1024}, 
-  				{ src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
+  				{ src: 'https://support.apple.com/library/content/dam/edam/applecare/images/en_US/apple-store-giftcard.png',  width: 681,
     				height: 1024}
     		];
     		
   			return (
           <div>
-  				  <Gallery cols = {2} photos={images} onClickPhoto={this.openLightbox}/>
+  				  <Gallery cols = {2} photos={images2} onClickPhoto={this.openLightbox}/>
   			  </div>
         );
   		}
