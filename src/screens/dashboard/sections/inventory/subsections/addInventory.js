@@ -12,10 +12,10 @@ export default class AddInventory extends Component {
 				<h2 style = {{textAlign: "center"}}>Item Information</h2>
 				<Grid>
 					<Row className="show-grid">
-						<Col xs={6} md={6}>
+						<Col xs={6} md={6} lg={6}>
 							<ItemInfo/>
 						</Col>
-						<Col xs={6} md={6}>
+						<Col xs={6} md={6} lg={6}>
 							<UploadImages/>
 						</Col>
 					</Row>

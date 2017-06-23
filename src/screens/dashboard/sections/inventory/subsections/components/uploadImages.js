@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import Dropzone from 'react-dropzone';
+import {Grid, Row, Col, Image, Thumbnail} from 'react-bootstrap';
 
 import Gallery from 'react-photo-gallery';
+
 
 var textAlign = {
 	textAlign: 'center',
@@ -14,7 +16,6 @@ export default class UploadImages extends Component {
   constructor(props) {
 	    super(props);
 	    this.state = {
-	    	uploadedFiles: [],
 	    	images: []
 	    };
   	}
@@ -42,6 +43,19 @@ export default class UploadImages extends Component {
   		console.log("openLightbox");
   	}
 
+    renderThumbnails(){
+      console.log("renderThumbnails: images is: ", this.state.images);
+      var imagesMapped = this.state.images.map(function(image){
+            return (
+                <Col xs={2} md={2} lg={2}>
+                  <Thumbnail src = {image.src} responsive/>
+                </Col>
+              );
+          });
+      console.log("imagesMapped is: ", imagesMapped);
+      return imagesMapped;
+    }
+
   	renderImages(){
   		var images = this.state.images;
   		if(images === undefined || images.length == 0){
@@ -56,11 +70,15 @@ export default class UploadImages extends Component {
   				{ src: 'https://support.apple.com/library/content/dam/edam/applecare/images/en_US/apple-store-giftcard.png',  width: 681,
     				height: 1024}
     		];
-    		
+
   			return (
           <div>
-  				  <Gallery cols = {2} photos={images2} onClickPhoto={this.openLightbox}/>
-  			  </div>
+            <Grid>
+              <Row>
+                {this.renderThumbnails()}
+              </Row>
+            </Grid>
+          </div>
         );
   		}
   	}
@@ -78,7 +96,9 @@ export default class UploadImages extends Component {
 					</Dropzone>
 				</div>
 			</form>
-			{this.renderImages()}
+			<div>
+        {this.renderImages()}
+      </div>
 		</div>
     );
   }
