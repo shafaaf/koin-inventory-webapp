@@ -11,7 +11,7 @@ import {
 import Navbar from './components/myNavBar.js';
 import DashboardIntro from './sections/dashboardIntro.js';
 
-import Inventory from './sections/inventory/inventory.js';
+import ListInventory from './sections/inventory/listInventory/listInventory';
 import AddInventory from './sections/inventory/addInventory/addInventory';
 
 import Transactions from './sections/transactions/transactions.js';
@@ -42,7 +42,7 @@ export default class Dashboard extends Component {
 						<Route exact path='/dashboard' component={DashboardIntro}/>
 						
 						{/* Inventory Sections*/}
-						<Route exact path='/dashboard/inventory/' component={Inventory}/>
+						<Route exact path='/dashboard/inventory/' component={ListInventory}/>
 						<Route exact path='/dashboard/inventory/add' component={AddInventory}/>
 
 						<Route exact path='/dashboard/transactions' component={Transactions}/>
