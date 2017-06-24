@@ -4,7 +4,6 @@ import {Grid, Row, Col, Image, Thumbnail} from 'react-bootstrap';
 
 import Gallery from 'react-photo-gallery';
 
-
 var textAlign = {
 	textAlign: 'center',
 	border: '2px dotted #000000',
@@ -46,48 +45,48 @@ export default class UploadImages extends Component {
 		this.setState({ 
 			images: images
 		});
-  	}
+  }
 
-  	openLightbox(){
-  		console.log("openLightbox");
-  	}
+	openLightbox(){
+		console.log("openLightbox");
+	}
 
-    renderThumbnails(){
-      console.log("renderThumbnails: images is: ", this.state.images);
-      var imagesMapped = this.state.images.map(function(image){
-            return (
-                <Col xs={12} sm={6} md={4} lg={4}>
-                  <img style = {imageStyle} src = {image.src} responsive/>
-                </Col>
-              );
-          });
-      console.log("imagesMapped is: ", imagesMapped);
-      return imagesMapped;
-    }
+  renderThumbnails(){
+    console.log("renderThumbnails: images is: ", this.state.images);
+    var imagesMapped = this.state.images.map(function(image){
+      return (
+        <Col xs={12} sm={6} md={4} lg={4}>
+        <img style = {imageStyle} src = {image.src} responsive/>
+        </Col>
+      );
+    });
+    console.log("imagesMapped is: ", imagesMapped);
+    return imagesMapped;
+  }
 
-  	renderImages(){
-  		var images = this.state.images;
-  		if(images === undefined || images.length == 0){
-  			return <h3 style = {{textAlign: "center"}}>No Images uploaded</h3>;
-  		}
-  		else{
-  			console.log("images is: ", images);
-  			// For testing purposes
-  			var images2 = [
-  				{src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
-  					height: 1024}, 
-  				{ src: 'https://support.apple.com/library/content/dam/edam/applecare/images/en_US/apple-store-giftcard.png',  width: 681,
-    				height: 1024}
-    		];
-  			return (
-          <div style = {{marginTop:"2%"}}>
-            <Row>
-              {this.renderThumbnails()}
-            </Row>
-          </div>
-        );
-  		}
-  	}
+	renderImages(){
+		var images = this.state.images;
+		if(images === undefined || images.length == 0){
+			return <h3 style = {{textAlign: "center"}}>No Images uploaded</h3>;
+		}
+		else{
+			console.log("images is: ", images);
+			// For testing purposes
+			var images2 = [
+				{src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
+					height: 1024}, 
+				{ src: 'https://support.apple.com/library/content/dam/edam/applecare/images/en_US/apple-store-giftcard.png',  width: 681,
+  				height: 1024}
+  		];
+			return (
+        <div style = {{marginTop:"2%"}}>
+          <Row>
+            {this.renderThumbnails()}
+          </Row>
+        </div>
+      );
+		}
+	}
 
   render() {
     return (
@@ -112,8 +111,8 @@ export default class UploadImages extends Component {
 
 export class Sample extends React.Component {
     render() {
-    return (
-        <Gallery photos={this.props.images} onClickPhoto={this.openLightbox}/>
-    );
+      return (
+          <Gallery photos={this.props.images} onClickPhoto={this.openLightbox}/>
+      );
     }
 }

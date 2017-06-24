@@ -11,11 +11,11 @@ import {
 import Navbar from './components/myNavBar.js';
 import DashboardIntro from './sections/dashboardIntro.js';
 
-import Inventory from './sections/inventory/subsections/inventory.js';
-import AddInventory from './sections/inventory/subsections/addInventory';
+import Inventory from './sections/inventory/inventory.js';
+import AddInventory from './sections/inventory/addInventory/addInventory';
 
-import Transactions from './sections/transactions.js';
-import Settings from './sections/settings.js';
+import Transactions from './sections/transactions/transactions.js';
+import Settings from './sections/settings/settings.js';
 import ContactUs from './sections/contactUs/contactUs.js';
 
 // Importing styles
