@@ -87,15 +87,15 @@ export default class UploadImages extends Component {
     return (
     	<div>
     		<form>
-				<div className="FileUpload" style = {{cursor:"pointer"}}>
-					<Dropzone style = {textAlign}
-						onDrop={this.onImageDrop.bind(this)}
-						multiple={true}
-						accept="image/*">
-						<div><span className="glyphicon glyphicon-plus"></span> Upload pictures of food item!</div>
-					</Dropzone>
-				</div>
-			</form>
+  				<div className="FileUpload" style = {{cursor:"pointer"}}>
+  					<Dropzone style = {textAlign}
+  						onDrop={this.onImageDrop.bind(this)}
+  						multiple={true}
+  						accept="image/*">
+  						<div><span className="glyphicon glyphicon-plus"></span> Upload pictures of food item!</div>
+  					</Dropzone>
+  				</div>
+			   </form>
 			<div>
         {this.renderImages()}
       </div>
