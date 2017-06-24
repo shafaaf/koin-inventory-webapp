@@ -1,8 +1,8 @@
 // Important resources
+// http://jossmac.github.io/react-images/
 // https://www.npmjs.com/package/react-images
 // https://github.com/jossmac/react-images
 // https://github.com/jossmac/react-images/tree/master/examples/src
-// http://jossmac.github.io/react-images/
 
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -58,7 +58,7 @@ class Gallery extends Component {
 
 		this.gotoNext();
 	}
-	renderGallery () {
+	renderGallery () {	// Imp - this renders the image gallery that doesnt need click
 		const { images } = this.props;
 
 		if (!images) return;
@@ -69,8 +69,7 @@ class Gallery extends Component {
 					href={obj.src}
 					className={css(classes.thumbnail, classes[obj.orientation])}
 					key={i}
-					onClick={(e) => this.openLightbox(i, e)}
-				>
+					onClick={(e) => this.openLightbox(i, e)}>
 					<img src={obj.thumbnail} className={css(classes.source)} />
 				</a>
 			);

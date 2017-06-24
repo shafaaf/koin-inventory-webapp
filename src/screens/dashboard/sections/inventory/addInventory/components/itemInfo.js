@@ -27,6 +27,13 @@ export default class ItemInfo extends Component {
 	        </Row>
 
 	        <Row className="show-grid">
+	        	<Col md={6}>
+	                {/* Category */}
+	                <FormGroup controlId="formBasicText">
+	                    <ControlLabel>Product category</ControlLabel>
+	                    <FormControl type="text" placeholder="Category"/>
+	                </FormGroup>
+	            </Col>
 	            <Col md={6}> 
 	                {/* Quantity*/}
 	                <FormGroup controlId="formBasicText">
@@ -36,13 +43,6 @@ export default class ItemInfo extends Component {
 	                    
 	                </FormGroup>
 	            </Col>
-	            <Col md={6}>
-	                {/* Phone number */}
-	                <FormGroup controlId="formBasicText">
-	                    <ControlLabel>Phone number</ControlLabel>
-	                    <FormControl type="text" placeholder="Enter text"/>
-	                </FormGroup>
-	            </Col>
 	        </Row>
 
 	        <Row className="show-grid">
@@ -50,7 +50,7 @@ export default class ItemInfo extends Component {
 	            	{/* Description */}
 		            <FormGroup controlId="formControlsTextarea">
 		                <ControlLabel>Description</ControlLabel>
-		                <FormControl componentClass="textarea" placeholder="Message" style={{ height: 70 }} />
+		                <FormControl componentClass="textarea" placeholder="Description" style={{ height: 70 }} />
 		            </FormGroup>
 		         </Col>
 		        <Col md={6}>

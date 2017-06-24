@@ -1,8 +1,9 @@
+// Note: Pass in showThumbnails to show small slides of images at bottom to give more space for caption.
+
 import React,{Component} from 'react';
 
-
-// React Images stuff
 import Gallery from './Gallery';
+
 function makeUnsplashSrc (id) {
 	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&w=1024&h=1024`;
 }
@@ -19,7 +20,7 @@ function makeUnsplashThumbnail (id, orientation = 'landscape') {
 
 
 const DEFAULT_IMAGES = [
-	{ id: '1470619549108-b85c56fe5be8', caption: 'Photo by Alan Emery', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/SYzUF6XcWBY (Flamingo)
+	{ id: '1470619549108-b85c56fe5be8', caption: 'Photo by Jeremy Bishop ¼ lb* of savory flame-grilled beef topped with juicy tomatoes, fresh lettuce, creamy mayonnaise, ketchup, crunchy pickles, and sliced white onions on a soft sesame seed bun.', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/SYzUF6XcWBY (Flamingo)
 	{ id: '1471079502516-250c19af6928', caption: 'Photo by Jeremy Bishop', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/GIpGxe2_cT4 (Turtle)
 	{ id: '1454023492550-5696f8ff10e1', caption: 'Photo by Jessica Weiller', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/LmVSKeDy6EA (Tiger)
 	{ id: '1470854989922-5be2f7456d78', caption: 'Photo by Piotr Łaskawski', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/GXMr7BadXQo (Hedgehog)
@@ -41,7 +42,7 @@ const THUMBNAIL_IMAGES = [
 ];
 
 const THEMED_IMAGES = [
-	{ id: '1471101173712-b9884175254e', caption: 'Photo by Pedro Lastra', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/5oRzZU5uwSM (Dragonfly)
+	{ id: '1471101173712-b9884175254e', caption: 'Photo by Pedro Lastra. Our DOUBLE WHOPPER® Sandwich is a pairing of two ¼ lb* savory flame-grilled beef patties topped with juicy tomatoes, fresh lettuce, creamy mayonnaise, ketchup, crunchy pickles, and sliced white onions on a soft sesame seed bun.', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/5oRzZU5uwSM (Dragonfly)
 	{ id: '1471127432458-65206be149c9', caption: 'Photo by Ernesto Velázquez', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/Kpgt4pl03O0 (Deer)
 	{ id: '1470777639313-60af88918203', caption: 'Photo by Cris Saur', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/GNUcUx-iObg (Koala)
 	{ id: '1453550486481-aa4175b013ea', caption: 'Photo by Benjamin Pley', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/WiSeaZ4E6ZI (Elephant)
@@ -68,7 +69,7 @@ export default class InventoryGallery extends Component {
 				caption,
 				orientation, // Decides whether square or like stacked with others
 				useForDemo,	// Decides whether appears in thumbnail or not.
-			}))} />
+			}))}/>
 
 
 

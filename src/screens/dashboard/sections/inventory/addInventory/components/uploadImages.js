@@ -56,7 +56,7 @@ export default class UploadImages extends Component {
     var imagesMapped = this.state.images.map(function(image){
       return (
         <Col xs={12} sm={6} md={4} lg={4}>
-        <img style = {imageStyle} src = {image.src} responsive/>
+          <img style = {imageStyle} src = {image.src} responsive/>
         </Col>
       );
     });
@@ -107,12 +107,4 @@ export default class UploadImages extends Component {
 		</div>
     );
   }
-}
-
-export class Sample extends React.Component {
-    render() {
-      return (
-          <Gallery photos={this.props.images} onClickPhoto={this.openLightbox}/>
-      );
-    }
 }
