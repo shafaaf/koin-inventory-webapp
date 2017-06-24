@@ -12,6 +12,15 @@ var textAlign = {
 	backgroundColor: '#f6f5f5'
 }
 
+var imageStyle = {
+  width: '260px', 
+  height: '260px',
+  //textAlign: "center",
+  display:"block",
+  margin:"auto",
+  paddingBottom:"7%"
+}
+
 export default class UploadImages extends Component {
   constructor(props) {
 	    super(props);
@@ -47,8 +56,8 @@ export default class UploadImages extends Component {
       console.log("renderThumbnails: images is: ", this.state.images);
       var imagesMapped = this.state.images.map(function(image){
             return (
-                <Col xs={2} md={2} lg={2}>
-                  <Thumbnail src = {image.src} responsive/>
+                <Col xs={12} sm={6} md={4} lg={4}>
+                  <img style = {imageStyle} src = {image.src} responsive/>
                 </Col>
               );
           });
@@ -70,14 +79,11 @@ export default class UploadImages extends Component {
   				{ src: 'https://support.apple.com/library/content/dam/edam/applecare/images/en_US/apple-store-giftcard.png',  width: 681,
     				height: 1024}
     		];
-
   			return (
           <div>
-            <Grid>
-              <Row>
-                {this.renderThumbnails()}
-              </Row>
-            </Grid>
+            <Row>
+              {this.renderThumbnails()}
+            </Row>
           </div>
         );
   		}
