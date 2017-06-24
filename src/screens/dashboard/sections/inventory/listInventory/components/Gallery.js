@@ -1,3 +1,9 @@
+// Important resources
+// https://www.npmjs.com/package/react-images
+// https://github.com/jossmac/react-images
+// https://github.com/jossmac/react-images/tree/master/examples/src
+// http://jossmac.github.io/react-images/
+
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
