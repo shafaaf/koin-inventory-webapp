@@ -68,7 +68,7 @@ export default class UploadImages extends Component {
   	renderImages(){
   		var images = this.state.images;
   		if(images === undefined || images.length == 0){
-  			return <p style = {{textAlign: "center"}}>No Images uploaded</p>;
+  			return <h3 style = {{textAlign: "center"}}>No Images uploaded</h3>;
   		}
   		else{
   			console.log("images is: ", images);
@@ -80,7 +80,7 @@ export default class UploadImages extends Component {
     				height: 1024}
     		];
   			return (
-          <div>
+          <div style = {{marginTop:"2%"}}>
             <Row>
               {this.renderThumbnails()}
             </Row>

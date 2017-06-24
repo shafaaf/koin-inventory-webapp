@@ -4,7 +4,7 @@ import React,{Component} from 'react';
 //import Test from './components/test.js';
 import UploadImages from './components/uploadImages.js';
 import ItemInfo from './components/itemInfo.js';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Grid, Row, Col, Button} from 'react-bootstrap';
 
 export default class AddInventory extends Component {
 	render() {
@@ -14,6 +14,7 @@ export default class AddInventory extends Component {
 					<h2 style = {{textAlign: "center"}}>Item Information</h2>
 					<ItemInfo style = {{textAlign: "center"}}/>
 					<UploadImages style = {{textAlign: "center"}}/>
+					<Button bsStyle="primary" bsSize="large" block>Submit</Button>
 				</Grid>
 			</div>
 		);
