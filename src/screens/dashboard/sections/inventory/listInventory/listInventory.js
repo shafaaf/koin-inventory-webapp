@@ -7,7 +7,7 @@ export default class ListInventory extends Component {
   render() {
     return (
     	<div>
-			<h1>Your Inventory!</h1>
+			<h2>Your Inventory!</h2>
 			<InventoryGallery/>
 		</div>
     );

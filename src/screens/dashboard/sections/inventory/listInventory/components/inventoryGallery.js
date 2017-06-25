@@ -18,7 +18,6 @@ function makeUnsplashThumbnail (id, orientation = 'landscape') {
 	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&crop=faces&fit=crop&${dimensions}`;
 }
 
-
 const DEFAULT_IMAGES = [
 	{ id: '1470619549108-b85c56fe5be8', caption: 'Photo by Jeremy Bishop ¼ lb* of savory flame-grilled beef topped with juicy tomatoes, fresh lettuce, creamy mayonnaise, ketchup, crunchy pickles, and sliced white onions on a soft sesame seed bun.', orientation: 'square', useForDemo: true }, // https://unsplash.com/photos/SYzUF6XcWBY (Flamingo)
 	{ id: '1471079502516-250c19af6928', caption: 'Photo by Jeremy Bishop', orientation: 'landscape', useForDemo: true }, // https://unsplash.com/photos/GIpGxe2_cT4 (Turtle)
@@ -56,7 +55,7 @@ export default class InventoryGallery extends Component {
   render() {
     return (
 		<div>
-			<h3>Default Options (Popular Products)</h3>
+			<p>Default Options (Popular Products)</p>
 			<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 				src: makeUnsplashSrc(id),
 				thumbnail: makeUnsplashThumbnail(id, orientation),
@@ -73,7 +72,7 @@ export default class InventoryGallery extends Component {
 
 
 
-			<h3>With Thumbnails (Appeteasers/Appetizer)</h3>
+			<p>With Thumbnails (Appeteasers/Appetizer)</p>
 			<Gallery images={THUMBNAIL_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 				src: makeUnsplashSrc(id),
 				thumbnail: makeUnsplashThumbnail(id, orientation),
@@ -90,7 +89,7 @@ export default class InventoryGallery extends Component {
 
 
 
-			<h3>Themed Lightbox (Burgers, Pitas, Wraps)</h3>
+			<p>Themed Lightbox (Burgers, Pitas, Wraps)</p>
 			<Gallery images={THEMED_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 				src: makeUnsplashSrc(id),
 				thumbnail: makeUnsplashThumbnail(id, orientation),

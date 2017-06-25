@@ -11,15 +11,11 @@
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.13.2",
     "react-facebook-login": "^3.6.1",
-    "react-grid-gallery": "^0.3.6",
     "react-images": "^0.5.4",
     "react-moment": "^0.2.4",
-    "react-photo-gallery": "^5.6.1",
     "react-responsive-sidebar": "^0.1.16",
     "react-router-dom": "^4.1.1",
-    "react-super-responsive-table": "^0.2.1",
-    "revalidator": "^0.3.1",
-    "superagent": "^3.5.2"
+    "react-super-responsive-table": "^0.2.1"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

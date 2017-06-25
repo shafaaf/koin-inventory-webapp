@@ -2,8 +2,6 @@ import React,{Component} from 'react';
 import Dropzone from 'react-dropzone';
 import {Grid, Row, Col, Image, Thumbnail} from 'react-bootstrap';
 
-import Gallery from 'react-photo-gallery';
-
 var textAlign = {
 	textAlign: 'center',
 	border: '2px dotted #000000',
@@ -12,8 +10,8 @@ var textAlign = {
 }
 
 var imageStyle = {
-  width: '260px', 
-  height: '260px',
+  width: '250px', 
+  height: '250px',
   //textAlign: "center",
   display:"block",
   margin:"auto",
