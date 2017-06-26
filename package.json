@@ -15,6 +15,8 @@
     "react-moment": "^0.2.4",
     "react-responsive-sidebar": "^0.1.16",
     "react-router-dom": "^4.1.1",
+    "react-scrollable-anchor": "^0.4.2",
+    "react-scrollchor": "^4.0.0",
     "react-super-responsive-table": "^0.2.1"
   },
   "devDependencies": {

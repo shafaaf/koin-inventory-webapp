@@ -37,17 +37,21 @@ export default class ItemGallery extends Component {
   render() {
     return (
     	<div>
-			<p>Bro item gallery</p>
+			<p>Some description of category</p>
 		    <Row className="show-grid" style = {{paddingBottom:"5%"}}>
 				<Col xs={12} sm={6} md={6} style = {textAlign}>
-				<ul>{
-						itemsTest.map(function(item, i){
-						return <li key={i}>{item.productName}</li>})
+					{
+						Object.keys(itemsTest[0]).map((key, index) => ( 
+				          <p key={index}> {key}: {itemsTest[0][key]}</p> 
+				        ))
 					}
-				</ul>
 				</Col>
 				<Col xs={12} sm={6} md={6} style = {textAlign}>
-					<code>&lt;{'Col xs={6} md={4}'} /&gt;</code>
+					{
+						Object.keys(itemsTest[1]).map((key, index) => ( 
+				          <p key={index}> {key}: {itemsTest[0][key]}</p> 
+				        ))
+					}
 				</Col>
 			</Row>
 			<Row className="show-grid">

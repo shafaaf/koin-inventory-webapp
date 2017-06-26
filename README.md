@@ -7,3 +7,4 @@ Todos:
 - In contact us, add server support to receive input
 - In contact us, validation for phone number
 - Need to click Navbar text and not buttons to navigate
+- Fix sidebar anchor links to move slowly. Not working cause Scrollchor within Sidebar
