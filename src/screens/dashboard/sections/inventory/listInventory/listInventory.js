@@ -7,6 +7,7 @@ import { Sidebar, SidebarItem } from 'react-responsive-sidebar';
 
 import ItemGallery from './components/gallery/itemGallery.js';
 import Scrollchor from 'react-scrollchor';
+import {Grid} from 'react-bootstrap';
 
 
 // Todo: Get from server later on
@@ -20,7 +21,7 @@ const items = [
   </SidebarItem>,
 
   <SidebarItem>
-    <Scrollchor to="#popular" animate={{offset: -20, duration: 1200}}className="nav-link">Popular</Scrollchor>
+    <Scrollchor to="#popular" animate={{offset: 20, duration: 600}} className="nav-link">Popular</Scrollchor>
   </SidebarItem>,
 
   <SidebarItem>
@@ -28,7 +29,7 @@ const items = [
   </SidebarItem>,
 
   <SidebarItem>
-    <Scrollchor to="drinks" className="nav-link">Drinks</Scrollchor>
+    <Scrollchor to="#drinks" className="nav-link">Drinks</Scrollchor>
   </SidebarItem>
 ];
 
@@ -41,12 +42,12 @@ export default class ListInventory extends Component {
             <div id='appetizers'>
               <h3>Appetizer Items</h3>
               <ItemGallery/>
-              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/>
             </div>
             <div id='popular'>
               <h3> Popular Items</h3>
               <ItemGallery/>
-              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/>
             </div>
             <div id='desserts'>
               <h3> Dessert Items</h3>
