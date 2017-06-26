@@ -52,16 +52,15 @@ export default class ListInventory extends Component {
             <div id='desserts'>
               <h3> Dessert Items</h3>
               <ItemGallery/>
-              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>  
+              <br/><br/><br/><br/><br/>  
             </div>
             <div id='drinks'>
               <h3> Drinks Items</h3>
               <ItemGallery/>
-              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/>
             </div>
     			</div>
         </Sidebar>
-
     );
   }
 }
