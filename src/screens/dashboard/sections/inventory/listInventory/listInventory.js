@@ -8,29 +8,35 @@ import ItemGallery from './components/gallery/itemGallery.js';
 import Scrollchor from 'react-scrollchor';
 import {Grid} from 'react-bootstrap';
 
-// Get these from server
+// Todo: Get these from server
 var categories = [
   {
-    "category":"appetizers",
-    "header":"Appetizer Items"
+    "category":"Test", /*Todo: This part hidden so makes sidebar work. Fix this silly bug*/
+    "header":"Test"
   },
   {
-    "category":"popular",
-    "header":"Popular Items"
+    "category":"Appetizers",
+    "header":"Appetizer Items",
+
   },
   {
-    "category":"desserts",
-    "header":"Dessert Items"
+    "category":"Popular",
+    "header":"Popular Items",
+
   },
   {
-    "category":"drinks",
-    "header":"Drinks Items"
+    "category":"Desserts",
+    "header":"Dessert Items",
+
   },
+  {
+    "category":"Drinks",
+    "header":"Drinks Items",
+  }
 ];
 
-// Todo: Change the sidebar and categories from server
-const items = [
-  <SidebarItem> {/*Todo: This part hidden so makes sidebar work. Fix this silly bug*/}
+const itemCategories = [
+  <SidebarItem>
     Test
   </SidebarItem>,
 
@@ -53,31 +59,52 @@ const items = [
 
 // Make bottom call dynamically generated
 export default class ListInventory extends Component {
+  constructor(props) {
+    console.log("listInventory: On constructor");
+    super(props);
+    this.state = {
+      categories: categories
+    };
+  }
+
+  makeCategoryIdName(string) {
+    console.log("makeCategoryIdName: string is: ", string);
+    return string.charAt(0).toLowerCase() + string.slice(1);
+  }
+
+  renderSidebar(){
+    var categories = this.state.categories;
+    const sidebarCategories = categories.map((category, index) =>
+      <SidebarItem key={index}>
+        <Scrollchor to = {this.makeCategoryIdName(category.category)} className="nav-link">{category.category}</Scrollchor>
+      </SidebarItem>
+    );
+    return sidebarCategories;
+  }
+
   render() {
-    return (  
-    		<Sidebar style = {{paddingTop:"100px"}} background = {"#000000"} color = {"#818181"} width = {150} content={items}>
+    return (
+    		<Sidebar style = {{paddingTop:"100px"}} background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
           <div style = {{paddingLeft: "3%", paddingRight: "1%", marginTop:"3%"}}>
             <h2 style = {{paddingTop:"40px"}}>Your Inventory!</h2>
+            
             <div id='appetizers'>
               <h3>Appetizer Items</h3>
-              <ItemGallery/>
-              <br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
             <div id='popular'>
               <h3>Popular Items</h3>
-              <ItemGallery/>
-              <br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
             <div id='desserts'>
               <h3>Dessert Items</h3>
-              <ItemGallery/>
-              <br/><br/><br/><br/><br/>  
+              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> 
             </div>
             <div id='drinks'>
               <h3>Drinks Items</h3>
-              <ItemGallery/>
-              <br/><br/><br/><br/><br/>
+              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
+
     			</div>
         </Sidebar>
     );
