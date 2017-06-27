@@ -48,7 +48,7 @@ export default class ListInventory extends Component {
 
   /* To make the id for each category section to use sidebar for navigation */
   makeCategoryIdName(string) { 
-    console.log("makeCategoryIdName: string is: ", string);
+    //console.log("makeCategoryIdName: string is: ", string);
     return string.charAt(0).toLowerCase() + string.slice(1);
   }
 
@@ -70,7 +70,7 @@ export default class ListInventory extends Component {
     const foodItemGallery = categories.map((category, index) => category.category != "Test" ?
       <div id={this.makeCategoryIdName(category.category)}>
         <h3>{category.header}</h3>
-        <ItemGallery/>
+        <ItemGallery category = {category.category}/>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
       </div> : null
     );
@@ -105,7 +105,7 @@ export default class ListInventory extends Component {
             <h3>Drinks Items</h3>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
           </div>*/}
-
+          
   			</div>
       </Sidebar>
     );
