@@ -12,27 +12,33 @@ import {Grid} from 'react-bootstrap';
 var categories = [
   {
     "category":"Test", /* Todo: This part hidden so makes sidebar work. Fix this silly bug*/
-    "header":"Test"
+    "header":"Test",
+    "description": "Test"
   },
   {
     "category":"Appetizers",
     "header":"Appetizers Items",
+    "description": "Insane appetizers to start with!"
   },
   {
     "category":"Popular",
     "header":"Popular Items",
+    "description": "Everyone loves these!"
   },
   {
     "category":"Dinner",
     "header":"Dinner Items",
+    "description": "Dinner with mom or wife? See these!"
   },
   {
     "category":"Desserts",
     "header":"Dessert Items",
+    "description": "Nothing to say about these!"
   },
   {
     "category":"Drinks",
     "header":"Drinks Items",
+    "description": "To dry your mouth!"
   }
 ];
 
@@ -70,7 +76,7 @@ export default class ListInventory extends Component {
     const foodItemGallery = categories.map((category, index) => category.category != "Test" ?
       <div id={this.makeCategoryIdName(category.category)}>
         <h3>{category.header}</h3>
-        <ItemGallery category = {category.category}/>
+        <ItemGallery category = {category.category} description = {category.description}/>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
       </div> : null
     );

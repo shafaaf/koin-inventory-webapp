@@ -109,7 +109,8 @@ export default class ItemGallery extends Component {
   		console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
 			<Col key={index} xs={12} sm={6} md={6} style = {textAlign}>
-				 <p> productName: {item["productName"]}</p> 
+				 <p><b>{item["productName"]}</b></p> 
+				 <br/><br/><br/><br/><br/>
 			</Col>
 		);
 		return items;
@@ -119,8 +120,8 @@ export default class ItemGallery extends Component {
 		return (
 			<div>
 				{this.getItemList()}
-				<p>Some description of category</p>
-			   	{this.renderItemList()}
+				<p>{this.props.description}</p>
+				{this.renderItemList()}
 			</div>
 		);
 	}
