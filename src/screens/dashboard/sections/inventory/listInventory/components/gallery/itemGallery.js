@@ -15,7 +15,7 @@ var itemsTest = [
 		"category":"Appetizers",
 		"quantity":"24",
 		"img":"https://www.bodybuilding.com/fun/images/2013/4-muscle-meals-cory-gregory-image3b.jpg",
-		"description":"Fuel your day with this one-two punch of protein. 16oz Vital Protein smoothie (Vega sport protein, spirulina, blueberry, banana, almond milk) and full",
+		"description":"Fuel your day with this one-two punch n, spirulina, blueberry, banana, almond milk) and full",
 		"additionalNotes":"Our premises are not gluten, soy or nut free. We cannot guarantee 100% that any item will not come into contact with gluten or other potential allergens during preparation. To ensure accuracy, please do not write add-ons in the ‘special instructions’ box. Go to the “add-ons” section of the menu for a comprehensive list of sides."
 	},
 	{
@@ -24,7 +24,7 @@ var itemsTest = [
 		"category":"Appetizers",
 		"quantity":"41",
 		"img":"https://barilla.azureedge.net/~/media/images/en_us/hero-images/oven-ready-lasagna.jpg",
-		"description":"Nourish your system with this curated detox meal, jam-packed with plant based nutrition. 16 oz Urban Detox, Detox Power Shot, All Star Salad with house dressing.",
+		"description":"Nourish your system with this curated detox meal, jam-packed with plant based nutrition.",
 		"additionalNotes":"Our premises are not gluten, soy or nut free. We cannot guarantee 100% that any item will not come into contact with gluten or other potential allergens during preparation. To ensure accuracy, please do not write add-ons in the ‘special instructions’ box. Go to the “add-ons” section of the menu for a comprehensive list of sides."
 	},
 	{
@@ -33,7 +33,7 @@ var itemsTest = [
 		"category":"Appetizers",
 		"quantity":"15",
 		"img":"https://www.thesun.co.uk/wp-content/uploads/2017/01/gettyimages-185071735.jpg?strip=all&w=960",
-		"description":"Put a smile on your face with these Fresh favourites, in what we consider the perfect combo! 16oz Charcoal Green Lemonade, BBQ Burger w/ Sweet Potato Fries and Chipotle mayo and a S'mores cookie.",
+		"description":"Put a smile on your face with these Fresh favourites, in what we consider the perfect co",
 		"additionalNotes":"Our premises are not gluten, soy or nut free. We cannot guarantee 100% that any item will not come into contact with gluten or other potential allergens during preparation. To ensure accuracy, please do not write add-ons in the ‘special instructions’ box. Go to the “add-ons” section of the menu for a comprehensive list of sides."
 	},
 	{
@@ -176,7 +176,7 @@ export default class ItemGallery extends Component {
   		var category = this.props.category;
   		console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
-			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {textAlign}>
+			<Col key={index} xs={12} sm={12} md={6} lg={6} style = {textAlign}>
 				<p>
 					<b>{item["productName"]}</b>
 					<br/>

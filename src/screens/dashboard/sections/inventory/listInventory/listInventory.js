@@ -77,6 +77,7 @@ export default class ListInventory extends Component {
       <Row className="show-grid" id={this.makeCategoryIdName(category.category)}>
         <h3>{category.header}</h3>
         <p>{category.description}</p>
+        <br/>
         <ItemGallery category = {category.category}/>
       </Row> : null
     );
