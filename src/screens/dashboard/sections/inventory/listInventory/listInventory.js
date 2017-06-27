@@ -74,13 +74,10 @@ export default class ListInventory extends Component {
   renderItems(){
     var categories = this.state.categories;
     const foodItemGallery = categories.map((category, index) => category.category != "Test" ?
-      <Row className="show-grid">
-        <div id={this.makeCategoryIdName(category.category)}>
-            <h3>{category.header}</h3>
-            <p>{category.description}</p>
-            <ItemGallery category = {category.category}/>
-            <br/><br/><br/><br/>
-        </div>
+      <Row className="show-grid" id={this.makeCategoryIdName(category.category)}>
+        <h3>{category.header}</h3>
+        <p>{category.description}</p>
+        <ItemGallery category = {category.category}/>
       </Row> : null
     );
     return foodItemGallery;
@@ -89,12 +86,11 @@ export default class ListInventory extends Component {
   render() {
     return (
   		<Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
-        <div style = {{paddingLeft: "3%", marginTop:"4%"}}>
+        <div style = {{paddingLeft: "3%", marginTop:"5%"}}>
           <h2 style = {{marginTop:"100px"}}>Your Inventory!</h2>
           <Grid>
             {this.renderItems()}
           </Grid>
-
   			</div>
       </Sidebar>
     );
