@@ -17,44 +17,23 @@ var categories = [
   {
     "category":"Appetizers",
     "header":"Appetizer Items",
-
   },
   {
     "category":"Popular",
     "header":"Popular Items",
-
   },
   {
     "category":"Desserts",
     "header":"Dessert Items",
-
   },
   {
     "category":"Drinks",
     "header":"Drinks Items",
-  }
-];
-
-const itemCategories = [
-  <SidebarItem>
-    Test
-  </SidebarItem>,
-
-  <SidebarItem>
-    <Scrollchor to="#appetizers" animate={{offset: -20, duration: 600}} className="nav-link">Appetizers</Scrollchor>
-  </SidebarItem>,
-
-  <SidebarItem>
-    <Scrollchor to="#popular" animate={{offset: 20, duration: 600}} className="nav-link">Popular</Scrollchor>
-  </SidebarItem>,
-
-  <SidebarItem>
-    <Scrollchor to="#desserts" className="nav-link">Desserts</Scrollchor>
-  </SidebarItem>,
-
-  <SidebarItem>
-    <Scrollchor to="#drinks" className="nav-link">Drinks</Scrollchor>
-  </SidebarItem>
+  },
+  {
+    "category":"Dinner",
+    "header":"Dinner Items",
+  },
 ];
 
 // Make bottom call dynamically generated
@@ -82,14 +61,28 @@ export default class ListInventory extends Component {
     return sidebarCategories;
   }
 
+  renderItems(){
+    var categories = this.state.categories;
+    const foodItemGallery = categories.map((category, index) => 1 + 1 == 1 ?
+      <div id={this.makeCategoryIdName(category.category)}>
+        <h3>{category.header}</h3>
+        <ItemGallery/>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      </div> : <p>weird</p>
+    );
+    return foodItemGallery;
+  }
+
   render() {
     return (
-    		<Sidebar style = {{paddingTop:"100px"}} background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
+    		<Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
           <div style = {{paddingLeft: "3%", paddingRight: "1%", marginTop:"3%"}}>
             <h2 style = {{paddingTop:"40px"}}>Your Inventory!</h2>
-            
-            <div id='appetizers'>
+
+            {this.renderItems()}
+            {/*<div id='appetizers'>
               <h3>Appetizer Items</h3>
+              <ItemGallery/>
               <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
             <div id='popular'>
@@ -104,6 +97,10 @@ export default class ListInventory extends Component {
               <h3>Drinks Items</h3>
               <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
+            <div id='dinner'>
+              <h3>Drinks Items</h3>
+              <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            </div>*/}
 
     			</div>
         </Sidebar>
