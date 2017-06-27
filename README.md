@@ -8,3 +8,4 @@ Todos:
 - In contact us, validation for phone number
 - Need to click Navbar text and not buttons to navigate
 - Fix sidebar anchor links to move slowly. Not working cause Scrollchor within Sidebar
+- Item descriptions need to be limited or else destroys row alignment
