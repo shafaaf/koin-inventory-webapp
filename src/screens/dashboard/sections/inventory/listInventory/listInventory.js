@@ -80,7 +80,7 @@ export default class ListInventory extends Component {
   render() {
     return (
   		<Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
-        <div style = {{paddingLeft: "3%", paddingRight: "1%", marginTop:"3%"}}>
+        <div style = {{paddingLeft: "3%", marginTop:"4%"}}>
           <h2 style = {{paddingTop:"40px"}}>Your Inventory!</h2>
           
           {this.renderItems()}
@@ -105,7 +105,6 @@ export default class ListInventory extends Component {
             <h3>Drinks Items</h3>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
           </div>*/}
-          
   			</div>
       </Sidebar>
     );

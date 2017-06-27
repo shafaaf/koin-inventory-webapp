@@ -107,15 +107,10 @@ export default class ItemGallery extends Component {
   	renderItemList(){
   		var category = this.props.category;
   		console.log("renderItemList() category is: ", category);
-  		const items = this.items.map((item, index) => (index+1)%2 == 0 ?
-  			<Row className="show-grid" style = {{paddingBottom:"5%"}}>
-	  			<Col key={index} xs={12} sm={6} md={6} style = {textAlign}>
-	  				 <p> productName: {item["productName"]}</p> 
-	  			</Col>
-	  		</Row>:
-	  		<Col key={index} xs={12} sm={6} md={6} style = {textAlign}>
-	  				 <p> productName: {item["productName"]}</p> 
-	  		</Col>
+  		const items = this.items.map((item, index) =>
+			<Col key={index} xs={12} sm={6} md={6} style = {textAlign}>
+				 <p> productName: {item["productName"]}</p> 
+			</Col>
 		);
 		return items;
   	}
