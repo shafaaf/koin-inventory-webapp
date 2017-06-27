@@ -41,7 +41,7 @@ export default class ItemGallery extends Component {
 		    <Row className="show-grid" style = {{paddingBottom:"5%"}}>
 				<Col xs={12} sm={6} md={6} style = {textAlign}>
 					{
-						Object.keys(itemsTest[0]).map((key, index) => ( 
+						Object.keys(itemsTest[0]).map((key, index) => (
 				          <p key={index}> {key}: {itemsTest[0][key]}</p> 
 				        ))
 					}
