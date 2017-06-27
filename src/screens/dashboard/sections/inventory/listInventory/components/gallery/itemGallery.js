@@ -176,7 +176,7 @@ export default class ItemGallery extends Component {
   		var category = this.props.category;
   		console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
-			<Col key={index} xs={12} sm={12} md={6} lg={6} style = {textAlign}>
+			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {textAlign}>
 				<p>
 					<b>{item["productName"]}</b>
 					<br/>
