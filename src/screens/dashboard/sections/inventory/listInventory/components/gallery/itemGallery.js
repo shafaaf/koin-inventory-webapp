@@ -7,6 +7,7 @@ var textAlign = {
 
 // Todo: Get this data from server
 var itemsTest = [
+	
 	/* Appetizers */ 
 	{
 		"productName": "One Two Punch Protein Pack",
@@ -74,6 +75,60 @@ var itemsTest = [
 		"quantity":"50",
 		"description":"Penne with grilled chicken, mushrooms, red peppers, onions, garlic, and parmesan in a white cream sauce.",
 		"additionalNotes":"None"
+	},
+	
+	/* Dinner */
+	{
+		"productName": "Pepperoni Pizza",
+		"price":"12",
+		"category":"Dinner",
+		"quantity":"75",
+		"description":"Tomato sauce, basil, cheese, and pepperoni.",
+		"additionalNotes":"None"
+	},
+	{
+		"productName": "Lasagna",
+		"price":"4",
+		"category":"Dinner",
+		"quantity":"65",
+		"description":"Layers of fresh pasta, meat sauce, and mozzarella cheese with parmesan.",
+		"additionalNotes":"None"
+	},
+
+	/* Desserts */
+	{
+		"productName": "Belgian Dark Chocolate Cake",
+		"price":"8",
+		"category":"Desserts",
+		"quantity":"90",
+		"description":"None",
+		"additionalNotes":"None"
+	},
+
+	/* Drinks */
+	{
+		"productName": "Sparkling Water",
+		"price":"2",
+		"category":"Drinks",
+		"quantity":"120",
+		"description":"None",
+		"additionalNotes":"None"
+	},
+	{
+		"productName": "Still Water",
+		"price":"1",
+		"category":"Drinks",
+		"quantity":"125",
+		"description":"None",
+		"additionalNotes":"None"
+	},
+	{
+		"productName": "Coke",
+		"price":"5",
+		"category":"Drinks",
+		"quantity":"129",
+		"description":"None",
+		"additionalNotes":"None"
 	}
 ];
 
@@ -120,7 +175,6 @@ export default class ItemGallery extends Component {
 		return (
 			<div>
 				{this.getItemList()}
-				<p>{this.props.description}</p>
 				{this.renderItemList()}
 			</div>
 		);

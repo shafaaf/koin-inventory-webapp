@@ -6,7 +6,7 @@ import { Sidebar, SidebarItem } from 'react-responsive-sidebar';
 // Just use <InventoryGallery/> to get old gallery back
 import ItemGallery from './components/gallery/itemGallery.js';
 import Scrollchor from 'react-scrollchor';
-import {Grid} from 'react-bootstrap';
+import {Grid, Row} from 'react-bootstrap';
 
 // Todo: Get these from server
 var categories = [
@@ -74,11 +74,14 @@ export default class ListInventory extends Component {
   renderItems(){
     var categories = this.state.categories;
     const foodItemGallery = categories.map((category, index) => category.category != "Test" ?
-      <div id={this.makeCategoryIdName(category.category)}>
-        <h3>{category.header}</h3>
-        <ItemGallery category = {category.category} description = {category.description}/>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-      </div> : null
+      <Row className="show-grid">
+        <div id={this.makeCategoryIdName(category.category)}>
+            <h3>{category.header}</h3>
+            <p>{category.description}</p>
+            <ItemGallery category = {category.category}/>
+            <br/><br/><br/><br/>
+        </div>
+      </Row> : null
     );
     return foodItemGallery;
   }
@@ -87,30 +90,11 @@ export default class ListInventory extends Component {
     return (
   		<Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
         <div style = {{paddingLeft: "3%", marginTop:"4%"}}>
-          <h2 style = {{paddingTop:"40px"}}>Your Inventory!</h2>
-          
-          {this.renderItems()}
-          {/*<div id='appetizers'>
-            <h3>Appetizer Items</h3>
-            <ItemGallery/>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          </div>
-          <div id='popular'>
-            <h3>Popular Items</h3>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          </div>
-          <div id='desserts'>
-            <h3>Dessert Items</h3>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> 
-          </div>
-          <div id='drinks'>
-            <h3>Drinks Items</h3>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          </div>
-          <div id='dinner'>
-            <h3>Drinks Items</h3>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-          </div>*/}
+          <h2 style = {{marginTop:"100px"}}>Your Inventory!</h2>
+          <Grid>
+            {this.renderItems()}
+          </Grid>
+
   			</div>
       </Sidebar>
     );
