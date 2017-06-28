@@ -9,3 +9,4 @@ Todos:
 - Fix sidebar anchor links to move slowly and show header. Not working cause Scrollchor within Sidebar
 - Horizontal scrolling prevented using overflowX: hidden in listInventory.js This good?
 - Item descriptions need to be limited or else destroys row alignment
+- Item gallery setting items using this.items = []; better way?
