@@ -15,7 +15,7 @@ var itemsTest = [
 		"category":"Appetizers",
 		"quantity":"24",
 		"img":"https://www.bodybuilding.com/fun/images/2013/4-muscle-meals-cory-gregory-image3b.jpg",
-		"description":"Fuel your day with this one-two punch n, spirulina, blueberry, banana, almond milk) and full",
+		"description":"Fuel your day with this one-two punch n, spirulina, blueberry, banana, almond milk) and full.",
 		"additionalNotes":"Our premises are not gluten, soy or nut free. We cannot guarantee 100% that any item will not come into contact with gluten or other potential allergens during preparation. To ensure accuracy, please do not write add-ons in the ‘special instructions’ box. Go to the “add-ons” section of the menu for a comprehensive list of sides."
 	},
 	{
@@ -178,7 +178,7 @@ export default class ItemGallery extends Component {
   		const items = this.items.map((item, index) =>
 			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {textAlign}>
 				<p>
-					<b>{item["productName"]}</b>
+					<b>{item["productName"]} &nbsp;&nbsp; <i>${item["price"]}</i></b>
 					<br/>
 					{item["description"]}
 					<br/>

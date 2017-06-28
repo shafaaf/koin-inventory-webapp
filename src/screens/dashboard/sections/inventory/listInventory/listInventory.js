@@ -42,7 +42,6 @@ var categories = [
   }
 ];
 
-// Make bottom call dynamically generated
 export default class ListInventory extends Component {
   constructor(props) {
     console.log("listInventory: On constructor");
@@ -87,8 +86,8 @@ export default class ListInventory extends Component {
   render() {
     return (
   		<Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
-        <div style = {{paddingLeft: "3%", marginTop:"5%"}}>
-          <h2 style = {{marginTop:"100px", marginLeft:"10px"}}>Your Inventory!</h2>
+        <div style = {{paddingLeft: "3%", marginTop:"5%",  overflowX: "hidden"}}>
+          <h2 style = {{marginTop:"45px", marginLeft:"10px"}}>Your Inventory!</h2>
             {this.renderItems()}
         </div>
       </Sidebar>
