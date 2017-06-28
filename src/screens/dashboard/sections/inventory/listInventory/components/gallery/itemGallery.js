@@ -6,7 +6,8 @@ import ItemModal from './itemModal';
 
 var colStyle = {
 	textAlign: 'center',
-	border: '1px solid #ddd'
+	border: '1px solid #ddd',
+	cursor:"pointer"
 }
 
 // Todo: Get this data from server
@@ -192,7 +193,7 @@ export default class ItemGallery extends Component {
   		var category = this.props.category;
   		console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
-			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle}>
+			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle} onClick={this.open.bind(this)}>
 				<p>
 					<b>{item["productName"]} &nbsp;&nbsp; <i>${item["price"]}</i></b>
 					<br/>
@@ -208,11 +209,7 @@ export default class ItemGallery extends Component {
 
 	render() {
 		return (
-			<div>
-
-				<Button bsStyle="primary" bsSize="large" onClick={this.open.bind(this)}>
-					Launch demo modal
-        		</Button>
+			<div>			
 
 				<Modal show={this.state.showModal} onHide={this.close.bind(this)}>
 					<Modal.Header closeButton>
@@ -242,7 +239,7 @@ export default class ItemGallery extends Component {
 
 				{this.getItemList()}
 				{this.renderItemList()}
-				
+
 			</div>
 		);
 	}
