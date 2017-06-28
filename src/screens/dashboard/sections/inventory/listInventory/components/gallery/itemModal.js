@@ -10,7 +10,7 @@ export default class ItemModal extends Component {
   	render() {
 	    return (
 			<div>
-				<Modal>
+				<Modal show={this.props.showModal} onHide={this.props.onHide}>
 					<Modal.Header closeButton>
 						<Modal.Title>Modal heading</Modal.Title>
 					</Modal.Header>
@@ -32,7 +32,7 @@ export default class ItemModal extends Component {
 						<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
 					</Modal.Body>
 					<Modal.Footer>
-						<Button>Close</Button>
+						<Button onClick={this.props.onHide}>Close</Button>
 					</Modal.Footer>
 				</Modal>
 			</div>
