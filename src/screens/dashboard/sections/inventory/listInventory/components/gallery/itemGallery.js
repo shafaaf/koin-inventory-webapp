@@ -177,10 +177,9 @@ export default class ItemGallery extends Component {
   	}
 
   	/* Rendering item list for specific category for which prop passed in */
-
   	handleItemClick(item){
   		console.log("item clicked is: ", item);
-  		this.props.onClickItem(item.productName);
+  		this.props.onClickItem(item);
   	}
 
   	renderItemList(){
