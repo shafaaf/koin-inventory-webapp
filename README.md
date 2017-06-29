@@ -1,4 +1,4 @@
-Koin Web App
+# Koin Inventory Management Web App
 
 Todos:
 - Fix CSS styling methods

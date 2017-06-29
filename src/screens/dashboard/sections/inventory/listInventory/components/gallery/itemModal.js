@@ -10,7 +10,6 @@ export default class ItemModal extends Component {
   	render() {
 	    return (
 			<div>
-
 				<Modal bsSize="large" modalProduct={this.props.modalProduct} show={this.props.showModal} onHide={this.props.onHide}>
 					<Modal.Header closeButton>
 						<Modal.Title>Modal heading</Modal.Title>
