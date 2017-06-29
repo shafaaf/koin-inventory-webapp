@@ -10,12 +10,13 @@ export default class ItemModal extends Component {
   	render() {
 	    return (
 			<div>
-				<Modal bsSize="large" show={this.props.showModal} onHide={this.props.onHide}>
+
+				<Modal bsSize="large" modalProduct={this.props.modalProduct} show={this.props.showModal} onHide={this.props.onHide}>
 					<Modal.Header closeButton>
 						<Modal.Title>Modal heading</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-						<h4>Text in a modal</h4>
+						<h4>Text in a modal is: {this.props.modalProduct}</h4>
 						<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
 						<h4>Popover in a modal</h4>
 						<h4>Tooltips in a modal</h4>

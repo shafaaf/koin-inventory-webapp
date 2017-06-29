@@ -67,8 +67,8 @@ export default class ListInventory extends Component {
   onClickItem(item){
     console.log("onClickItem: item to change state is: ", item);
     this.setState({
-        modalProduct: item}, function () {  // calling function just after setState
-          this.open();
+      modalProduct: item,
+      showModal: true
     });
   }
 

@@ -180,7 +180,7 @@ export default class ItemGallery extends Component {
 
   	handleItemClick(item){
   		console.log("item clicked is: ", item);
-  		this.props.onClickItem(item);
+  		this.props.onClickItem(item.productName);
   	}
 
   	renderItemList(){
