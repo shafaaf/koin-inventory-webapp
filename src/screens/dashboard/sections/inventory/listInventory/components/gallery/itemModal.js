@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Button, Modal} from 'react-bootstrap';
+import {Button, Modal, Image} from 'react-bootstrap';
 
 export default class ItemModal extends Component {
 	constructor(props) {
@@ -30,12 +30,11 @@ export default class ItemModal extends Component {
   					<p>Category: {this.props.modalProduct.category}</p>
   					<p>Description: {this.props.modalProduct.description}</p>
   					<p>Additional Notes: {this.props.modalProduct.additionalNotes}</p>
-  						
+  					<Image style = {{width: "60%", display: "block", margin: "0 auto"}} src={this.props.modalProduct.img} alt="image not found" responsive />
   				</div>
   			);
   		}
   	}
-
 
   	render() {
 	    return (
