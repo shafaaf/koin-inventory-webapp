@@ -10,3 +10,4 @@ Todos:
 - Horizontal scrolling prevented using overflowX: hidden in listInventory.js This good?
 - Item descriptions need to be limited or else destroys row alignment
 - Item gallery setting items using this.items = []; better way?
+- Clean up code using npm start warnings

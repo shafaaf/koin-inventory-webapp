@@ -177,12 +177,16 @@ export default class ItemGallery extends Component {
   		console.log("items is: ", items);
   	}
 
+  	handleItemClick(item){
+  		console.log("item clicked is: ", item);
+  	}
+
   	/* Rendering item list for specific category for which prop passed in */
   	renderItemList(){
   		var category = this.props.category;
   		console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
-			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle} onClick={this.props.onClickItem}>
+			<Col onClick={alert("hu")} key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle}>
 				<p>
 					<b>{item["productName"]} &nbsp;&nbsp; <i>${item["price"]}</i></b>
 					<br/>
