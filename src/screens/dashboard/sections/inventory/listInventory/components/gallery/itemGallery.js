@@ -159,18 +159,18 @@ export default class ItemGallery extends Component {
 		super(props);
 		this.items = [];
 		this.state = {
-			showModal: false
+			showModal: false,
+			itemModal: null
 		};
 	}
 
-	close() {
+	close() {	// Close Modal
     	this.setState({ showModal: false });
   	}
 
-  	open() {
+  	open() {	// Open Modal
     	this.setState({ showModal: true });
   	}
-
 
 	/* Making item list for specific category for which prop passed in */
   	getItemList(category){	// Todo: May need to do this in some lifecycle method
@@ -197,6 +197,7 @@ export default class ItemGallery extends Component {
   		console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
 			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle} onClick={this.open.bind(this)}>
+			<ItemModal showModal = {this.state.showModal} onHide = {this.close.bind(this)}/>
 				<p>
 					<b>{item["productName"]} &nbsp;&nbsp; <i>${item["price"]}</i></b>
 					<br/>
@@ -213,7 +214,7 @@ export default class ItemGallery extends Component {
 	render() {
 		return (
 			<div>
-				<ItemModal showModal = {this.state.showModal} onHide = {this.close.bind(this)}/>
+				{/*<ItemModal showModal = {this.state.showModal} onHide = {this.close.bind(this)}/>*/}
 				{this.getItemList()}
 				{this.renderItemList()}
 			</div>
