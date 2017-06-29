@@ -7,39 +7,45 @@ export default class ItemModal extends Component {
 		super(props);
 	}
 
-	test(){
+	renderItemHeader(){
+  		if(this.props.modalProduct == null){
+  			return <p>Nothing there bro</p>
+  		}
+  		else
+  		{
+  			return <Modal.Title>{this.props.modalProduct.productName}</Modal.Title>;
+  		}
+  	}
+
+	renderItemInfo(){	//Todo: So weird why can access props without binding. Figure out why 
 		if(this.props.modalProduct == null){
   			return <p>Nothing there bro</p>
   		}
   		else
   		{
-  			return <p>Something there bro: {this.props.modalProduct.price}</p>
+  			return( 
+  				<div>
+  					<p>Price: {this.props.modalProduct.price}</p>
+  					<p>Quantity: {this.props.modalProduct.quantity}</p>	
+  					<p>Category: {this.props.modalProduct.category}</p>
+  					<p>Description: {this.props.modalProduct.description}</p>
+  					<p>Additional Notes: {this.props.modalProduct.additionalNotes}</p>
+  						
+  				</div>
+  			);
   		}
   	}
+
 
   	render() {
 	    return (
 			<div>
 				<Modal bsSize="large" show={this.props.showModal} onHide={this.props.onHide}>
 					<Modal.Header closeButton>
-						<Modal.Title>Modal heading</Modal.Title>
+						{this.renderItemHeader()}
 					</Modal.Header>
 					<Modal.Body>
-						<h4>Text in a modal is: {this.test()}</h4>
-						<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-						<h4>Popover in a modal</h4>
-						<h4>Tooltips in a modal</h4>
-						<hr />
-						<h4>Overflowing text to show scroll behavior</h4>
-						<p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-						<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-						<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-						<p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-						<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-						<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-						<p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-						<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-						<p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+						{this.renderItemInfo()}
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={this.props.onHide}>Close</Button>
