@@ -2,7 +2,7 @@
 	Each ItemGallery instance is made for each category.
 */
 import React,{Component} from 'react';
-import {Grid, Row, Col, Button, Modal} from 'react-bootstrap';
+import {Col} from 'react-bootstrap';
 
 var colStyle = {
 	textAlign: 'center',

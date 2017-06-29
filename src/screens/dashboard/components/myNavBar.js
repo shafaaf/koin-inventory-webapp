@@ -6,7 +6,8 @@ import {
   Link
 } from 'react-router-dom'
 
-import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Button} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export default class MyNavBar extends Component {
   render() {
@@ -22,9 +23,12 @@ export default class MyNavBar extends Component {
 				<Navbar.Collapse>
 					<Nav>
 						<NavItem eventKey={1}>My Profile</NavItem>
-						<NavItem eventKey={2}>
-							<Link className = "menuItem" to='/dashboard/transactions'>My Transactions</Link>
-						</NavItem>
+						
+						<LinkContainer to="/dashboard/transactions">
+							<NavItem eventKey={2}>My Transactions
+							</NavItem>
+						 </LinkContainer>
+						
 						<NavDropdown eventKey={3} title="My Inventory" id="basic-nav-dropdown">
 							
 							<MenuItem eventKey={3.1}>
