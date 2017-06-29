@@ -1,7 +1,6 @@
 /*
 	Each ItemGallery instance is made for each category.
 */
-
 import React,{Component} from 'react';
 import {Grid, Row, Col, Button, Modal} from 'react-bootstrap';
 
@@ -177,16 +176,18 @@ export default class ItemGallery extends Component {
   		console.log("items is: ", items);
   	}
 
+  	/* Rendering item list for specific category for which prop passed in */
+
   	handleItemClick(item){
   		console.log("item clicked is: ", item);
+  		this.props.onClickItem(item);
   	}
 
-  	/* Rendering item list for specific category for which prop passed in */
   	renderItemList(){
   		var category = this.props.category;
   		console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
-			<Col onClick={alert("hu")} key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle}>
+			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle} onClick={this.handleItemClick.bind(this, item)}>
 				<p>
 					<b>{item["productName"]} &nbsp;&nbsp; <i>${item["price"]}</i></b>
 					<br/>
@@ -209,4 +210,3 @@ export default class ItemGallery extends Component {
 		);
 	}
 }
-

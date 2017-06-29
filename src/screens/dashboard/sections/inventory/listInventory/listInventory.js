@@ -55,19 +55,20 @@ export default class ListInventory extends Component {
     };
   }
 
-  close() { // Close Modal
-      this.setState({ showModal: false });
-    }
+  close() {
+    this.setState({ showModal: false });
+  }
 
-  open() {  // Open Modal
+  open() {
     this.setState({ showModal: true });
   }
 
-  // Show item modal
+   // Show item modal
   onClickItem(item){
+    console.log("onClickItem: item to change state is: ", item);
     this.setState({
         modalProduct: item}, function () {  // calling function just after setState
-          this.open();    
+          this.open();
     });
   }
 
@@ -97,7 +98,7 @@ export default class ListInventory extends Component {
         <h3 style = {{textAlign : "center"}}>{category.header}</h3>
         <p style  = {{textAlign : "center"}}>{category.description}</p>
         <br/>
-        <ItemGallery onClickItem = {this.onClickItem.bind(this)} category = {category.category}/>
+        <ItemGallery onClickItem={this.onClickItem.bind(this)} category={category.category}/>
       </Row> : null
     );
     return foodItemGallery;
@@ -105,12 +106,12 @@ export default class ListInventory extends Component {
 
   render() {
     return (
-  		<Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
-        <div style = {{paddingLeft: "3%", paddingRight: "3%", marginTop:"5%", overflowX: "hidden"}}>
+      <Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
+        <div style = {{paddingLeft: "3%", marginTop:"5%", overflowX: "hidden"}}>
           <h2 style = {{marginTop:"45px", marginLeft:"10px"}}>Your Inventory!</h2>
-            {this.renderItems()}
+          {this.renderItems()}
+          <ItemModal modalProduct={this.state.modalProduct} showModal = {this.state.showModal} onHide = {this.close.bind(this)}/>
         </div>
-        <ItemModal modalProduct={this.state.modalProduct} showModal = {this.state.showModal} onHide = {this.close.bind(this)}/>
       </Sidebar>
     );
   }
