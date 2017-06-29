@@ -28,7 +28,6 @@ export default class MyNavBar extends Component {
 							<NavItem eventKey={2}>My Transactions
 							</NavItem>
 						 </LinkContainer>
-						
 						{/* Inventory Dropdown */}
 						<NavDropdown eventKey={3} title="My Inventory" id="basic-nav-dropdown">
 							{/* Inventory List */}

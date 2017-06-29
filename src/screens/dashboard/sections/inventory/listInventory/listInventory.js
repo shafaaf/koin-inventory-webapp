@@ -10,6 +10,12 @@ import ItemModal from './components/gallery/itemModal';
 import Scrollchor from 'react-scrollchor';
 import {Grid, Row} from 'react-bootstrap';
 
+
+var sidebarStyle = {
+  border: '1px solid #ddd',
+}
+
+
 // Todo: Get these from server
 var categories = [
   {
@@ -82,8 +88,8 @@ export default class ListInventory extends Component {
   renderSidebar(){
     var categories = this.state.categories;
     const sidebarCategories = categories.map((category, index) =>
-      <SidebarItem key={index}>
-        <Scrollchor to = {this.makeCategoryIdName(category.category)} className="nav-link">{category.category}</Scrollchor>
+      <SidebarItem key={index} background  = {"#000000"}>
+        <Scrollchor style = {{color: '#9d9d9d'}} to = {this.makeCategoryIdName(category.category)}>{category.category}</Scrollchor>
       </SidebarItem>
     );
     return sidebarCategories;
@@ -106,7 +112,7 @@ export default class ListInventory extends Component {
 
   render() {
     return (
-      <Sidebar background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
+      <Sidebar style = {sidebarStyle} breakPoint = {600} background = {"#000000"} color = {"#818181"} width = {150} content={this.renderSidebar()}>
         <div style = {{paddingLeft: "3%", marginTop:"5%", overflowX: "hidden"}}>
           <h2 style = {{marginTop:"45px", marginLeft:"10px"}}>Your Inventory!</h2>
           {this.renderItems()}
