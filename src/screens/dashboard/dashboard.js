@@ -41,7 +41,7 @@ export default class Dashboard extends Component {
 					<Switch> {/*Content for each different section*/}
 						<Route exact path='/dashboard' component={DashboardIntro}/>
 						{/* Inventory Sections */}
-						<Route exact path='/dashboard/inventory/' component={ListInventory}/>
+						<Route exact path='/dashboard/inventory/list' component={ListInventory}/>
 						<Route exact path='/dashboard/inventory/add' component={AddInventory}/>
 						{/* Other sections */}
 						<Route exact path='/dashboard/transactions' component={Transactions}/>

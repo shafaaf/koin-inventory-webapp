@@ -23,30 +23,36 @@ export default class MyNavBar extends Component {
 				<Navbar.Collapse>
 					<Nav>
 						<NavItem eventKey={1}>My Profile</NavItem>
-						
+						{/* Transactions tab */}
 						<LinkContainer to="/dashboard/transactions">
 							<NavItem eventKey={2}>My Transactions
 							</NavItem>
 						 </LinkContainer>
 						
+						{/* Inventory Dropdown */}
 						<NavDropdown eventKey={3} title="My Inventory" id="basic-nav-dropdown">
-							
-							<MenuItem eventKey={3.1}>
-								<Link className = "menuItem" to='/dashboard/inventory/'>Current list</Link>
-							</MenuItem>
-
-							<MenuItem eventKey={3.2}>
-								<Link className = "menuItem" to='/dashboard/inventory/add'>Add an item</Link>
-							</MenuItem>
+							{/* Inventory List */}
+							<LinkContainer to="/dashboard/inventory/list">
+								<MenuItem eventKey={3.1}>
+									Current list
+								</MenuItem>
+							</LinkContainer>
+							{/* Add item to inventory */}
+							<LinkContainer to="/dashboard/inventory/add">
+								<MenuItem eventKey={3.2}>
+									Add an item
+								</MenuItem>
+							</LinkContainer>
 							<MenuItem eventKey={3.3}>Something else here</MenuItem>
 							<MenuItem divider />
 							<MenuItem eventKey={3.3}>Separated link</MenuItem>
 						</NavDropdown>
 					</Nav>
 					<Nav pullRight>
-						<NavItem eventKey={1}>
-							<Link className = "menuItem" to='/dashboard/contactus'>Contact Us</Link>
-						</NavItem>
+						<LinkContainer to="/dashboard/contactus">
+							<NavItem eventKey={1}>Contact Us
+							</NavItem>
+						</LinkContainer>
 						<NavItem eventKey={2} href="#" onClick = {this.props.onLogOut}>Log Out</NavItem>
 					</Nav>
 				</Navbar.Collapse>
