@@ -13,6 +13,7 @@ import {Grid, Row} from 'react-bootstrap';
 
 var sidebarStyle = {
   border: '1px solid #ddd',
+  marginTop: '100px'
 }
 
 
