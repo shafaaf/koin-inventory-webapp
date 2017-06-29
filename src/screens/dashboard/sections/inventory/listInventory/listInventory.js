@@ -4,7 +4,9 @@ import { Sidebar, SidebarItem } from 'react-responsive-sidebar';
 // Components
 // Import InventoryGallery from './components/oldGallery/inventoryGallery.js';
 // Just use <InventoryGallery/> to get old gallery back
-import ItemGallery from './components/gallery/itemGallery.js';
+import ItemGallery from './components/gallery/itemGallery';
+import ItemModal from './components/gallery/itemModal';
+
 import Scrollchor from 'react-scrollchor';
 import {Grid, Row} from 'react-bootstrap';
 
@@ -47,8 +49,26 @@ export default class ListInventory extends Component {
     console.log("listInventory: On constructor");
     super(props);
     this.state = {
-      categories: categories
+      categories: categories,
+      showModal: false,
+      modalProduct: null
     };
+  }
+
+  close() { // Close Modal
+      this.setState({ showModal: false });
+    }
+
+  open() {  // Open Modal
+    this.setState({ showModal: true });
+  }
+
+  // Show item modal
+  onClickItem(item){
+    this.setState({
+        modalProduct: item}, function () {  // calling function just after setState
+          this.open();    
+    });
   }
 
   /* To make the id for each category section to use sidebar for navigation */
@@ -77,7 +97,7 @@ export default class ListInventory extends Component {
         <h3 style = {{textAlign : "center"}}>{category.header}</h3>
         <p style  = {{textAlign : "center"}}>{category.description}</p>
         <br/>
-        <ItemGallery category = {category.category}/>
+        <ItemGallery onClickItem = {this.onClickItem.bind(this)} category = {category.category}/>
       </Row> : null
     );
     return foodItemGallery;
@@ -90,6 +110,7 @@ export default class ListInventory extends Component {
           <h2 style = {{marginTop:"45px", marginLeft:"10px"}}>Your Inventory!</h2>
             {this.renderItems()}
         </div>
+        <ItemModal modalProduct={this.state.modalProduct} showModal = {this.state.showModal} onHide = {this.close.bind(this)}/>
       </Sidebar>
     );
   }
