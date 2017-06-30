@@ -174,11 +174,22 @@ export default class Transactions extends Component {
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 
 				<h3>Sample table</h3>
-				<Table className="table" data={[
-					{ Name: 'Griffin Smith', Age: 18 },
-					{ Age: 23,  Name: 'Lee Salminen' },
-					{ Age: 28, Position: 'Developer' },
-				]} />
+				<Table className="table" id="table">
+			        <Tr>
+			            <Td column="Name" data="Griffin Smith">
+			                <b>Griffin Smith</b>
+			            </Td>
+			            <Td column="Age">18</Td>
+			        </Tr>
+			        <Tr>
+			            <Td column="Name">Lee Salminen</Td>
+			            <Td column="Age">23</Td>
+			        </Tr>
+			        <Tr>
+			            <Td column="Position">Developer</Td>
+			            <Td column="Age">28</Td>
+			        </Tr>
+			    </Table>
 
 				<h3>Final table</h3>
 				<Table className="table" data={this.state.formattedTableData} />
