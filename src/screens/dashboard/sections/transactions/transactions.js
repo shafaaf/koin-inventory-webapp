@@ -6,8 +6,8 @@ import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
 
 var tableStyles = {
-	overflowY: "hidden",
-	overflowX: "hidden"
+	// overflowY: "hidden",
+	// overflowX: "hidden"
 };
 
 export default class Transactions extends Component {
@@ -39,7 +39,7 @@ export default class Transactions extends Component {
 		mode: 'cors',
 		headers: new Headers({
 			'Content-Type': 'application/json',
-			'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'
+			'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'	// Zen's token hardcoded in
 		})
 	});
 	var thisContext = this; // To keep track of this context within promise callback
@@ -68,7 +68,6 @@ export default class Transactions extends Component {
 		}
 	);
 	console.log("After promise section in componentDidMount transactions fetch.");
-
   }
   
 
@@ -141,7 +140,7 @@ export default class Transactions extends Component {
 
   render() {
   	console.log("Rendering transactions component.");
-    if(this.state.loading){	// loading screen when getting data
+    if(this.state.loading){	// Show loading screen when getting data
     	return <h2>Loading your transactions ..</h2>;
     }
     else{	// Show transactions data
@@ -163,8 +162,8 @@ export default class Transactions extends Component {
 						</Tr>
 					</Thead>
 					<Tbody>
-					{this.state.transactionsArray.map((transaction, key) =>
-	            		<Tr>
+					{this.state.transactionsArray.map((transaction, index) =>
+	            		<Tr key = {index}>
 	            			<Td>{transaction.amount}</Td>
 	            			<Td>
 	            				<Moment unix>{transaction.created_at}</Moment>
