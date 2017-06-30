@@ -7,7 +7,9 @@ import Moment from 'react-moment';
 //import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 //import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
 
-import { Table, Tr, Td } from 'reactable';
+import {Panel} from 'react-bootstrap';
+
+import { Table, Tr, Td, Thead, Th } from 'reactable';
 
 var tableStyles = {
 	// overflowY: "hidden",
@@ -22,7 +24,8 @@ export default class Transactions extends Component {
 		transactionsList: [],
 		hasNextPage: null,
 		currentTransactionPage: null,
-		formattedTableData: []
+		formattedTableData: [],
+		open: true
 	};
   }
 
@@ -175,22 +178,40 @@ export default class Transactions extends Component {
 
 				<h3>Sample table</h3>
 				<Table className="table" id="table">
-			        <Tr>
-			            <Td column="Name" data="Griffin Smith">
-			                <b>Griffin Smith</b>
-			            </Td>
-			            <Td column="Age">18</Td>
-			        </Tr>
-			        <Tr>
-			            <Td column="Name">Lee Salminen</Td>
-			            <Td column="Age">23</Td>
-			        </Tr>
-			        <Tr>
-			            <Td column="Position">Developer</Td>
-			            <Td column="Age">28</Td>
-			        </Tr>
-			    </Table>
-
+					<Thead>
+						<Th column="name">
+							<strong className="name-header">First Name, Last Name</strong>
+						</Th>
+						<Th column="age">
+							<em className="age-header">Age, years</em>
+						</Th>
+					</Thead>
+					<Tr onClick={ ()=> this.setState({ open: !this.state.open })}>
+						<Td column="name" data="Griffin Smith">
+							<b>Griffin Smith</b>
+							<Panel collapsible expanded={this.state.open}>
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+          Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </Panel>
+						</Td>
+						<Td column="age">18</Td>
+					</Tr>
+					<Panel collapsible expanded={this.state.open}>
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+          Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </Panel>
+					<Tr>
+						<Td column="name">Lee Salminen</Td>
+						<Td column="age">23</Td>
+						
+					</Tr>
+					<Tr>
+						<Td column="position">
+						Developer</Td>
+						<Td column="age">28</Td>
+					</Tr>
+				</Table>
+				
 				<h3>Final table</h3>
 				<Table className="table" data={this.state.formattedTableData} />
 				
