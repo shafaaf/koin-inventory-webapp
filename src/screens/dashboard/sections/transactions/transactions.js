@@ -66,10 +66,10 @@ export default class Transactions extends Component {
 		  			myEntry["amount"] = data["transactions"][i]["amount"];
 		  			myEntry["created_at"] = data["transactions"][i]["created_at"];
 		  			myEntry["state"] = data["transactions"][i]["state"];
-		  			myEntry["merchant_id"] = data["transactions"][i]["merchant"]["merchant_id"];
-		  			myEntry["store_location"] = data["transactions"][i]["merchant"]["store_location"];
+		  			//myEntry["merchant_id"] = data["transactions"][i]["merchant"]["merchant_id"];
+		  			//myEntry["store_location"] = data["transactions"][i]["merchant"]["store_location"];
 		  			myEntry["store_name"] = data["transactions"][i]["merchant"]["store_name"];
-		  			myEntry["store_type"] = data["transactions"][i]["merchant"]["store_type"];
+		  			//myEntry["store_type"] = data["transactions"][i]["merchant"]["store_type"];
 		  			formattedTableData.push(myEntry);
 		  		}
 		  		console.log("formattedTableData is: ", formattedTableData);
