@@ -3,6 +3,8 @@ import React,{Component} from 'react';
 // Importing other sections
 import MyForm from './components/myForm';
 
+import { Table } from 'reactable';
+
 
 export default class ContactUs extends Component {
 
@@ -15,6 +17,12 @@ export default class ContactUs extends Component {
 		return (
 			<div>
 				<h2>Contact Us!</h2>
+				<Table className="table" data={[
+					{ Name: 'Griffin Smith', Age: 18 },
+					{ Age: 23,  Name: 'Lee Salminen' },
+					{ Age: 28, Position: 'Developer' },
+				]}/>
+
 				<p> You can send email using button here: &nbsp;&nbsp; 
 					<button onClick = {this.emailConactUs}>Click here</button>
 				</p>

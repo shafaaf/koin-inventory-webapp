@@ -5,6 +5,7 @@ import Moment from 'react-moment';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
 
+
 var tableStyles = {
 	// overflowY: "hidden",
 	// overflowX: "hidden"
@@ -178,6 +179,7 @@ export default class Transactions extends Component {
 				</Table>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
+				
 			</div>
 	    );
 	}

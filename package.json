@@ -18,7 +18,8 @@
     "react-router-dom": "^4.1.1",
     "react-scrollable-anchor": "^0.4.2",
     "react-scrollchor": "^4.0.0",
-    "react-super-responsive-table": "^0.2.1"
+    "react-super-responsive-table": "^0.2.1",
+    "reactable": "^0.14.1"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"
