@@ -2,9 +2,12 @@ import React,{Component} from 'react';
 // import { Table } from 'react-bootstrap';
 
 import Moment from 'react-moment';
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
 
+
+//import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+//import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
+
+import { Table, Tr, Td } from 'reactable';
 
 var tableStyles = {
 	// overflowY: "hidden",
@@ -16,10 +19,10 @@ export default class Transactions extends Component {
   	super(props);
 	this.state = {
 		loading: true,
-		transactions: {},
-		transactionsArray: [],
+		transactionsList: [],
+		hasNextPage: null,
 		currentTransactionPage: null,
-		hasNextPage: null
+		formattedTableData: []
 	};
   }
 
@@ -27,10 +30,11 @@ export default class Transactions extends Component {
   	console.log("componentWillMount here.");
   	//heard not good
   }
-  
-  componentDidMount(){	// Fetch merchant's transactions
+
+  // Initial fetch of merchant's transactions
+  componentDidMount(){
   	console.log("componentDidMount here. Going to fetch transactions");
-  	//Requesting transaction info from Koin server
+  	// Requesting transaction info from Koin server
 	// Todo: Hard coded right now using Zen's session token
 	var data = JSON.stringify({});
 	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list';
@@ -53,18 +57,33 @@ export default class Transactions extends Component {
 			// Examine the text in the response from Koin server
 			response.json().then(function(data) {  
 				console.log("transaction data from server is: ", data);
+
+				// Setting formatted table data
+				var formattedTableData = thisContext.state.formattedTableData;
+		  		var i;
+		  		for(i=0; i<data["transactions"].length;i++){
+		  			var myEntry = {};
+		  			myEntry["amount"] = data["transactions"][i]["amount"];
+		  			myEntry["created_at"] = data["transactions"][i]["created_at"];
+		  			myEntry["state"] = data["transactions"][i]["state"];
+		  			myEntry["merchant_id"] = data["transactions"][i]["merchant"]["merchant_id"];
+		  			myEntry["store_location"] = data["transactions"][i]["merchant"]["store_location"];
+		  			myEntry["store_name"] = data["transactions"][i]["merchant"]["store_name"];
+		  			myEntry["store_type"] = data["transactions"][i]["merchant"]["store_type"];
+		  			formattedTableData.push(myEntry);
+		  		}
+		  		console.log("formattedTableData is: ", formattedTableData);
 				console.log("setting state for transactions now.");
 				// Todo: get warning of setting state when component not mounted
 				// Happens when click away to another section and state for old component
 				// is being set
 				thisContext.setState({
 					loading: false,
-					transactions: data,
-					transactionsArray: data["transactions"],
+					transactionsList: data["transactions"],
 					currentTransactionPage: 1,
-					hasNextPage: data["has_next_page"]
+					hasNextPage: data["has_next_page"],
+					formattedTableData: formattedTableData
 				 });
-
 			});
 		}
 	);
@@ -127,7 +146,6 @@ export default class Transactions extends Component {
 					currentTransactionPage: currentIndex,
 					hasNextPage: data["has_next_page"]
 				 });
-
 			});
 			console.log("after then statement");
 		}
@@ -138,6 +156,9 @@ export default class Transactions extends Component {
 	});
   }
 
+  	formatTable(){
+  		
+  	}
 
   render() {
   	console.log("Rendering transactions component.");
@@ -151,32 +172,18 @@ export default class Transactions extends Component {
 				<p>Fell free to check out your transactions!</p>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
-				<Table style = {tableStyles}>
-					<Thead>
-						<Tr>
-							<Th>Amount</Th>
-							<Th>Created At</Th>
-							<Th>State</Th>
-							<Th>Store Location</Th>
-							<Th>Store Name</Th>
-							<Th>Store Type</Th>
-						</Tr>
-					</Thead>
-					<Tbody>
-					{this.state.transactionsArray.map((transaction, index) =>
-	            		<Tr key = {index}>
-	            			<Td>{transaction.amount}</Td>
-	            			<Td>
-	            				<Moment unix>{transaction.created_at}</Moment>
-	            			</Td>	
-	            			<Td>{transaction.state}</Td>
-	            			<Td>{transaction.merchant.store_location}</Td>
-	            			<Td>{transaction.merchant.store_name}</Td>
-	            			<Td>{transaction.merchant.store_type}</Td>          			            		           		            			
-	            		</Tr>
-	          		)}
-	          		</Tbody>
-				</Table>
+
+				<h3>Sample table</h3>
+				<Table className="table" data={[
+					{ Name: 'Griffin Smith', Age: 18 },
+					{ Age: 23,  Name: 'Lee Salminen' },
+					{ Age: 28, Position: 'Developer' },
+				]} />
+
+				<h3>Final table</h3>
+				<Table className="table" data={this.state.formattedTableData} />
+				
+
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 				
