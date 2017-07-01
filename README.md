@@ -12,3 +12,4 @@ Todos:
 - Clean up code using npm start warnings
 - Remove all print statements
 - Some warning about set state in transactions. I think not using componentDidMount properly
+- Add ability to confirm or remove the pictures uploaded on add item page

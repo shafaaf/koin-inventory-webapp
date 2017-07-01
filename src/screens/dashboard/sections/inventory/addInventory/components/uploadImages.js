@@ -21,7 +21,7 @@ var imageStyle = {
 export default class UploadImages extends Component {
   constructor(props) {
 	    super(props);
-	    this.state = {
+      this.state = {
 	    	images: []
 	    };
   	}
@@ -40,24 +40,25 @@ export default class UploadImages extends Component {
 			imagesObject["height"] = 600;
 			images.push(imagesObject);
 		}
-		this.setState({ 
+		this.setState({
 			images: images
 		});
   }
 
-	openLightbox(){
-		console.log("openLightbox");
+	imageModal(){
+		console.log("imageModal");
+    console.log("this is: ", this);
 	}
 
   renderThumbnails(){
     console.log("renderThumbnails: images is: ", this.state.images);
-    var imagesMapped = this.state.images.map(function(image){
+    var imagesMapped = this.state.images.map(function(image, index){
       return (
-        <Col xs={12} sm={6} md={4} lg={4}>
-          <img style = {imageStyle} src = {image.src} responsive/>
+        <Col key={index} xs={12} sm={6} md={4} lg={4} onClick={this.imageModal}>
+          <img style = {imageStyle} src = {image.src}/>
         </Col>
       );
-    });
+    }, this); // Trick was to pass "this" like this
     console.log("imagesMapped is: ", imagesMapped);
     return imagesMapped;
   }
@@ -67,7 +68,7 @@ export default class UploadImages extends Component {
 		if(images === undefined || images.length == 0){
 			return <h3 style = {{textAlign: "center"}}>No Images uploaded</h3>;
 		}
-		else{
+		else {
 			console.log("images is: ", images);
 			// For testing purposes
 			var images2 = [
@@ -98,11 +99,12 @@ export default class UploadImages extends Component {
   						<div><span className="glyphicon glyphicon-plus"></span> Upload pictures of food item!</div>
   					</Dropzone>
   				</div>
-			   </form>
-			<div>
-        {this.renderImages()}
-      </div>
-		</div>
+        </form>
+    		<div>
+          {this.renderImages()}
+        </div>
+  	  </div>
     );
   }
+
 }
