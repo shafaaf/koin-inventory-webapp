@@ -2,6 +2,7 @@
 
 Todos:
 - Fix CSS styling methods
+- Image sizing
 - Right now transaction listing only gets Zen's transactions. Change to get using token.
 - Make transaction listing responsive, sorting allowed
 - Fix sidebar anchor links to move slowly and show header. Not working cause Scrollchor within Sidebar. Also
@@ -13,3 +14,8 @@ Todos:
 - Remove all print statements
 - Some warning about set state in transactions. I think not using componentDidMount properly
 - Add ability to confirm or remove the pictures uploaded on add item page
+
+Major sections left:
+- Home page shoing lates activities
+- Profile page
+- See whole inventory on a table format

@@ -1,20 +1,23 @@
 import React,{Component} from 'react';
-// import { Table } from 'react-bootstrap';
-
 import Moment from 'react-moment';
 
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
-//import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-//import 'react-super-responsive-table/src/SuperResponsiveTableStyle.css'
-
-import {Panel} from 'react-bootstrap';
-
-import { Table, Tr, Td, Thead, Th } from 'reactable';
-
-var tableStyles = {
-	// overflowY: "hidden",
-	// overflowX: "hidden"
-};
+// products will be presented by react-bootstrap-table
+var products = [{
+      id: 1,
+      name: "Item name 1",
+      price: 100
+  },{
+      id: 2,
+      name: "Item name 2",
+      price: 100
+  }];
+// It's a data format example.
+function priceFormatter(cell, row){
+  return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
+}
 
 export default class Transactions extends Component {
   constructor(props){
@@ -24,14 +27,13 @@ export default class Transactions extends Component {
 		transactionsList: [],
 		hasNextPage: null,
 		currentTransactionPage: null,
-		formattedTableData: [],
 		open: true
 	};
   }
 
   componentWillMount(){
   	console.log("componentWillMount here.");
-  	//heard not good
+  	// Todo: heard not good
   }
 
   // Initial fetch of merchant's transactions
@@ -59,23 +61,7 @@ export default class Transactions extends Component {
 			}
 			// Examine the text in the response from Koin server
 			response.json().then(function(data) {  
-				console.log("transaction data from server is: ", data);
-
-				// Setting formatted table data
-				var formattedTableData = thisContext.state.formattedTableData;
-		  		var i;
-		  		for(i=0; i<data["transactions"].length;i++){
-		  			var myEntry = {};
-		  			myEntry["amount"] = data["transactions"][i]["amount"];
-		  			myEntry["created_at"] = data["transactions"][i]["created_at"];
-		  			myEntry["state"] = data["transactions"][i]["state"];
-		  			//myEntry["merchant_id"] = data["transactions"][i]["merchant"]["merchant_id"];
-		  			//myEntry["store_location"] = data["transactions"][i]["merchant"]["store_location"];
-		  			myEntry["store_name"] = data["transactions"][i]["merchant"]["store_name"];
-		  			//myEntry["store_type"] = data["transactions"][i]["merchant"]["store_type"];
-		  			formattedTableData.push(myEntry);
-		  		}
-		  		console.log("formattedTableData is: ", formattedTableData);
+				console.log("Transaction data from server is: ", data);
 				console.log("setting state for transactions now.");
 				// Todo: get warning of setting state when component not mounted
 				// Happens when click away to another section and state for old component
@@ -84,8 +70,7 @@ export default class Transactions extends Component {
 					loading: false,
 					transactionsList: data["transactions"],
 					currentTransactionPage: 1,
-					hasNextPage: data["has_next_page"],
-					formattedTableData: formattedTableData
+					hasNextPage: data["has_next_page"]
 				 });
 			});
 		}
@@ -176,47 +161,19 @@ export default class Transactions extends Component {
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 
-				<h3>Sample table</h3>
-				<Table className="table" id="table">
-					<Thead>
-						<Th column="name">
-							<strong className="name-header">First Name, Last Name</strong>
-						</Th>
-						<Th column="age">
-							<em className="age-header">Age, years</em>
-						</Th>
-					</Thead>
-					<Tr onClick={ ()=> this.setState({ open: !this.state.open })}>
-						<Td column="name" data="Griffin Smith">
-							<b>Griffin Smith</b>
-							<Panel collapsible expanded={this.state.open}>
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-          Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-        </Panel>
-						</Td>
-						<Td column="age">18</Td>
-					</Tr>
-					<Panel collapsible expanded={this.state.open}>
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-          Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-        </Panel>
-					<Tr>
-						<Td column="name">Lee Salminen</Td>
-						<Td column="age">23</Td>
-						
-					</Tr>
-					<Tr>
-						<Td column="position">
-						Developer</Td>
-						<Td column="age">28</Td>
-					</Tr>
-				</Table>
-				
+				<h3>Sample table</h3>		
+				<BootstrapTable data={products} striped={true} hover={true}>
+      <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>Product ID</TableHeaderColumn>
+      <TableHeaderColumn dataField="name" dataSort={true}>Product Name</TableHeaderColumn>
+      <TableHeaderColumn dataField="price" dataFormat={priceFormatter}>Product Price</TableHeaderColumn>
+  </BootstrapTable>
+
 				<h3>Final table</h3>
-				<Table className="table" data={this.state.formattedTableData} />
+							
 				
 
-				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
+				{/* Not working for now*/}
+				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button> 
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 				
 			</div>
