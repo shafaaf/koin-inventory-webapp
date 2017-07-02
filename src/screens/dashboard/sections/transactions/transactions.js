@@ -4,6 +4,7 @@ import Moment from 'react-moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
+
 // products will be presented by react-bootstrap-table
 var products = [{
       id: 1,
@@ -12,8 +13,9 @@ var products = [{
   },{
       id: 2,
       name: "Item name 2",
-      price: 100
+      price: 120
   }];
+
 // It's a data format example.
 function priceFormatter(cell, row){
   return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
@@ -163,15 +165,13 @@ export default class Transactions extends Component {
 
 				<h3>Sample table</h3>		
 				<BootstrapTable data={products} striped={true} hover={true}>
-      <TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>Product ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="name" dataSort={true}>Product Name</TableHeaderColumn>
-      <TableHeaderColumn dataField="price" dataFormat={priceFormatter}>Product Price</TableHeaderColumn>
-  </BootstrapTable>
+					<TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>Product ID</TableHeaderColumn>
+					<TableHeaderColumn dataField="name" dataSort={true}>Product Name</TableHeaderColumn>
+					<TableHeaderColumn dataField="price" dataFormat={priceFormatter}>Product Price</TableHeaderColumn>
+				</BootstrapTable>
 
 				<h3>Final table</h3>
-							
 				
-
 				{/* Not working for now*/}
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button> 
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
