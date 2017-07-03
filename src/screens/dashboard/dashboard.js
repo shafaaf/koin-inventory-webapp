@@ -9,11 +9,10 @@ import {
 
 // Importing other page sections
 import Navbar from './components/myNavBar.js';
+import Routes from './components/routes.js';
 import DashboardIntro from './sections/dashboardIntro.js';
-
 import ListInventory from './sections/inventory/listInventory/listInventory';
 import AddInventory from './sections/inventory/addInventory/addInventory';
-
 import Transactions from './sections/transactions/transactions.js';
 import Settings from './sections/settings/settings.js';
 import ContactUs from './sections/contactUs/contactUs.js';
@@ -37,17 +36,7 @@ export default class Dashboard extends Component {
 					<Navbar onLogOut = {this.facebookLogout.bind(this)}/>
 				</div>
 				<div className = "container"> {/* Main content section here. Add sections like transations etc here.*/}
-					<br/>
-					<Switch> {/*Content for each different section*/}
-						<Route exact path='/dashboard' component={DashboardIntro}/>
-						{/* Inventory Sections */}
-						<Route exact path='/dashboard/inventory/list' component={ListInventory}/>
-						<Route exact path='/dashboard/inventory/add' component={AddInventory}/>
-						{/* Other sections */}
-						<Route exact path='/dashboard/transactions' component={Transactions}/>
-						<Route exact path='/dashboard/settings' component={Settings}/>
-						<Route exact path='/dashboard/contactus' component={ContactUs}/>
-					</Switch>
+					<Routes/>
 				</div>	
 			</div>
 		);

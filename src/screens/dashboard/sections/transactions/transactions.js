@@ -17,7 +17,6 @@ var products = [{
       price: 120
   }];
 
-// It's a data format example.
 function priceFormatter(cell, row){
   return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
 }
@@ -28,10 +27,8 @@ function timeFormatter(cell, row){
 	//return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
 	var moment = require('moment');
 	var a = moment(cell);
-
 	return <p>{a.format("MMM Do YYYY")}</p>;
 }
-
 
 export default class Transactions extends Component {
   constructor(props) {
@@ -109,6 +106,10 @@ export default class Transactions extends Component {
 	console.log("After promise section in componentDidMount transactions fetch.");
   }
 
+	componentWillUnmount(){
+		console.log("componentWillUnmount here.");
+	}
+
 
   // Todo: Figure out how to other fetch data here later on.
   fetchDifferentIndexTransactions(direction) {
@@ -161,21 +162,21 @@ export default class Transactions extends Component {
 				// is being set
 				//
 
-				thisContext.setState({
-					loading: false,
-					transactions: data,
-					transactionsArray: data["transactions"],
-					currentTransactionPage: currentIndex,
-					hasNextPage: data["has_next_page"]
-				 });
+				// thisContext.setState({
+				// 	loading: false,
+				// 	transactions: data,
+				// 	transactionsArray: data["transactions"],
+				// 	currentTransactionPage: currentIndex,
+				// 	hasNextPage: data["has_next_page"]
+				//  });
 			});
 			console.log("after then statement");
 		}
 	);
 	console.log("after fetch");
-	thisContext.setState({
-		loading: true
-	});
+	// thisContext.setState({
+	// 	loading: true
+	// });
   }
 
   render() {
@@ -201,7 +202,7 @@ export default class Transactions extends Component {
 				<h3>Final table</h3>
 				<BootstrapTable data={this.state.tableData} striped={true} hover={true}>
 					<TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
-					<TableHeaderColumn dataField="amount" dataSort={true}>Amount</TableHeaderColumn>
+					<TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
 					<TableHeaderColumn dataField="storeName" dataSort={true}>Store Name</TableHeaderColumn>
 					<TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
 				</BootstrapTable>
