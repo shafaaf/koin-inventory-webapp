@@ -219,9 +219,9 @@ class ExpandedRow extends React.Component {
 	    if (this.props.storeLocation && this.props.storeType) {
 	    	return (
 	    		<div>
-	      			<h4> Store Location is: {this.props.storeLocation}</h4>
-	      			<h4> Store Type is: {this.props.storeType}</h4>
-	      			<h4> Store Name is: {this.props.storeName}</h4>
+	      			<div> <p>Store Location is: {this.props.storeLocation}</p></div>
+	      			<div> <p>Store Type is: {this.props.storeType}</p></div>
+	      			<div> Store Name is: {this.props.storeName}</div>
 	      		</div>
 			);
 		} 
