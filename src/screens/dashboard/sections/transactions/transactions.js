@@ -30,6 +30,27 @@ function timeFormatter(cell, row){
 	return <p>{a.format("MMM Do YYYY")}</p>;
 }
 
+
+class BSTable extends React.Component {
+  render() {
+    if (this.props.data) {
+      return (
+        <BootstrapTable data={ this.props.data }>
+          <TableHeaderColumn dataField='fieldA' isKey={ true }>Field A</TableHeaderColumn>
+          <TableHeaderColumn dataField='fieldB'>Field B</TableHeaderColumn>
+          <TableHeaderColumn dataField='fieldC'>Field C</TableHeaderColumn>
+          <TableHeaderColumn dataField='fieldD'>Field D</TableHeaderColumn>
+        </BootstrapTable>);
+    } else {
+      return (<p>?</p>);
+    }
+  }
+}
+
+
+
+
+
 export default class Transactions extends Component {
   constructor(props) {
   	super(props);
@@ -179,6 +200,18 @@ export default class Transactions extends Component {
 	// });
   }
 
+	isExpandableRow(row) {
+		if (row.id < 3) return true;
+		else return false;
+	}
+
+	expandComponent(row) {
+    return (
+      <h1>Hi Guys</h1>
+    );
+  }
+
+
   render() {
   	console.log("Rendering transactions component.");
     if(this.state.loading){	// Show loading screen when getting data
@@ -193,7 +226,8 @@ export default class Transactions extends Component {
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 
 				<h3>Sample table</h3>		
-				<BootstrapTable data={products} striped={true} hover={true}>
+				<BootstrapTable data={products} striped={true} hover={true} expandableRow={ this.isExpandableRow }
+				expandComponent={ this.expandComponent }>
 					<TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>Product ID</TableHeaderColumn>
 					<TableHeaderColumn dataField="name" dataSort={true}>Product Name</TableHeaderColumn>
 					<TableHeaderColumn dataField="price" dataFormat={priceFormatter}>Product Price</TableHeaderColumn>
