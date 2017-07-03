@@ -10,11 +10,33 @@ require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 var products = [{
       id: 1,
       name: "Item name 1",
-      price: 100
+      price: 100,
+      expand: [ {
+          fieldA: 'test1',
+          fieldB: "a",
+          fieldC: "b",
+          fieldD: "c"
+        }, {
+          fieldA: 'test2',
+          fieldB: "a",
+          fieldC: "b",
+          fieldD: "c",
+        } ]
   },{
       id: 2,
       name: "Item name 2",
-      price: 120
+      price: 120,
+      expand: [ {
+          fieldA: 'test1',
+          fieldB: "a",
+          fieldC: "b",
+          fieldD: "c"
+        }, {
+          fieldA: 'test2',
+          fieldB: "a",
+          fieldC: "b",
+          fieldD: "c",
+        } ]
   }];
 
 function priceFormatter(cell, row){
@@ -30,25 +52,27 @@ function timeFormatter(cell, row){
 	return <p>{a.format("MMM Do YYYY")}</p>;
 }
 
-
+//<BSTable storeLocation={ row.storeLocation } storeType = {row.storeType} />
 class BSTable extends React.Component {
   render() {
-    if (this.props.data) {
+    if (this.props.storeLocation) {
+    	console.log("storeLocation is: ", this.props.storeLocation);
+    	console.log("storeType is: ", this.props.storeType);
+    	
       return (
-        <BootstrapTable data={ this.props.data }>
-          <TableHeaderColumn dataField='fieldA' isKey={ true }>Field A</TableHeaderColumn>
-          <TableHeaderColumn dataField='fieldB'>Field B</TableHeaderColumn>
-          <TableHeaderColumn dataField='fieldC'>Field C</TableHeaderColumn>
-          <TableHeaderColumn dataField='fieldD'>Field D</TableHeaderColumn>
-        </BootstrapTable>);
+        // <BootstrapTable data={ this.props.data }>
+        //   <TableHeaderColumn dataField='fieldA' isKey={ true }>Field A</TableHeaderColumn>
+        //   <TableHeaderColumn dataField='fieldB'>Field B</TableHeaderColumn>
+        //   <TableHeaderColumn dataField='fieldC'>Field C</TableHeaderColumn>
+        //   <TableHeaderColumn dataField='fieldD'>Field D</TableHeaderColumn>
+        // </BootstrapTable>);
+      	<p> storeLocation is {this.props.storeLocation}</p>
+      	);
     } else {
       return (<p>?</p>);
     }
   }
 }
-
-
-
 
 
 export default class Transactions extends Component {
@@ -111,6 +135,11 @@ export default class Transactions extends Component {
 					myEntry["amount"] = data["transactions"][i]["amount"];
 					myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
 					myEntry["state"] = data["transactions"][i]["state"];
+					
+
+					// To show in expandable row
+					myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
+					myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
 					tableData.push(myEntry);
 				}
 
@@ -201,15 +230,15 @@ export default class Transactions extends Component {
   }
 
 	isExpandableRow(row) {
-		if (row.id < 3) return true;
-		else return false;
+		return true
 	}
 
+
 	expandComponent(row) {
-    return (
-      <h1>Hi Guys</h1>
-    );
-  }
+		return (
+			<BSTable storeLocation={ row.storeLocation } storeType = {row.storeType} />
+		);
+	}
 
 
   render() {
@@ -218,6 +247,11 @@ export default class Transactions extends Component {
     	return <h2>Loading your transactions ..</h2>;
     }
     else{	// Show transactions data
+
+    	const options = {
+      expandRowBgColor: 'rgb(242, 255, 163)'
+    };
+    	var test = "test";
 	    return (
 	    	<div>
 				<h2>Your Transactions!</h2>
@@ -225,16 +259,19 @@ export default class Transactions extends Component {
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 
+				
 				<h3>Sample table</h3>		
-				<BootstrapTable data={products} striped={true} hover={true} expandableRow={ this.isExpandableRow }
-				expandComponent={ this.expandComponent }>
+				<BootstrapTable data={products} striped={true} hover={true} 
+				expandableRow={ this.isExpandableRow }  expandComponent={ this.expandComponent }>
 					<TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>Product ID</TableHeaderColumn>
 					<TableHeaderColumn dataField="name" dataSort={true}>Product Name</TableHeaderColumn>
 					<TableHeaderColumn dataField="price" dataFormat={priceFormatter}>Product Price</TableHeaderColumn>
 				</BootstrapTable>
 
+
 				<h3>Final table</h3>
-				<BootstrapTable data={this.state.tableData} striped={true} hover={true}>
+				<BootstrapTable data={this.state.tableData} striped={true} hover={true} expandableRow={ this.isExpandableRow }
+				expandComponent={ this.expandComponent}>
 					<TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
 					<TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
 					<TableHeaderColumn dataField="storeName" dataSort={true}>Store Name</TableHeaderColumn>
