@@ -5,75 +5,15 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
 
-
-// products will be presented by react-bootstrap-table
-var products = [{
-      id: 1,
-      name: "Item name 1",
-      price: 100,
-      expand: [ {
-          fieldA: 'test1',
-          fieldB: "a",
-          fieldC: "b",
-          fieldD: "c"
-        }, {
-          fieldA: 'test2',
-          fieldB: "a",
-          fieldC: "b",
-          fieldD: "c",
-        } ]
-  },{
-      id: 2,
-      name: "Item name 2",
-      price: 120,
-      expand: [ {
-          fieldA: 'test1',
-          fieldB: "a",
-          fieldC: "b",
-          fieldD: "c"
-        }, {
-          fieldA: 'test2',
-          fieldB: "a",
-          fieldC: "b",
-          fieldD: "c",
-        } ]
-  }];
-
 function priceFormatter(cell, row){
-  return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
+  return 'Tk ' + cell;
 }
 
 function timeFormatter(cell, row){
-	//console.log("cell is: ", cell);
-	//console.log("row is: ", row);
-	//return '<i class="glyphicon glyphicon-usd"></i> ' + cell;
 	var moment = require('moment');
 	var a = moment(cell);
 	return <p>{a.format("MMM Do YYYY")}</p>;
 }
-
-//<BSTable storeLocation={ row.storeLocation } storeType = {row.storeType} />
-class BSTable extends React.Component {
-  render() {
-    if (this.props.storeLocation) {
-    	console.log("storeLocation is: ", this.props.storeLocation);
-    	console.log("storeType is: ", this.props.storeType);
-    	
-      return (
-        // <BootstrapTable data={ this.props.data }>
-        //   <TableHeaderColumn dataField='fieldA' isKey={ true }>Field A</TableHeaderColumn>
-        //   <TableHeaderColumn dataField='fieldB'>Field B</TableHeaderColumn>
-        //   <TableHeaderColumn dataField='fieldC'>Field C</TableHeaderColumn>
-        //   <TableHeaderColumn dataField='fieldD'>Field D</TableHeaderColumn>
-        // </BootstrapTable>);
-      	<p> storeLocation is {this.props.storeLocation}</p>
-      	);
-    } else {
-      return (<p>?</p>);
-    }
-  }
-}
-
 
 export default class Transactions extends Component {
   constructor(props) {
@@ -133,11 +73,10 @@ export default class Transactions extends Component {
 					var myEntry = {};
 					myEntry["dateTime"] = data["transactions"][i]["created_at"];
 					myEntry["amount"] = data["transactions"][i]["amount"];
-					myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
 					myEntry["state"] = data["transactions"][i]["state"];
 					
-
 					// To show in expandable row
+					myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
 					myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
 					myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
 					tableData.push(myEntry);
@@ -230,16 +169,15 @@ export default class Transactions extends Component {
   }
 
 	isExpandableRow(row) {
-		return true
+		return true;
 	}
 
 
 	expandComponent(row) {
 		return (
-			<BSTable storeLocation={ row.storeLocation } storeType = {row.storeType} />
+			<ExpandedRow storeName={ row.storeName } storeLocation={ row.storeLocation } storeType = {row.storeType} />
 		);
 	}
-
 
   render() {
   	console.log("Rendering transactions component.");
@@ -259,33 +197,37 @@ export default class Transactions extends Component {
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 
-				
-				<h3>Sample table</h3>		
-				<BootstrapTable data={products} striped={true} hover={true} 
-				expandableRow={ this.isExpandableRow }  expandComponent={ this.expandComponent }>
-					<TableHeaderColumn dataField="id" isKey={true} dataAlign="center" dataSort={true}>Product ID</TableHeaderColumn>
-					<TableHeaderColumn dataField="name" dataSort={true}>Product Name</TableHeaderColumn>
-					<TableHeaderColumn dataField="price" dataFormat={priceFormatter}>Product Price</TableHeaderColumn>
-				</BootstrapTable>
-
-
-				<h3>Final table</h3>
-				<BootstrapTable data={this.state.tableData} striped={true} hover={true} expandableRow={ this.isExpandableRow }
-				expandComponent={ this.expandComponent}>
+				<h3>Transactions table</h3>
+				<BootstrapTable data={this.state.tableData} striped={true} hover={true} 
+				expandableRow={ this.isExpandableRow }
+				expandComponent={ this.expandComponent}
+				expandColumnOptions={ { expandColumnVisible: true } }
+				>
 					<TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
 					<TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
-					<TableHeaderColumn dataField="storeName" dataSort={true}>Store Name</TableHeaderColumn>
 					<TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
-				</BootstrapTable>
-				
-				
-				{/* Not working for now*/}
-				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button> 
-				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
-				
+				</BootstrapTable>				
 			</div>
 	    );
 	}
   }
 
 }
+
+class ExpandedRow extends React.Component {
+  	render() {
+	    if (this.props.storeLocation && this.props.storeType) {
+	    	return (
+	    		<div>
+	      			<h4> Store Location is: {this.props.storeLocation}</h4>
+	      			<h4> Store Type is: {this.props.storeType}</h4>
+	      			<h4> Store Name is: {this.props.storeName}</h4>
+	      		</div>
+			);
+		} 
+		else {
+			return (<p>What!? Some data missing.</p>);
+		}
+	}
+}
+
