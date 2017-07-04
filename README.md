@@ -1,6 +1,27 @@
 # Koin Inventory Management Web App
 
-Todos:
+### Installation And Basic Setup
+A step by step procedure to have a local development environment running:
+
+Clone Gitlab project
+```
+git clone https://github.com/shafaaf/koin-inventory-webapp.git
+```
+
+Install npm dependencies
+```
+npm install
+```
+
+Run server
+```
+npm start
+```
+
+Open browser and go to: 
+localhost:3000/login
+
+### Todos:
 - Fix CSS styling methods
 - Image sizing
 - Right now transaction listing only gets Zen's transactions. Change to get using token.
