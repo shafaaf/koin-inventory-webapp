@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
 import Moment from 'react-moment';
 
+import ExpandedRow from './components/expandedRow';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
-
 
 function priceFormatter(cell, row){
   return 'Tk ' + cell;
@@ -28,8 +28,9 @@ export default class Transactions extends Component {
   }
 
   componentWillMount() {
-  	console.log("componentWillMount here.");
-  	// Todo: heard not good
+  	console.log("componentWillMount for transaction here.");
+  	console.log("loading is: ", this.state.loading);
+  	console.log("tableData is: ", this.state.tableData);
   }
 
   // Initial fetch of merchant's transactions
@@ -58,15 +59,10 @@ export default class Transactions extends Component {
 			// Examine the text in the response from Koin server
 			response.json().then(function(data) {  
 				console.log("Transaction data from server is: ", data);
-				
-				console.log("setting state for transactions now.");
-				// Todo: get warning of setting state when component not mounted
-				// Happens when click away to another section and state for old component
-				// is being set
-				
+								
 				// Setup table data
+				console.log("Setting table for transactions now.");
 				var tableData = thisContext.state.tableData;
-				console.log("tableData is: ", tableData);
 				var dataListLength = data["transactions"].length;
 				var i = 0;
 				for(i = 0; i < dataListLength; i++){
@@ -82,6 +78,7 @@ export default class Transactions extends Component {
 					tableData.push(myEntry);
 				}
 
+				console.log("Setting state for transactions now.");
 				thisContext.setState({
 					loading: false,
 					transactionsList: data["transactions"],
@@ -96,7 +93,7 @@ export default class Transactions extends Component {
   }
 
 	componentWillUnmount(){
-		console.log("componentWillUnmount here.");
+		console.log("componentWillUnmount for transactions here.");
 	}
 
 
@@ -172,7 +169,6 @@ export default class Transactions extends Component {
 		return true;
 	}
 
-
 	expandComponent(row) {
 		return (
 			<ExpandedRow storeName={ row.storeName } storeLocation={ row.storeLocation } storeType = {row.storeType} />
@@ -201,8 +197,7 @@ export default class Transactions extends Component {
 				<BootstrapTable data={this.state.tableData} striped={true} hover={true} 
 				expandableRow={ this.isExpandableRow }
 				expandComponent={ this.expandComponent}
-				expandColumnOptions={ { expandColumnVisible: true } }
-				>
+				expandColumnOptions={{expandColumnVisible: true}}>
 					<TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
 					<TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
 					<TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
@@ -214,20 +209,4 @@ export default class Transactions extends Component {
 
 }
 
-class ExpandedRow extends React.Component {
-  	render() {
-	    if (this.props.storeLocation && this.props.storeType) {
-	    	return (
-	    		<div>
-	      			<div> <p>Store Location is: {this.props.storeLocation}</p></div>
-	      			<div> <p>Store Type is: {this.props.storeType}</p></div>
-	      			<div> Store Name is: {this.props.storeName}</div>
-	      		</div>
-			);
-		} 
-		else {
-			return (<p>What!? Some data missing.</p>);
-		}
-	}
-}
 

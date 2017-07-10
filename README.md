@@ -21,7 +21,7 @@ npm start
 Open browser and go to: 
 localhost:3000/login
 
-### Todos:
+### Todos
 - Fix CSS styling methods
 - Image sizing
 - Right now transaction listing only gets Zen's transactions. Change to get using token.
@@ -35,6 +35,7 @@ localhost:3000/login
 - Remove all print statements
 - Some warning about set state in transactions. I think not using componentDidMount properly
 - Add ability to confirm or remove the pictures uploaded on add item page
+- Add in loading profile on successful login
 
 Major sections left:
 - Home page shoing lates activities

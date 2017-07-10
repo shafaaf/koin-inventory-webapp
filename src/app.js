@@ -19,7 +19,7 @@ import NoPageFound from './screens/noPageFound';
 
 export default class App extends Component {
   constructor(props) {
-    console.log("On constructor");
+    console.log("app.js: On constructor");
     super(props);
    
     // Load in Koin session token which say whether user logged in session or not.

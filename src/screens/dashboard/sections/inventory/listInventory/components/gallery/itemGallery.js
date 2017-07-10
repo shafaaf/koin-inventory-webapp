@@ -160,12 +160,12 @@ export default class ItemGallery extends Component {
 	/* Making item list for specific category for which prop passed in */
   	getItemList(category){	// Todo: May need to do this in some lifecycle method
   		var category = this.props.category;
-  		console.log("getItemList() category is: ", category);
+  		//console.log("getItemList() category is: ", category);
   		// Todo: Get from server. messy here - FIX
   		var items = this.items;
   		items.splice(0,items.length)
 
-  		console.log("items is: ", items);
+  		//console.log("items is: ", items);
   		var itemsTestLength = itemsTest.length;
   		var i;
   		for (i = 0; i<itemsTestLength; i++){
@@ -173,18 +173,18 @@ export default class ItemGallery extends Component {
   				items.push(itemsTest[i]);
   			}
   		}
-  		console.log("items is: ", items);
+  		//console.log("items is: ", items);
   	}
 
   	/* Rendering item list for specific category for which prop passed in */
   	handleItemClick(item){
-  		console.log("item clicked is: ", item);
+  		//console.log("item clicked is: ", item);
   		this.props.onClickItem(item);
   	}
 
   	renderItemList(){
   		var category = this.props.category;
-  		console.log("renderItemList() category is: ", category);
+  		//console.log("renderItemList() category is: ", category);
   		const items = this.items.map((item, index) =>
 			<Col key={index} xs={12} sm={6} md={6} lg={6} style = {colStyle} onClick={this.handleItemClick.bind(this, item)}>
 				<p>

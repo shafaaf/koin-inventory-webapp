@@ -10,7 +10,7 @@ import { ButtonInput } from 'react-bootstrap';
 
 export default class myForm extends Component {
     constructor(props) {
-        console.log("On constructor");
+        console.log("myForm: On constructor");
         super(props);
         this.state = {
             firstNameValue: '',

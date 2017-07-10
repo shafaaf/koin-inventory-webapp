@@ -72,7 +72,7 @@ export default class ListInventory extends Component {
 
    // Show item modal
   onClickItem(item){
-    console.log("onClickItem: item to change state is: ", item);
+    //console.log("onClickItem: item to change state is: ", item);
     this.setState({
       modalProduct: item,
       showModal: true
@@ -110,6 +110,11 @@ export default class ListInventory extends Component {
     );
     return foodItemGallery;
   }
+
+  componentWillMount() {
+    console.log("listInventory.js: componentWillMount here.");
+  }
+
 
   render() {
     return (
