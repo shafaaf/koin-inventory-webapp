@@ -195,11 +195,10 @@ export default class Transactions extends Component {
 	    	<div>
 				<h2>Your Transactions!</h2>
 				<p>Fell free to check out your transactions!</p>
-				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
-				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
-
-				
 				<MyDatePicker/>
+				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
+				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>				
+
 				
 				<h3>Transactions table</h3>
 				<BootstrapTable data={this.state.tableData} hover={true} 

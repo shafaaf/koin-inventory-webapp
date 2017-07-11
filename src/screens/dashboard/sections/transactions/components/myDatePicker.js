@@ -25,16 +25,15 @@ export default class MyDatePicker extends React.Component {
 
   render() {
     return (
-        
         <Row className="show-grid">
           <Col xs={12} md={6}>
-            <DatePicker selected={this.state.startDate}
+            Start Date: <DatePicker selected={this.state.startDate}
                 onChange={this.handleChange}
                    todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
                     dateFormat="DD/MM/YYYY"/>
           </Col>
           <Col xs={12} md={6}>
-            <DatePicker selected={this.state.startDate}
+            End Date: <DatePicker selected={this.state.startDate}
               onChange={this.handleChange}
                 todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
                   dateFormat="DD/MM/YYYY"/>
