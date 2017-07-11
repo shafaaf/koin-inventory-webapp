@@ -2,9 +2,16 @@ import React,{Component} from 'react';
 import Moment from 'react-moment';
 
 import ExpandedRow from './components/expandedRow';
+import MyDatePicker from './components/myDatePicker';
+
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import {Grid, Row, Col, Button} from 'react-bootstrap';
+
+
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
+
+// Functions to format values in table
 function priceFormatter(cell, row){
   return 'Tk ' + cell;
 }
@@ -21,8 +28,8 @@ export default class Transactions extends Component {
 	this.state = {
 		loading: true,
 		transactionsList: [],
-		hasNextPage: null,
 		tableData: [],
+		hasNextPage: null,
 		currentTransactionPage: null
 	};
   }
@@ -181,20 +188,21 @@ export default class Transactions extends Component {
     	return <h2>Loading your transactions ..</h2>;
     }
     else{	// Show transactions data
-
     	const options = {
-      expandRowBgColor: 'rgb(242, 255, 163)'
-    };
-    	var test = "test";
-	    return (
+      		expandRowBgColor: 'rgb(242, 255, 163)'
+    	};
+    	return (
 	    	<div>
 				<h2>Your Transactions!</h2>
 				<p>Fell free to check out your transactions!</p>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
 				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>
 
+				
+				<MyDatePicker/>
+				
 				<h3>Transactions table</h3>
-				<BootstrapTable data={this.state.tableData} striped={true} hover={true} 
+				<BootstrapTable data={this.state.tableData} hover={true} 
 				expandableRow={ this.isExpandableRow }
 				expandComponent={ this.expandComponent}
 				expandColumnOptions={{expandColumnVisible: true}}>
