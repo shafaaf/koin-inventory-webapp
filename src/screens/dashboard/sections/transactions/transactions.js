@@ -5,7 +5,7 @@ import ExpandedRow from './components/expandedRow';
 import MyDatePicker from './components/myDatePicker';
 
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import {Grid, Row, Col, Button} from 'react-bootstrap';
+import {Grid, Row, Col, Button, Pager} from 'react-bootstrap';
 
 
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
@@ -149,19 +149,35 @@ export default class Transactions extends Component {
 			// Examine the text in the response from Koin server
 			response.json().then(function(data) {  
 				console.log("transaction data from server is: ", data);
-				console.log("setting state for transactions now.");
-				// Todo: get warning of setting state when component not mounted
-				// Happens when click away to another section and state for old component
-				// is being set
-				//
+				
+				// Setup table data
+				console.log("Setting table for prev/next transactions now.");
+				var tableData = thisContext.state.tableData;
+				tableData.splice(0,tableData.length);
+				var dataListLength = data["transactions"].length;
+				var i = 0;
+				for(i = 0; i < dataListLength; i++){
+					var myEntry = {};
+					myEntry["dateTime"] = data["transactions"][i]["created_at"];
+					myEntry["amount"] = data["transactions"][i]["amount"];
+					myEntry["state"] = data["transactions"][i]["state"];
+					
+					// To show in expandable row
+					myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
+					myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
+					myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
+					tableData.push(myEntry);
+				}
 
-				// thisContext.setState({
-				// 	loading: false,
-				// 	transactions: data,
-				// 	transactionsArray: data["transactions"],
-				// 	currentTransactionPage: currentIndex,
-				// 	hasNextPage: data["has_next_page"]
-				//  });
+				console.log("Setting state for transactions now.");
+				thisContext.setState({
+					loading: false,
+					transactionsList: data["transactions"],
+					hasNextPage: data["has_next_page"],
+					tableData: tableData,
+					hasNextPage: data["has_next_page"],
+					currentTransactionPage: currentIndex
+				});
 			});
 			console.log("after then statement");
 		}
@@ -196,9 +212,11 @@ export default class Transactions extends Component {
 				<h2>Your Transactions!</h2>
 				<p>Fell free to check out your transactions!</p>
 				<MyDatePicker/>
-				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>Prev</button>
-				<button onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next</button>				
 
+				<Pager>
+	    			<Pager.Item previous onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>&larr; Previous Page</Pager.Item>
+				    <Pager.Item next     onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next Page &rarr;</Pager.Item>
+			  	</Pager>			
 				
 				<h3>Transactions table</h3>
 				<BootstrapTable data={this.state.tableData} hover={true} 
@@ -208,7 +226,13 @@ export default class Transactions extends Component {
 					<TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
 					<TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
 					<TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
-				</BootstrapTable>				
+				</BootstrapTable>
+
+				<Pager>
+	    			<Pager.Item previous onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>&larr; Previous Page</Pager.Item>
+				    <Pager.Item next     onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next Page &rarr;</Pager.Item>
+			  	</Pager>			
+			
 			</div>
 	    );
 	}
