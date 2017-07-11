@@ -26,17 +26,17 @@ export default class MyDatePicker extends React.Component {
   render() {
     return (
         <Row className="show-grid">
-          <Col xs={12} md={6}>
+          <Col xs={12} md={6} style = {{textAlign: "center"}}>
             Start Date: <DatePicker selected={this.state.startDate}
                 onChange={this.handleChange}
                    todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
-                    dateFormat="DD/MM/YYYY"/>
+                    dateFormat="DD/MM/YYYY"  maxDate={moment().add(0, "days")}/>
           </Col>
-          <Col xs={12} md={6}>
+          <Col xs={12} md={6} style = {{textAlign: "center"}}>
             End Date: <DatePicker selected={this.state.startDate}
               onChange={this.handleChange}
                 todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
-                  dateFormat="DD/MM/YYYY"/>
+                  dateFormat="DD/MM/YYYY" maxDate={moment().add(0, "days")}/>
           </Col>
         </Row>
     );

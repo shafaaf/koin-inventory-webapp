@@ -17,3 +17,11 @@
 .react-datepicker__day-name, .react-datepicker__day {
   margin: 0.2rem !important;
 }
+
+.react-datepicker-ignore-onclickoutside{
+  text-align: center;
+}
+
+.react-datepicker__input-container input{
+    text-align: center;  
+}
