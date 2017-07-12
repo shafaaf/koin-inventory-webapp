@@ -198,16 +198,20 @@ export default class Transactions extends Component {
 		);
 	}
 
-  render() {
-  	console.log("Rendering transactions component.");
-    if(this.state.loading){	// Show loading screen when getting data
-    	return <h2>Loading your transactions ..</h2>;
-    }
-    else{	// Show transactions data
-    	const options = {
-      		expandRowBgColor: 'rgb(242, 255, 163)'
-    	};
-    	return (
+	renderResults(){
+		
+	}
+
+	render() {
+		console.log("Rendering transactions component.");
+	if(this.state.loading){	// Show loading screen when getting data
+		return <h2>Loading your transactions ..</h2>;
+	}
+	else{	// Show transactions data
+		const options = {
+	  		expandRowBgColor: 'rgb(242, 255, 163)'
+		};
+		return (
 	    	<div>
 				<h2>Your Transactions!</h2>
 				<p>Fell free to check out your transactions!</p>
@@ -218,7 +222,6 @@ export default class Transactions extends Component {
 				    <Pager.Item next     onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next Page &rarr;</Pager.Item>
 			  	</Pager>			
 				
-				<h3>Transactions table</h3>
 				<BootstrapTable data={this.state.tableData} hover={true} 
 				expandableRow={ this.isExpandableRow }
 				expandComponent={ this.expandComponent}
@@ -236,7 +239,7 @@ export default class Transactions extends Component {
 			</div>
 	    );
 	}
-  }
+	}
 
 }
 
