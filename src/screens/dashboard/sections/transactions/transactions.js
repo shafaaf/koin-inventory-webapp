@@ -198,8 +198,30 @@ export default class Transactions extends Component {
 		);
 	}
 
-	renderResults(){
+	renderCurrentDate(){
+		// Todo: Do for Dhaka time
+		var fullDate = new Date();
+		console.log("fullDate is: ", fullDate);		
 		
+		var indexToMonth = new Array();
+		indexToMonth[0] = "January";
+		indexToMonth[1] = "February";
+		indexToMonth[2] = "March";
+		indexToMonth[3] = "April";
+		indexToMonth[4] = "May";
+		indexToMonth[5] = "June";
+		indexToMonth[6] = "July";
+		indexToMonth[7] = "August";
+		indexToMonth[8] = "September";
+		indexToMonth[9] = "October";
+		indexToMonth[10] = "November";
+		indexToMonth[11] = "December";
+
+		var month = indexToMonth[fullDate.getMonth()];
+		var year = fullDate.getFullYear();
+		console.log("year is: ", year);
+		console.log("month is: ", month);
+		return month + " " + year;
 	}
 
 	render() {
@@ -220,7 +242,9 @@ export default class Transactions extends Component {
 				<Pager>
 	    			<Pager.Item previous onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>&larr; Previous Page</Pager.Item>
 				    <Pager.Item next     onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next Page &rarr;</Pager.Item>
-			  	</Pager>			
+			  	</Pager>
+
+				<h3 style = {{textAlign: "center"}}>Transactions for {this.renderCurrentDate()}</h3>
 				
 				<BootstrapTable data={this.state.tableData} hover={true} 
 				expandableRow={ this.isExpandableRow }
