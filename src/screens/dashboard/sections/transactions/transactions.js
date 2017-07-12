@@ -25,13 +25,13 @@ function timeFormatter(cell, row){
 export default class Transactions extends Component {
   constructor(props) {
     super(props);
-  this.state = {
-    loading: true,
-    transactionsList: [],
-    tableData: [],
-    hasNextPage: null,
-    currentTransactionPage: null
-  };
+    this.state = {
+      loading: true,
+      transactionsList: [],
+      tableData: [],
+      hasNextPage: null,
+      currentTransactionPage: null
+    };
   }
 
   componentWillMount() {
@@ -45,7 +45,14 @@ export default class Transactions extends Component {
     console.log("componentDidMount here. Going to fetch transactions");
     // Requesting transaction info from Koin server
   // Todo: Hard coded right now using Zen's session token
-  var data = JSON.stringify({});
+  var data = JSON.stringify({
+    "query_parameters":
+    {
+      "updates_after" : "1498881600000",
+      "updates_before" : "1499832000000",
+      "order" : "DESCENDING"
+    }
+  });
   var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list';
   var request = new Request(url, {
     method: 'POST',
@@ -103,7 +110,6 @@ export default class Transactions extends Component {
     console.log("componentWillUnmount for transactions here.");
   }
 
-
   // Todo: Figure out how to other fetch data here later on.
   fetchDifferentIndexTransactions(direction) {
     console.log("fetchDifferentIndexTransactions: direction is: ", direction);
@@ -128,7 +134,14 @@ export default class Transactions extends Component {
     else{
       console.log("Some weird error!");
     }
-    var data = JSON.stringify({});
+    var data = JSON.stringify({
+      "query_parameters":
+      {
+        "updates_after" : "1498881600000",
+        "updates_before" : "1499832000000",
+        "order" : "DESCENDING"
+      }
+    });
   var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list?page=' + currentIndex;
   var request = new Request(url, {
     method: 'POST',
@@ -194,7 +207,7 @@ export default class Transactions extends Component {
 
   expandComponent(row) {
     return (
-      <ExpandedRow storeName={ row.storeName } storeLocation={ row.storeLocation } storeType = {row.storeType} />
+      <ExpandedRow exactTime = {row.dateTime} storeName={ row.storeName } storeLocation={ row.storeLocation } storeType = {row.storeType} />
     );
   }
 
@@ -240,19 +253,19 @@ export default class Transactions extends Component {
         <MyDatePicker/>
 
         <Pager>
-            <Pager.Item previous onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>&larr; Previous Page</Pager.Item>
-            <Pager.Item next     onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next Page &rarr;</Pager.Item>
-          </Pager>
+          <Pager.Item previous onClick = {this.fetchDifferentIndexTransactions.bind(this,"prev")}>&larr; Previous Page</Pager.Item>
+          <Pager.Item next     onClick = {this.fetchDifferentIndexTransactions.bind(this,"next")}>Next Page &rarr;</Pager.Item>
+        </Pager>
 
         <h3 style = {{textAlign: "center"}}>Transactions for {this.renderCurrentDate()}</h3>
         
         <BootstrapTable data={this.state.tableData} hover={true} options={ options }
-        expandableRow={ this.isExpandableRow }
-        expandComponent={ this.expandComponent}
-        expandColumnOptions={{expandColumnVisible: true}}>
-          <TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
-          <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
-          <TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
+          expandableRow={ this.isExpandableRow }
+          expandComponent={ this.expandComponent}
+          expandColumnOptions={{expandColumnVisible: true}}>
+            <TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
+            <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
+            <TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
         </BootstrapTable>
 
         <Pager>

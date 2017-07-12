@@ -5,6 +5,7 @@ export default class ExpandedRow extends React.Component {
 	    if (this.props.storeLocation && this.props.storeType) {
 	    	return (
 	    		<div style = {{overflowX: "scroll"}}>
+	    			<div> <p>Exact Time is: {this.props.exactTime}</p></div>
 	      			<div> <p>Store Location is: {this.props.storeLocation}</p></div>
 	      			<div> <p>Store Type is: {this.props.storeType}</p></div>
 	      			<div> Store Name is: {this.props.storeName}</div>
