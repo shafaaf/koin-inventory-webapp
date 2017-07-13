@@ -184,7 +184,16 @@ export default class Transactions extends Component {
 
   setCustomTimes(startTime, endTime){
     console.log("transactionsjs: setCustomTimes: startTime is: ", startTime);
-    console.log("transactionsjs: setCustomTimes: endTime is: ", endTime); 
+    var milliEpochStart = startTime.valueOf();
+    console.log("transactionsjs: milliEpochStart is: ", milliEpochStart);
+    console.log("transactionsjs: setCustomTimes: endTime is: ", endTime);
+    var milliEpochEnd = endTime.valueOf();
+    console.log("transactionsjs: milliEpochEnd is: ", milliEpochEnd);
+
+    this.setState({
+      startTime: milliEpochStart,
+      endTime: milliEpochEnd
+    });
   }
 
   componentWillUnmount(){
