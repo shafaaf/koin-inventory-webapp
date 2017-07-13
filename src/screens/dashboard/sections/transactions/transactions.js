@@ -23,31 +23,37 @@ function timeFormatter(cell, row){
 export default class Transactions extends Component {
   constructor(props) {
     super(props);
+    // Get Milli Epoch start time of month
+    var moment = require('moment');
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var firstDayTime = new Date(y, m, 1);
+    firstDayTime = moment(firstDayTime).valueOf();
+
     this.state = {
       loading: true,
       transactionsList: [],
       tableData: [],
       hasNextPage: null,
-      currentTransactionPage: null
+      currentTransactionPage: null,
+      startTime: firstDayTime,
+      endTime: (new Date).getTime()
     };
   }
 
   componentWillMount() {
     console.log("componentWillMount for transaction here.");
-    console.log("loading is: ", this.state.loading);
-    console.log("tableData is: ", this.state.tableData);
   }
 
   // Initial fetch of merchant's transactions
   componentDidMount() {
-    console.log("componentDidMount here. Going to fetch transactions");
-    // Requesting transaction info from Koin server
+    console.log("componentDidMount here. Going to fetch initial transactions");
     // Todo: Hard coded right now using Zen's session token
     var data = JSON.stringify({
       "query_parameters":
       {
-        "updates_after" : "1498881600000",
-        "updates_before" : "1499832000000",
+        // Todo: Fix hardcoded timestamps
+        "updates_after" : this.state.startTime,
+        "updates_before" : this.state.endTime,
         "order" : "DESCENDING"
       }
     });
@@ -79,10 +85,10 @@ export default class Transactions extends Component {
           var i = 0;
           for(i = 0; i < dataListLength; i++){
             var myEntry = {};
+            // To show in table view
             myEntry["dateTime"] = data["transactions"][i]["created_at"];
             myEntry["amount"] = data["transactions"][i]["amount"];
             myEntry["state"] = data["transactions"][i]["state"];
-            
             // To show in expandable row
             myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
             myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
@@ -90,12 +96,11 @@ export default class Transactions extends Component {
             tableData.push(myEntry);
           }
           console.log("Setting state for transactions now.");
-          
           thisContext.setState({
             loading: false,
             transactionsList: data["transactions"],
-            hasNextPage: data["has_next_page"],
             tableData: tableData,
+            hasNextPage: data["has_next_page"],
             currentTransactionPage: 1
            });
         });
@@ -118,64 +123,62 @@ export default class Transactions extends Component {
     var data = JSON.stringify({
       "query_parameters":
       {
-        "updates_after" : "1498881600000",
-        "updates_before" : "1499832000000",
+        "updates_after" : this.state.startTime,
+        "updates_before" : this.state.endTime,
         "order" : "DESCENDING"
       }
     });
-  var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list?page=' + currentIndex;
-  var request = new Request(url, {
-    method: 'POST',
-    body: data,
-    mode: 'cors',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'
-    })
-  });
-  var thisContext = this; // To keep track of this context within promise callback
-  fetch(request).then(
-    function(response) {
-      if (response.status !== 200) {   
-        console.log('Looks like there was a problem. Status Code: ' +  response.status);  
-        return;  
-      }
-      // Examine the text in the response from Koin server
-      response.json().then(function(data) {  
-        console.log("fetchDifferentIndexTransactions: transaction data from server is: ", data);
-        
-        // Setup table data
-        console.log("Setting table for prev/next transactions now.");
-        var tableData = thisContext.state.tableData;
-        //tableData.splice(0,tableData.length);
-        var dataListLength = data["transactions"].length;
-        var i = 0;
-        for(i = 0; i < dataListLength; i++){
-          var myEntry = {};
-          myEntry["dateTime"] = data["transactions"][i]["created_at"];
-          myEntry["amount"] = data["transactions"][i]["amount"];
-          myEntry["state"] = data["transactions"][i]["state"];
-          
-          // To show in expandable row
-          myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
-          myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
-          myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
-          tableData.push(myEntry);
+    var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list?page=' + currentIndex;
+    var request = new Request(url, {
+      method: 'POST',
+      body: data,
+      mode: 'cors',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'
+      })
+    });
+    var thisContext = this; // To keep track of this context within promise callback
+    fetch(request).then(
+      function(response) {
+        if (response.status !== 200) {   
+          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+          return;  
         }
+        // Examine the text in the response from Koin server
+        response.json().then(function(data) {  
+          console.log("fetchDifferentIndexTransactions: transaction data from server is: ", data);
+          
+          // Setup table data
+          console.log("Setting table for prev/next transactions now.");
+          var tableData = thisContext.state.tableData;
+          var dataListLength = data["transactions"].length;
+          var i = 0;
+          for(i = 0; i < dataListLength; i++){
+            var myEntry = {};
+            // To show in table view
+            myEntry["dateTime"] = data["transactions"][i]["created_at"];
+            myEntry["amount"] = data["transactions"][i]["amount"];
+            myEntry["state"] = data["transactions"][i]["state"];
+            // To show in expandable row
+            myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
+            myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
+            myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
+            tableData.push(myEntry);
+          }
 
-        console.log("Setting state for transactions now.");
-        thisContext.setState({
-          loading: false,
-          transactionsList: data["transactions"],
-          hasNextPage: data["has_next_page"],
-          tableData: tableData,
-          hasNextPage: data["has_next_page"],
-          currentTransactionPage: currentIndex
+          console.log("Setting state for transactions now.");
+          thisContext.setState({
+            loading: false,
+            transactionsList: data["transactions"],
+            tableData: tableData,
+            hasNextPage: data["has_next_page"],
+            currentTransactionPage: currentIndex
+          });
         });
-      });
-      console.log("after then statement");
-    }
-  );
+        console.log("after then statement");
+      }
+    );
     console.log("after fetch");
   }
 
@@ -223,7 +226,7 @@ export default class Transactions extends Component {
     console.log("At renderButtonOrFinishMessage");
     if(this.state.hasNextPage){
       return(
-        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchDifferentIndexTransactions.bind(this)}>Generate more</Button>
+        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchDifferentIndexTransactions.bind(this)}>Load rest</Button>
       );
     }
     else
