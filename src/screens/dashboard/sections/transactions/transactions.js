@@ -89,9 +89,7 @@ export default class Transactions extends Component {
             myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
             tableData.push(myEntry);
           }
-
           console.log("Setting state for transactions now.");
-          console.log("has_next_page is: ", data["has_next_page"]);
           
           thisContext.setState({
             loading: false,
@@ -104,10 +102,6 @@ export default class Transactions extends Component {
       }
     );
     console.log("After promise section in componentDidMount transactions fetch.");
-  }
-
-  componentWillUnmount(){
-    console.log("componentWillUnmount for transactions here.");
   }
 
   // Todo: Figure out how to other fetch data here later on.
@@ -182,10 +176,11 @@ export default class Transactions extends Component {
       console.log("after then statement");
     }
   );
-  console.log("after fetch");
-  // thisContext.setState({
-  //  loading: true
-  // });
+    console.log("after fetch");
+  }
+
+  componentWillUnmount(){
+    console.log("componentWillUnmount for transactions here.");
   }
 
   isExpandableRow(row) {
@@ -227,15 +222,13 @@ export default class Transactions extends Component {
   renderButtonOrFinishMessage(){
     console.log("At renderButtonOrFinishMessage");
     if(this.state.hasNextPage){
-      console.log("hasNextPage");
       return(
-        <Button onClick = {this.fetchDifferentIndexTransactions.bind(this)}>Generate More ...</Button>
+        <Button style = {{display: "block", margin: "0 auto"}} onClick = {this.fetchDifferentIndexTransactions.bind(this)}>Generate More ...</Button>
       );
     }
     else
     {
-      console.log("no hasNextPage");
-      return <p>No more left</p>;
+      return <p style = {{textAlign: "center"}} >No more left</p>;
     }
   }
 
@@ -265,7 +258,6 @@ export default class Transactions extends Component {
               <TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
           </BootstrapTable>
           {this.renderButtonOrFinishMessage()}
-          <p>Chcker</p>
         </div>
       );
     }
