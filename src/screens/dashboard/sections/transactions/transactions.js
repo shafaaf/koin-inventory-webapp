@@ -110,7 +110,7 @@ export default class Transactions extends Component {
   }
 
   // Todo: Figure out how to other fetch data here later on.
-  fetchDifferentIndexTransactions() {
+  fetchMoreTransactions() {
     console.log("current index is: ", this.state.currentTransactionPage);
     var currentIndex = this.state.currentTransactionPage;
     
@@ -147,7 +147,7 @@ export default class Transactions extends Component {
         }
         // Examine the text in the response from Koin server
         response.json().then(function(data) {  
-          console.log("fetchDifferentIndexTransactions: transaction data from server is: ", data);
+          console.log("fetchMoreTransactions: transaction data from server is: ", data);
           
           // Setup table data
           console.log("Setting table for prev/next transactions now.");
@@ -180,6 +180,11 @@ export default class Transactions extends Component {
       }
     );
     console.log("after fetch");
+  }
+
+  setCustomTimes(startTime, endTime){
+    console.log("transactionsjs: setCustomTimes: startTime is: ", startTime);
+    console.log("transactionsjs: setCustomTimes: endTime is: ", endTime); 
   }
 
   componentWillUnmount(){
@@ -226,7 +231,7 @@ export default class Transactions extends Component {
     console.log("At renderButtonOrFinishMessage");
     if(this.state.hasNextPage){
       return(
-        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchDifferentIndexTransactions.bind(this)}>Load rest</Button>
+        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchMoreTransactions.bind(this)}>Load rest</Button>
       );
     }
     else
@@ -249,7 +254,7 @@ export default class Transactions extends Component {
         <div>
           <h2>Your Transactions!</h2>
           <p>Fell free to check out your transactions!</p>
-          <MyDatePicker/>
+          <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
 
           <h3 style = {{textAlign: "center"}}>Transactions for {this.renderCurrentDate()}</h3>
           

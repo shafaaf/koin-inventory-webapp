@@ -20,31 +20,43 @@ export default class MyDatePicker extends React.Component {
       startDate: firstDay,
       endDate: moment()
     };
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(date) {
+  handleStartDateChange(date) {
+    console.log("handleStartDateChange: date is: ", date);
+    // var milliEpoch = date.valueOf();
+    // console.log("handleStartDateChange: milliEpoch is: ", milliEpoch);
     this.setState({
       startDate: date
     });
   }
 
+  handleEndDateChange(date) {
+    console.log("handleEndDateChange: date is: ", date);
+    this.setState({
+      endDate: date
+    });
+  }
+  
   render() {
     return (
+      <div>
         <Row className="show-grid">
           <Col xs={12} md={6} style = {{textAlign: "center"}}>
             Start Date: <DatePicker selected={this.state.startDate}
-                onChange={this.handleChange}
+                onChange={this.handleStartDateChange.bind(this)}
                    todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
                     dateFormat="DD/MM/YYYY"  maxDate={moment().add(0, "days")}/>
           </Col>
           <Col xs={12} md={6} style = {{textAlign: "center"}}>
             End Date: <DatePicker selected={this.state.endDate}
-              onChange={this.handleChange}
+              onChange={this.handleEndDateChange.bind(this)}
                 todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
                   dateFormat="DD/MM/YYYY" maxDate={moment().add(0, "days")}/>
           </Col>
         </Row>
+        <Button onClick = {this.props.setCustomTimes.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
+      </div>
     );
   }
 }
