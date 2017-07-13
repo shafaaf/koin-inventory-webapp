@@ -8,6 +8,10 @@ import { priceFormatter, timeFormatter } from './utils.js';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import {Grid, Row, Col, Button, Pager} from 'react-bootstrap';
 
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+
+
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
 export default class Transactions extends Component {
@@ -48,7 +52,7 @@ export default class Transactions extends Component {
         // Todo: Fix hardcoded timestamps
         "updates_after" : this.state.startTime,
         "updates_before" : this.state.endTime,
-        "order" : "DESCENDING"
+        "order" : "ASCENDING"
       }
     });
     var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list';
@@ -121,7 +125,7 @@ export default class Transactions extends Component {
       {
         "updates_after" : this.state.startTime,
         "updates_before" : this.state.endTime,
-        "order" : "DESCENDING"
+        "order" : "ASCENDING"
       }
     });
     var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list?page=' + currentIndex;
@@ -193,7 +197,7 @@ export default class Transactions extends Component {
         // Todo: Fix hardcoded timestamps
         "updates_after" : startTime,
         "updates_before" : endTime,
-        "order" : "DESCENDING"
+        "order" : "ASCENDING"
       }
     });
     var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list';
@@ -305,6 +309,10 @@ export default class Transactions extends Component {
     }
   }
 
+  testLoad(){
+    console.log("Test Load here");
+  }
+
   renderTransactionsTable(){
     if(this.state.loading){ // Show loading screen when getting data
       return <h3>Loading your transactions ..</h3>;
@@ -317,16 +325,18 @@ export default class Transactions extends Component {
       };
       return (
         <div>
-          <BootstrapTable data={this.state.tableData} hover={true} options={ options }
-            search={ true } multiColumnSearch={ true }
-            expandableRow={ this.isExpandableRow }
-            expandComponent={ this.expandComponent}
-            expandColumnOptions={{expandColumnVisible: true}}>
-              <TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
-              <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
-              <TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
-          </BootstrapTable>
-          {this.renderButtonOrFinishMessage()}
+          <InfiniteScroll next={this.fetchRestTransactions.bind(this)} hasMore={this.state.hasNextPage} 
+            loader={<h3 style = {{textAlign: "center"}}>Loading More...</h3>} endMessage = {<h3 style = {{textAlign: "center"}}>The End</h3>}>
+            <BootstrapTable data={this.state.tableData} hover={true} options={ options }
+              search={ true } multiColumnSearch={ true }
+              expandableRow={ this.isExpandableRow }
+              expandComponent={ this.expandComponent}
+              expandColumnOptions={{expandColumnVisible: true}}>
+                <TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
+                <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
+                <TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
+            </BootstrapTable>
+          </InfiniteScroll>
         </div>
       );
     }
