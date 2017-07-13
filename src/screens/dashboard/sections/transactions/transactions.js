@@ -318,7 +318,7 @@ export default class Transactions extends Component {
           <InfiniteScroll next={this.fetchRestTransactions.bind(this)} hasMore={this.state.hasNextPage} 
             loader={<h3 style = {{textAlign: "center"}}>Loading More...</h3>} endMessage = {<h3 style = {{textAlign: "center"}}>The End</h3>}>
             <BootstrapTable data={this.state.tableData} hover={true} options={ options }
-              search={ true }
+              search={!this.state.hasNextPage}
               expandableRow={ this.isExpandableRow }
               expandComponent={ this.expandComponent}
               expandColumnOptions={{expandColumnVisible: true}}>
