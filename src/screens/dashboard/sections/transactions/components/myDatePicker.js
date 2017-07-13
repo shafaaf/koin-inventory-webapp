@@ -55,7 +55,7 @@ export default class MyDatePicker extends React.Component {
                   dateFormat="DD/MM/YYYY" maxDate={moment().add(0, "days")}/>
           </Col>
         </Row>
-        <Button onClick = {this.props.fetchSpecificDatesTransactions.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
+        <Button onClick = {this.props.setCustomTimes.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
       </div>
     );
   }

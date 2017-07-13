@@ -178,22 +178,95 @@ export default class Transactions extends Component {
     console.log("fetchRestTransactions: after fetch");
   }
 
-  fetchSpecificDatesTransactions(){
+  fetchSpecificDatesTransactions(startTime, endTime){
+    console.log("In fetchSpecificDatesTransactions");
+    console.log("fetchSpecificDatesTransactions: startTime is: ", startTime);
+    console.log("fetchSpecificDatesTransactions: endTime is: ", endTime);
+    setTimeout(function(){
+      console.log("Hi testing");
+    }, 3000);
+
+    // Todo: Hard coded right now using Zen's session token
+    var data = JSON.stringify({
+      "query_parameters":
+      {
+        // Todo: Fix hardcoded timestamps
+        "updates_after" : startTime,
+        "updates_before" : endTime,
+        "order" : "DESCENDING"
+      }
+    });
+    var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/transactions/merchant/list';
+    var request = new Request(url, {
+      method: 'POST',
+      body: data,
+      mode: 'cors',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+      })
+    });
+    var thisContext = this; // To keep track of this context within promise callback
+    fetch(request).then(
+      function(response) {
+        if (response.status !== 200) {   
+          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+          return;  
+        }
+        // Examine the text in the response from Koin server
+        response.json().then(function(data) {  
+          console.log("fetchSpecificDatesTransactions: Transaction data from server is: ", data);
+                  
+          // Setup table data
+          console.log("fetchSpecificDatesTransactions: Setting table for transactions now.");
+          var tableData = thisContext.state.tableData;
+          tableData.splice(0,tableData.length);
+          var dataListLength = data["transactions"].length;
+          var i;
+          for(i = 0; i < dataListLength; i++){
+            var myEntry = {};
+            // To show in table view
+            myEntry["dateTime"] = data["transactions"][i]["created_at"];
+            myEntry["amount"] = data["transactions"][i]["amount"];
+            myEntry["state"] = data["transactions"][i]["state"];
+            // To show in expandable row
+            myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
+            myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
+            myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
+            tableData.push(myEntry);
+          }
+          console.log("fetchSpecificDatesTransactions: tableData is: ", tableData);
+          console.log("fetchSpecificDatesTransactions: Setting state for transactions now.");
+          thisContext.setState({
+            loading: false,
+            transactionsList: data["transactions"],
+            tableData: tableData,
+            hasNextPage: data["has_next_page"],
+            currentTransactionPage: 1
+           });
+        });
+      }
+    );
+    console.log("After promise section in fetchSpecificDatesTransactions transactions fetch.");
+
   }
 
-  fetchSpecificDatesTransactions(startTime, endTime){
-    //console.log("transactionsjs: fetchSpecificDatesTransactions: startTime is: ", startTime);
+  setCustomTimes(startTime, endTime){
+    //console.log("transactionsjs: setCustomTimes: startTime is: ", startTime);
     var milliEpochStart = startTime.valueOf();
-    console.log("transactionsjs: milliEpochStart is: ", milliEpochStart);
+    console.log("setCustomTimes: current start is: ", this.state.startTime);
+    console.log("setCustomTimes: new milliEpochStart is: ", milliEpochStart);
     
-    //console.log("transactionsjs: fetchSpecificDatesTransactions: endTime is: ", endTime);
+    //console.log("transactionsjs: setCustomTimes: endTime is: ", endTime);
     var milliEpochEnd = endTime.valueOf();
-    console.log("transactionsjs: milliEpochEnd is: ", milliEpochEnd);
+    console.log("setCustomTimes: current end is: ", this.state.endTime);
+    console.log("setCustomTimes: new milliEpochEnd is: ", milliEpochEnd);
 
     this.setState({
       startTime: milliEpochStart,
-      endTime: milliEpochEnd
-    });
+      endTime: milliEpochEnd,
+      loading: true,
+    }, this.fetchSpecificDatesTransactions(milliEpochStart, milliEpochEnd));
   }
 
   componentWillUnmount(){
@@ -219,7 +292,7 @@ export default class Transactions extends Component {
     return (start.format("MMM Do YYYY") + " to " + end.format("MMM Do YYYY"));
   }
 
-  renderButtonOrFinishMessage(){
+  renderButtonOrFinishMessage(){  // Either button to load more transactions or end of transactions message
     console.log("At renderButtonOrFinishMessage");
     if(this.state.hasNextPage){
       return(
@@ -232,24 +305,18 @@ export default class Transactions extends Component {
     }
   }
 
-  render() {
-    console.log("Rendering transactions component.");
+  renderTransactionsTable(){
     if(this.state.loading){ // Show loading screen when getting data
-      return <h2>Loading your transactions ..</h2>;
+      return <h3>Loading your transactions ..</h3>;
     }
+
     else{ // Show transactions data
       const options = {
         expandRowBgColor: 'rgb(242, 255, 163)',
-         clearSearch: true
+        clearSearch: true
       };
       return (
         <div>
-          <h2>Your Transactions!</h2>
-          <p>Fell free to check out your transactions!</p>
-          <MyDatePicker fetchSpecificDatesTransactions = {this.fetchSpecificDatesTransactions.bind(this)}/>
-
-          <h3 style = {{textAlign: "center"}}>{this.renderTimeWindow()}</h3>
-          
           <BootstrapTable data={this.state.tableData} hover={true} options={ options }
             search={ true } multiColumnSearch={ true }
             expandableRow={ this.isExpandableRow }
@@ -263,6 +330,19 @@ export default class Transactions extends Component {
         </div>
       );
     }
+  }
+
+  render() {
+    console.log("Rendering transactions component.");
+    return (
+      <div>
+        <h2>Your Transactions!</h2>
+        <p>Fell free to check out your transactions!</p>
+        <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
+        <h3 style = {{textAlign: "center"}}>{this.renderTimeWindow()}</h3>
+        {this.renderTransactionsTable()}
+      </div>
+    );
   }
 
 }
