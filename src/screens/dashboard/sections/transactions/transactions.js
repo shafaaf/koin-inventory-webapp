@@ -3,26 +3,17 @@ import Moment from 'react-moment';
 
 import ExpandedRow from './components/expandedRow';
 import MyDatePicker from './components/myDatePicker';
+import { priceFormatter, timeFormatter } from './utils.js';
 
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import {Grid, Row, Col, Button, Pager} from 'react-bootstrap';
 
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
-// Functions to format values in table
-function priceFormatter(cell, row){
-  return 'Tk ' + cell;
-}
-
-function timeFormatter(cell, row){
-  var moment = require('moment');
-  var a = moment(cell);
-  return <p>{a.format("MMM Do YYYY")}</p>;
-}
-
 export default class Transactions extends Component {
   constructor(props) {
     super(props);
+
     // Get Milli Epoch start time of month
     var moment = require('moment');
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -35,6 +26,8 @@ export default class Transactions extends Component {
       tableData: [],
       hasNextPage: null,
       currentTransactionPage: null,
+      // Initially start and end are start of month and current date of month,
+      // but gets updated from the datepickers
       startTime: firstDayTime,
       endTime: (new Date).getTime()
     };
@@ -44,7 +37,8 @@ export default class Transactions extends Component {
     console.log("componentWillMount for transaction here.");
   }
 
-  // Initial fetch of merchant's transactions
+  // Initial fetch of merchant's transactions for 
+  // start of month to current date
   componentDidMount() {
     console.log("componentDidMount here. Going to fetch initial transactions");
     // Todo: Hard coded right now using Zen's session token
@@ -82,7 +76,7 @@ export default class Transactions extends Component {
           console.log("Setting table for transactions now.");
           var tableData = thisContext.state.tableData;
           var dataListLength = data["transactions"].length;
-          var i = 0;
+          var i;
           for(i = 0; i < dataListLength; i++){
             var myEntry = {};
             // To show in table view
@@ -95,7 +89,8 @@ export default class Transactions extends Component {
             myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
             tableData.push(myEntry);
           }
-          console.log("Setting state for transactions now.");
+          console.log("componentDidMount: tableData is: ", tableData);
+          console.log("componentDidMount: Setting state for transactions now.");
           thisContext.setState({
             loading: false,
             transactionsList: data["transactions"],
@@ -110,13 +105,14 @@ export default class Transactions extends Component {
   }
 
   // Todo: Figure out how to other fetch data here later on.
-  fetchMoreTransactions() {
+  fetchRestTransactions() {
+    console.log("fetchRestTransactions called.");
     console.log("current index is: ", this.state.currentTransactionPage);
     var currentIndex = this.state.currentTransactionPage;
     
     // Todo: perform checks to see if possible or not to get next pages
     if(!this.state.hasNextPage){
-        console.log("Theres no more pages.");
+        console.log("fetchRestTransactions: Theres no more pages.");
         return;
       }
     currentIndex = currentIndex + 1;
@@ -142,15 +138,15 @@ export default class Transactions extends Component {
     fetch(request).then(
       function(response) {
         if (response.status !== 200) {   
-          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+          console.log('fetchRestTransactions: Looks like there was a problem. Status Code: ' +  response.status);  
           return;  
         }
         // Examine the text in the response from Koin server
         response.json().then(function(data) {  
-          console.log("fetchMoreTransactions: transaction data from server is: ", data);
+          console.log("fetchRestTransactions: transaction data from server is: ", data);
           
           // Setup table data
-          console.log("Setting table for prev/next transactions now.");
+          console.log("fetchRestTransactions: Setting table for transactions now.");
           var tableData = thisContext.state.tableData;
           var dataListLength = data["transactions"].length;
           var i = 0;
@@ -167,7 +163,7 @@ export default class Transactions extends Component {
             tableData.push(myEntry);
           }
 
-          console.log("Setting state for transactions now.");
+          console.log("fetchRestTransactions: Setting state for transactions now.");
           thisContext.setState({
             loading: false,
             transactionsList: data["transactions"],
@@ -176,17 +172,21 @@ export default class Transactions extends Component {
             currentTransactionPage: currentIndex
           });
         });
-        console.log("after then statement");
+        console.log("fetchRestTransactions: after then statement");
       }
     );
-    console.log("after fetch");
+    console.log("fetchRestTransactions: after fetch");
   }
 
-  setCustomTimes(startTime, endTime){
-    console.log("transactionsjs: setCustomTimes: startTime is: ", startTime);
+  fetchSpecificDatesTransactions(){
+  }
+
+  fetchSpecificDatesTransactions(startTime, endTime){
+    //console.log("transactionsjs: fetchSpecificDatesTransactions: startTime is: ", startTime);
     var milliEpochStart = startTime.valueOf();
     console.log("transactionsjs: milliEpochStart is: ", milliEpochStart);
-    console.log("transactionsjs: setCustomTimes: endTime is: ", endTime);
+    
+    //console.log("transactionsjs: fetchSpecificDatesTransactions: endTime is: ", endTime);
     var milliEpochEnd = endTime.valueOf();
     console.log("transactionsjs: milliEpochEnd is: ", milliEpochEnd);
 
@@ -210,37 +210,20 @@ export default class Transactions extends Component {
     );
   }
 
-  renderCurrentDate(){
-    // Todo: Do for Dhaka time
-    var fullDate = new Date();
-    console.log("fullDate is: ", fullDate);   
-    
-    var indexToMonth = new Array();
-    indexToMonth[0] = "January";
-    indexToMonth[1] = "February";
-    indexToMonth[2] = "March";
-    indexToMonth[3] = "April";
-    indexToMonth[4] = "May";
-    indexToMonth[5] = "June";
-    indexToMonth[6] = "July";
-    indexToMonth[7] = "August";
-    indexToMonth[8] = "September";
-    indexToMonth[9] = "October";
-    indexToMonth[10] = "November";
-    indexToMonth[11] = "December";
-
-    var month = indexToMonth[fullDate.getMonth()];
-    var year = fullDate.getFullYear();
-    console.log("year is: ", year);
-    console.log("month is: ", month);
-    return month + " " + year;
+  renderTimeWindow(){
+    console.log("startTime is: ", this.state.startTime);
+    console.log("endTime is: ", this.state.endTime);
+    var moment = require('moment');
+    var start = moment(this.state.startTime);
+    var end = moment(this.state.endTime);
+    return (start.format("MMM Do YYYY") + " to " + end.format("MMM Do YYYY"));
   }
 
   renderButtonOrFinishMessage(){
     console.log("At renderButtonOrFinishMessage");
     if(this.state.hasNextPage){
       return(
-        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchMoreTransactions.bind(this)}>Load rest</Button>
+        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchRestTransactions.bind(this)}>Load rest</Button>
       );
     }
     else
@@ -263,9 +246,9 @@ export default class Transactions extends Component {
         <div>
           <h2>Your Transactions!</h2>
           <p>Fell free to check out your transactions!</p>
-          <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
+          <MyDatePicker fetchSpecificDatesTransactions = {this.fetchSpecificDatesTransactions.bind(this)}/>
 
-          <h3 style = {{textAlign: "center"}}>Transactions for {this.renderCurrentDate()}</h3>
+          <h3 style = {{textAlign: "center"}}>{this.renderTimeWindow()}</h3>
           
           <BootstrapTable data={this.state.tableData} hover={true} options={ options }
             search={ true } multiColumnSearch={ true }
