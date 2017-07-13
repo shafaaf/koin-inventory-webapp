@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 
 import ExpandedRow from './components/expandedRow';
 import MyDatePicker from './components/myDatePicker';
-import { priceFormatter, timeFormatter } from './utils.js';
+import { priceFormatter, timeFormatter, milliEpochToString } from './utils.js';
 
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import {Grid, Row, Col, Button, Pager} from 'react-bootstrap';
@@ -85,6 +85,7 @@ export default class Transactions extends Component {
             var myEntry = {};
             // To show in table view
             myEntry["dateTime"] = data["transactions"][i]["created_at"];
+            myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
             myEntry["amount"] = data["transactions"][i]["amount"];
             myEntry["state"] = data["transactions"][i]["state"];
             // To show in expandable row
@@ -158,6 +159,7 @@ export default class Transactions extends Component {
             var myEntry = {};
             // To show in table view
             myEntry["dateTime"] = data["transactions"][i]["created_at"];
+            myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
             myEntry["amount"] = data["transactions"][i]["amount"];
             myEntry["state"] = data["transactions"][i]["state"];
             // To show in expandable row
@@ -232,6 +234,7 @@ export default class Transactions extends Component {
             // To show in table view
             myEntry["dateTime"] = data["transactions"][i]["created_at"];
             myEntry["amount"] = data["transactions"][i]["amount"];
+            myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
             myEntry["state"] = data["transactions"][i]["state"];
             // To show in expandable row
             myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
@@ -296,19 +299,6 @@ export default class Transactions extends Component {
     return (start.format("MMM Do YYYY") + " to " + end.format("MMM Do YYYY"));
   }
 
-  renderButtonOrFinishMessage(){  // Either button to load more transactions or end of transactions message
-    console.log("At renderButtonOrFinishMessage");
-    if(this.state.hasNextPage){
-      return(
-        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchRestTransactions.bind(this)}>Load rest</Button>
-      );
-    }
-    else
-    {
-      return <h3 style = {{textAlign: "center"}} >End of transactions</h3>;
-    }
-  }
-
   testLoad(){
     console.log("Test Load here");
   }
@@ -328,13 +318,14 @@ export default class Transactions extends Component {
           <InfiniteScroll next={this.fetchRestTransactions.bind(this)} hasMore={this.state.hasNextPage} 
             loader={<h3 style = {{textAlign: "center"}}>Loading More...</h3>} endMessage = {<h3 style = {{textAlign: "center"}}>The End</h3>}>
             <BootstrapTable data={this.state.tableData} hover={true} options={ options }
-              search={ true } multiColumnSearch={ true }
+              search={ true }
               expandableRow={ this.isExpandableRow }
               expandComponent={ this.expandComponent}
               expandColumnOptions={{expandColumnVisible: true}}>
                 <TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
-                <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataSort={true}>Amount</TableHeaderColumn>
-                <TableHeaderColumn dataField="state" dataSort={true}>State</TableHeaderColumn>
+                <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataAlign="center" dataSort={true}>Amount</TableHeaderColumn>
+                <TableHeaderColumn dataField="state" dataAlign="center" dataSort={true}>State</TableHeaderColumn>
+                <TableHeaderColumn dataField="dateTimeString" hidden>Date Time String</TableHeaderColumn>
             </BootstrapTable>
           </InfiniteScroll>
         </div>
