@@ -223,12 +223,12 @@ export default class Transactions extends Component {
     console.log("At renderButtonOrFinishMessage");
     if(this.state.hasNextPage){
       return(
-        <Button style = {{display: "block", margin: "0 auto"}} onClick = {this.fetchDifferentIndexTransactions.bind(this)}>Generate More ...</Button>
+        <Button style = {{display: "block", margin: "0 auto", marginTop: "2%", marginBottom: "2%"}} onClick = {this.fetchDifferentIndexTransactions.bind(this)}>Generate more</Button>
       );
     }
     else
     {
-      return <p style = {{textAlign: "center"}} >No more left</p>;
+      return <h3 style = {{textAlign: "center"}} >End of transactions</h3>;
     }
   }
 
@@ -239,7 +239,8 @@ export default class Transactions extends Component {
     }
     else{ // Show transactions data
       const options = {
-        expandRowBgColor: 'rgb(242, 255, 163)'
+        expandRowBgColor: 'rgb(242, 255, 163)',
+         clearSearch: true
       };
       return (
         <div>
@@ -250,6 +251,7 @@ export default class Transactions extends Component {
           <h3 style = {{textAlign: "center"}}>Transactions for {this.renderCurrentDate()}</h3>
           
           <BootstrapTable data={this.state.tableData} hover={true} options={ options }
+            search={ true } multiColumnSearch={ true }
             expandableRow={ this.isExpandableRow }
             expandComponent={ this.expandComponent}
             expandColumnOptions={{expandColumnVisible: true}}>

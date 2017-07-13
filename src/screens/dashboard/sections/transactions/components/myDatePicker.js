@@ -10,9 +10,15 @@ import './myDatePicker.css';
 
 export default class MyDatePicker extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
+    // Getting start of current month
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var firstDay = new Date(y, m, 1);
+    firstDay = moment(firstDay);
+
     this.state = {
-      startDate: moment()
+      startDate: firstDay,
+      endDate: moment()
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -33,7 +39,7 @@ export default class MyDatePicker extends React.Component {
                     dateFormat="DD/MM/YYYY"  maxDate={moment().add(0, "days")}/>
           </Col>
           <Col xs={12} md={6} style = {{textAlign: "center"}}>
-            End Date: <DatePicker selected={this.state.startDate}
+            End Date: <DatePicker selected={this.state.endDate}
               onChange={this.handleChange}
                 todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
                   dateFormat="DD/MM/YYYY" maxDate={moment().add(0, "days")}/>
