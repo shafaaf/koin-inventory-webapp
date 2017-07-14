@@ -6,14 +6,14 @@ export default class ExpandedRow extends React.Component {
   	render() {
 	    if (this.props.storeLocation && this.props.storeType) {
 	    	var a = moment(this.props.exactTime);
-
 	    	return (
 	    		<div style = {{overflowX: "scroll"}}>
-	    			<div> <p>Exact Time is: 0{this.props.exactTime}</p></div>
-	    			<div> <p>Exact Time is: {a.format("MMMM Do YYYY, h:mm:ss a")}</p></div>
-	    			<div> <p>Store Location is: {this.props.storeLocation}</p></div>
-	      			<div> <p>Store Type is: {this.props.storeType}</p></div>
-	      			<div> Store Name is: {this.props.storeName}</div>
+	    			<div>Exact Time is: 0{this.props.exactTime}</div>
+	    			<div>Exact Time String is: {a.format("MMMM Do YYYY, h:mm:ss a")}</div>
+	    			<br/>
+	    			<div> Store Name is: {this.props.storeName}</div>
+					<div>Store Type is: {this.props.storeType}</div>
+	    			<div>Store Location is: {this.props.storeLocation}</div>
 	      		</div>
 			);
 		} 
