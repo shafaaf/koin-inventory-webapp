@@ -1,3 +1,12 @@
+/* To make date picker inputs on center */
+.react-datepicker-ignore-onclickoutside{
+  text-align: center;
+}
+.react-datepicker__input-container input{
+    text-align: center;  
+}
+
+
 @media screen and (min-width: 480px) {
 	.react-datepicker {
 	  font-size: 1em;
@@ -30,3 +39,9 @@
 	  right: 1em;
 	}
 }
+
+
+
+
+
+

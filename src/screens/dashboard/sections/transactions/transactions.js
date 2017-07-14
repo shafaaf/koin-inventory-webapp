@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import Moment from 'react-moment';
 
 import ExpandedRow from './components/expandedRow';
 import MyDatePicker from './components/myDatePicker';
@@ -10,16 +9,17 @@ import {Grid, Row, Col, Button, Pager} from 'react-bootstrap';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-
+// Importing styles
+// import './transactions.css';
 
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
-
+var moment = require('moment');
+    
 export default class Transactions extends Component {
   constructor(props) {
     super(props);
 
     // Get Milli Epoch start time of month
-    var moment = require('moment');
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
     var firstDayTime = new Date(y, m, 1);
     firstDayTime = moment(firstDayTime).valueOf();
@@ -30,10 +30,10 @@ export default class Transactions extends Component {
       tableData: [],
       hasNextPage: null,
       currentTransactionPage: null,
-      // Initially start and end are start of month and current date of month,
-      // but gets updated from the datepickers
-      startTime: firstDayTime,
-      endTime: (new Date).getTime()
+      //Initially start and end are start of month and current date of month,
+      //but gets updated from the datepickers
+      startTime: firstDayTime,  //start of month
+      endTime: (new Date).getTime() //current day of current month
     };
   }
 
@@ -293,10 +293,9 @@ export default class Transactions extends Component {
   renderTimeWindow(){
     console.log("startTime is: ", this.state.startTime);
     console.log("endTime is: ", this.state.endTime);
-    var moment = require('moment');
-    var start = moment(this.state.startTime);
-    var end = moment(this.state.endTime);
-    return (start.format("MMM Do YYYY") + " to " + end.format("MMM Do YYYY"));
+    var start = milliEpochToString(this.state.startTime);
+    var end = milliEpochToString(this.state.endTime);
+    return (start + " to " + end);
   }
 
   testLoad(){
@@ -318,7 +317,7 @@ export default class Transactions extends Component {
           <InfiniteScroll next={this.fetchRestTransactions.bind(this)} hasMore={this.state.hasNextPage} 
             loader={<h3 style = {{textAlign: "center"}}>Loading More...</h3>} endMessage = {<h3 style = {{textAlign: "center"}}>The End</h3>}>
             <BootstrapTable data={this.state.tableData} hover={true} options={ options }
-              search={!this.state.hasNextPage}
+              search={!this.state.hasNextPage} searchPlaceholder={"Search by date, amount or state"}
               expandableRow={ this.isExpandableRow }
               expandComponent={ this.expandComponent}
               expandColumnOptions={{expandColumnVisible: true}}>
