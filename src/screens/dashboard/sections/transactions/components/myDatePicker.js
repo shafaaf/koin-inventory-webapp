@@ -42,23 +42,20 @@ export default class MyDatePicker extends React.Component {
     return (
       <div>
         <Row className="show-grid">
-          <Col xs={12} md={4} style = {{textAlign: "center"}}>
+          <Col xs={12} md={6} style = {{textAlign: "center"}}>
             Start Date: <DatePicker selected={this.state.startDate}
                 onChange={this.handleStartDateChange.bind(this)}
                    todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
                     dateFormat="DD/MM/YYYY"  maxDate={moment().add(0, "days")}/>
           </Col>
-          <Col xs={12} md={4} style = {{textAlign: "center"}}>
+          <Col xs={12} md={6} style = {{textAlign: "center"}}>
             End Date: <DatePicker selected={this.state.endDate}
               onChange={this.handleEndDateChange.bind(this)}
                 todayButton={"Select Today"} showYearDropdown  scrollableYearDropdown
                   dateFormat="DD/MM/YYYY" maxDate={moment().add(0, "days")}/>
           </Col>
-          <Col xs={12} md={4} style = {{textAlign: "center"}}>
-            <Button onClick = {this.props.setCustomTimes.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
-          </Col>
         </Row>
-       
+        <Button onClick = {this.props.setCustomTimes.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
       </div>
     );
   }
