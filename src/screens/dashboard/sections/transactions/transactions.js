@@ -314,7 +314,7 @@ export default class Transactions extends Component {
       };
       return (
         <div>
-          <InfiniteScroll next={this.fetchRestTransactions.bind(this)} hasMore={this.state.hasNextPage} 
+          <InfiniteScroll style = {{overflow: "visible"}}next={this.fetchRestTransactions.bind(this)} hasMore={this.state.hasNextPage} 
             loader={<h3 style = {{textAlign: "center"}}>Loading More...</h3>} endMessage = {<h3 style = {{textAlign: "center"}}>The End</h3>}>
             <BootstrapTable data={this.state.tableData} hover={true} options={ options }
               search={!this.state.hasNextPage} searchPlaceholder={"Search by date, amount or state"}
