@@ -11,7 +11,6 @@ export function timeFormatter(cell, row){
   return <p>{a.format("MMM Do YYYY")}</p>;
 }
 
-
 export function milliEpochToString(milliEpoch){
 	var moment = require('moment');
   	var a = moment(milliEpoch);

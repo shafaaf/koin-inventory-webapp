@@ -3,10 +3,8 @@ import React,{Component} from 'react';
 import ExpandedRow from './components/expandedRow';
 import MyDatePicker from './components/myDatePicker';
 import { priceFormatter, timeFormatter, milliEpochToString } from './utils.js';
-
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import {Grid, Row, Col, Button, Pager} from 'react-bootstrap';
-
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 // Importing styles
@@ -30,8 +28,8 @@ export default class Transactions extends Component {
       tableData: [],
       hasNextPage: null,
       currentTransactionPage: null,
-      //Initially start and end are start of month and current date of month,
-      //but gets updated from the datepickers
+      // Initially startTime and endTime are start of month and current date of month,
+      // but gets updated from the dropdown or datepickers 
       startTime: firstDayTime,  //start of month
       endTime: (new Date).getTime() //current day of current month
     };
@@ -255,10 +253,9 @@ export default class Transactions extends Component {
       }
     );
     console.log("After promise section in fetchSpecificDatesTransactions transactions fetch.");
-
   }
 
-  setCustomTimes(startTime, endTime){
+  setCustomTimes(startTime, endTime){ // Set when user selects dates from datepicker and submits
     //console.log("transactionsjs: setCustomTimes: startTime is: ", startTime);
     var milliEpochStart = startTime.valueOf();
     console.log("setCustomTimes: current start is: ", this.state.startTime);
