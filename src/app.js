@@ -15,7 +15,7 @@ import Login from './screens/login/login';
 import Dashboard from './screens/dashboard/dashboard';
 import NoPageFound from './screens/noPageFound';
 
-//----------------------------------------------------------------
+// ----------------------------------------------------------------
 
 export default class App extends Component {
   constructor(props) {

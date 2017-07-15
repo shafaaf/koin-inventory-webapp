@@ -303,7 +303,6 @@ export default class Transactions extends Component {
     if(this.state.loading){ // Show loading screen when getting data
       return <h3>Loading your transactions ..</h3>;
     }
-
     else{ // Show transactions data
       const options = {
         expandRowBgColor: 'rgb(242, 255, 163)',
