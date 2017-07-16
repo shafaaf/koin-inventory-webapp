@@ -33,14 +33,14 @@ export default class MyNavBar extends Component {
 							<LinkContainer to="/dashboard/inventory/list">
 								<MenuItem eventKey={3.1}>List Items</MenuItem>
 							</LinkContainer>
+							{/* See items in inventory in a menu form */}
+							<LinkContainer to="/dashboard/inventory/menu">
+								<MenuItem eventKey={3.3}>Menu form</MenuItem>
+							</LinkContainer>
+							<MenuItem divider />
 							{/* Add item to inventory */}
 							<LinkContainer to="/dashboard/inventory/add">
 								<MenuItem eventKey={3.2}>Add an item</MenuItem>
-							</LinkContainer>
-							{/* See items in inventory in a menu form */}
-							<MenuItem divider />
-							<LinkContainer to="/dashboard/inventory/menu">
-								<MenuItem eventKey={3.3}>Menu form</MenuItem>
 							</LinkContainer>
 						</NavDropdown>
 					</Nav>

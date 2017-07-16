@@ -10,10 +10,11 @@ import ItemModal from './components/gallery/itemModal';
 import Scrollchor from 'react-scrollchor';
 import {Grid, Row} from 'react-bootstrap';
 
+// Importing styles
+import './inventoryMenu.css';
 
 var sidebarStyle = {
-  border: '1px solid #ddd',
-  marginTop: '100px'
+  paddingTop: '100px'
 }
 
 
