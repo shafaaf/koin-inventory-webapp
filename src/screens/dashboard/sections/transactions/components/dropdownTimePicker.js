@@ -8,7 +8,7 @@ export default class DropdownTimePicker extends Component {
 		super(props);
 		this.handleDropdownSelection = this.handleDropdownSelection.bind(this);
 		this.state = {
-			dropdownButtonTitle: "Current Month"
+			dropdownButtonTitle: "This Month"
 		};
 	}
 
