@@ -288,7 +288,8 @@ export default class Transactions extends Component {
 
   expandComponent(row) {
     return (
-      <ExpandedRow exactTime = {row.dateTime} storeName={ row.storeName } storeLocation={ row.storeLocation } storeType = {row.storeType} />
+      <ExpandedRow exactTime = {row.dateTime} storeName={ row.storeName } storeLocation={ row.storeLocation } 
+        storeType = {row.storeType} state = {row.state}/>
     );
   }
 
