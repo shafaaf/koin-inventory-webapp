@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 
 import ExpandedRow from './components/expandedRow';
 import MyDatePicker from './components/myDatePicker';
+import DropdownTimePicker from './components/dropdownTimePicker';
 import { priceFormatter, timeFormatter, milliEpochToString } from './utils.js';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import {Grid, Row, Col, Button, Pager} from 'react-bootstrap';
@@ -255,9 +256,13 @@ export default class Transactions extends Component {
     console.log("After promise section in fetchSpecificDatesTransactions transactions fetch.");
   }
 
-  setCustomTimes(startTime, endTime){ // Set when user selects dates from datepicker and submits
+  /*  Set when user selects dates from datepicker or dropdown and submits.
+      Values passed here are moment objects.
+  */
+  setCustomTimes(startTime, endTime){
     //console.log("transactionsjs: setCustomTimes: startTime is: ", startTime);
     var milliEpochStart = startTime.valueOf();
+    console.log("setCustomTimes: startTime received is: ", startTime);
     console.log("setCustomTimes: current start is: ", this.state.startTime);
     console.log("setCustomTimes: new milliEpochStart is: ", milliEpochStart);
     
@@ -303,6 +308,7 @@ export default class Transactions extends Component {
     if(this.state.loading){ // Show loading screen when getting data
       return <h3>Loading your transactions ..</h3>;
     }
+
     else{ // Show transactions data
       const options = {
         expandRowBgColor: 'rgb(242, 255, 163)',
@@ -311,13 +317,13 @@ export default class Transactions extends Component {
       return (
         <div>
           <InfiniteScroll style = {{overflow: "visible"}}next={this.fetchRestTransactions.bind(this)} hasMore={this.state.hasNextPage} 
-            loader={<h3 style = {{textAlign: "center"}}>Loading More...</h3>} endMessage = {<h3 style = {{textAlign: "center"}}>The End</h3>}>
+            loader={<h3 style = {{textAlign: "center"}}>Loading More...</h3>} endMessage = {<h3 style = {{textAlign: "center"}}>End of Transactions</h3>}>
             <BootstrapTable data={this.state.tableData} hover={true} options={ options }
               search={!this.state.hasNextPage} searchPlaceholder={"Search by date, amount or state"}
               expandableRow={ this.isExpandableRow }
               expandComponent={ this.expandComponent}
               expandColumnOptions={{expandColumnVisible: true}}>
-                <TableHeaderColumn dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
+                <TableHeaderColumn width='35%' dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
                 <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataAlign="center" dataSort={true}>Amount</TableHeaderColumn>
                 <TableHeaderColumn dataField="state" dataAlign="center" dataSort={true}>State</TableHeaderColumn>
                 <TableHeaderColumn dataField="dateTimeString" hidden>Date Time String</TableHeaderColumn>
@@ -334,7 +340,10 @@ export default class Transactions extends Component {
       <div>
         <h2>Your Transactions!</h2>
         <p>Fell free to check out your transactions!</p>
-        <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
+        <Row className="show-grid">
+          <DropdownTimePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
+          <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
+        </Row>
         <h3 style = {{textAlign: "center"}}>{this.renderTimeWindow()}</h3>
         {this.renderTransactionsTable()}
       </div>
