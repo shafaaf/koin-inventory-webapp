@@ -10,12 +10,15 @@ import {
 } from 'react-router-dom';
 
 // Importing other page sections
-import DashboardIntro from '../sections/dashboardIntro.js';
-import ListInventory from '../sections/inventory/listInventory/listInventory';
-import AddInventory from '../sections/inventory/addInventory/addInventory';
-import Transactions from '../sections/transactions/transactions.js';
-import Settings from '../sections/settings/settings.js';
-import ContactUs from '../sections/contactUs/contactUs.js';
+import DashboardIntro from '../sections/dashboardIntro';
+
+import InventoryList from '../sections/inventory/inventoryList/inventoryList';
+import InventoryAdd from '../sections/inventory/inventoryAdd/inventoryAdd';
+import InventoryMenu from '../sections/inventory/inventoryMenu/inventoryMenu';
+
+import Transactions from '../sections/transactions/transactions';
+import Settings from '../sections/settings/settings';
+import ContactUs from '../sections/contactUs/contactUs';
 
 export default class Routes extends Component {
   render() {
@@ -23,8 +26,9 @@ export default class Routes extends Component {
 		<Switch> {/*Content for each different section*/}
 			<Route exact path='/dashboard' component={DashboardIntro}/>
 			{/* Inventory Sections */}
-			<Route exact path='/dashboard/inventory/list' component={ListInventory}/>
-			<Route exact path='/dashboard/inventory/add' component={AddInventory}/>
+			<Route exact path='/dashboard/inventory/list' component={InventoryList}/>
+			<Route exact path='/dashboard/inventory/add' component={InventoryAdd}/>
+			<Route exact path='/dashboard/inventory/menu' component={InventoryMenu}/>
 			{/* Other sections */}
 			<Route exact path='/dashboard/transactions' component={Transactions}/>
 			<Route exact path='/dashboard/settings' component={Settings}/>

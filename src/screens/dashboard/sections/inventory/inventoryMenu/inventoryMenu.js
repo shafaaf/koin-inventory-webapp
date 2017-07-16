@@ -51,7 +51,7 @@ var categories = [
   }
 ];
 
-export default class ListInventory extends Component {
+export default class InventoryMenu extends Component {
   constructor(props) {
     console.log("listInventory: On constructor");
     super(props);

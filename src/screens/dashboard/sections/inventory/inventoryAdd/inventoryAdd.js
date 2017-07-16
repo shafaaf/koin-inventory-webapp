@@ -6,7 +6,7 @@ import UploadImages from './components/uploadImages.js';
 import ItemInfo from './components/itemInfo.js';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 
-export default class AddInventory extends Component {
+export default class InventoryAdd extends Component {
 	render() {
 		return (
 			<div>

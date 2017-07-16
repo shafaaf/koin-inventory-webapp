@@ -25,26 +25,23 @@ export default class MyNavBar extends Component {
 						<NavItem eventKey={1}>My Profile</NavItem>
 						{/* Transactions tab */}
 						<LinkContainer to="/dashboard/transactions">
-							<NavItem eventKey={2}>My Transactions
-							</NavItem>
+							<NavItem eventKey={2}>My Transactions</NavItem>
 						 </LinkContainer>
 						{/* Inventory Dropdown */}
 						<NavDropdown eventKey={3} title="My Inventory" id="basic-nav-dropdown">
 							{/* Inventory List */}
 							<LinkContainer to="/dashboard/inventory/list">
-								<MenuItem eventKey={3.1}>
-									Current list
-								</MenuItem>
+								<MenuItem eventKey={3.1}>List Items</MenuItem>
 							</LinkContainer>
 							{/* Add item to inventory */}
 							<LinkContainer to="/dashboard/inventory/add">
-								<MenuItem eventKey={3.2}>
-									Add an item
-								</MenuItem>
+								<MenuItem eventKey={3.2}>Add an item</MenuItem>
 							</LinkContainer>
-							<MenuItem eventKey={3.3}>Something else here</MenuItem>
+							{/* See items in inventory in a menu form */}
 							<MenuItem divider />
-							<MenuItem eventKey={3.3}>Separated link</MenuItem>
+							<LinkContainer to="/dashboard/inventory/menu">
+								<MenuItem eventKey={3.3}>Menu form</MenuItem>
+							</LinkContainer>
 						</NavDropdown>
 					</Nav>
 					<Nav pullRight>
