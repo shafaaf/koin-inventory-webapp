@@ -24,7 +24,8 @@
     "react-scrollchor": "^4.0.0",
     "react-super-responsive-table": "^0.2.1",
     "react-table": "^6.4.0",
-    "reactable": "^0.14.1"
+    "reactable": "^0.14.1",
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

@@ -1,6 +1,10 @@
 import React,{Component} from 'react';
 import Dropzone from 'react-dropzone';
-import {Grid, Row, Col, Image, Thumbnail} from 'react-bootstrap';
+import {Grid, Row, Col, Image, Thumbnail, Button} from 'react-bootstrap';
+import request from 'superagent';
+
+const CLOUDINARY_UPLOAD_PRESET = 'ydrh63nt';
+const CLOUDINARY_UPLOAD_URL = ' https://api.cloudinary.com/v1_1/sendkoin/upload';
 
 var textAlign = {
 	textAlign: 'center',
@@ -20,69 +24,69 @@ var imageStyle = {
 
 export default class UploadImages extends Component {
   constructor(props) {
-	    super(props);
-      this.state = {
-	    	images: []
-	    };
-  	}
+    super(props);
+    this.state = {
+      message: "Upload picture of food item!",
+    	uploadedImage: null,
+      uploadedImageCloudinaryUrl: ''
+    };
+  }
 
   onImageDrop(files) {
-		console.log("files is: ", files);
+		console.log("onImageDrop: files is: ", files);
 		var filesLength = files.length;
-		
-		var images = this.state.images;
-		console.log("onImageDrop: images is: ", images);
-		
-		for (var i = 0; i < filesLength; i++) {
-			var imagesObject = {};
-			imagesObject["src"] = files[i]["preview"];
-			imagesObject["width"] = 600;
-			imagesObject["height"] = 600;
-			images.push(imagesObject);
-		}
+		var uploadedImage = this.state.uploadedImage;
 		this.setState({
-			images: images
+			uploadedImage: files[0],
+      message: "Change item image"
 		});
+    // this.handleImageUpload(files[0]);
   }
 
-	imageModal(){
-		console.log("imageModal");
-    console.log("this is: ", this);
-	}
-
-  renderThumbnails(){
-    console.log("renderThumbnails: images is: ", this.state.images);
-    var imagesMapped = this.state.images.map(function(image, index){
-      return (
-        <Col key={index} xs={12} sm={6} md={4} lg={4} onClick={this.imageModal}>
-          <img style = {imageStyle} src = {image.src}/>
-        </Col>
-      );
-    }, this); // Trick was to pass "this" like this
-    console.log("imagesMapped is: ", imagesMapped);
-    return imagesMapped;
+  handleImageUpload(file){
+    console.log("At handleImageUpload: file is: ", file);
+    let upload = request.post(CLOUDINARY_UPLOAD_URL)
+      .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+      .field('file', file);
+    
+    upload.end((err, response) => {
+      if (err) {
+        console.error(err);
+      }
+      if (response.body.secure_url !== '') {
+        this.setState({
+          uploadedImageCloudinaryUrl: response.body.secure_url
+        });
+      }
+    });
   }
 
-	renderImages(){
-		var images = this.state.images;
-		if(images === undefined || images.length == 0){
-			return <h3 style = {{textAlign: "center"}}>No Images uploaded</h3>;
+  removeImage(){
+    console.log("removeImage called");
+    this.setState({
+      uploadedImage: null,
+      message: "Upload picture of food item!"
+    });
+  }
+
+	renderImage(){
+		var uploadedImage = this.state.uploadedImage;
+		if(uploadedImage == null){
+			return <h3 style = {{textAlign: "center"}}>No image uploaded</h3>;
 		}
 		else {
-			console.log("images is: ", images);
-			// For testing purposes
-			var images2 = [
-				{src: 'https://i5.walmartimages.ca/images/Enlarge/580/6_r/875806_R.jpg',  width: 681,
-					height: 1024}, 
-				{ src: 'https://support.apple.com/library/content/dam/edam/applecare/images/en_US/apple-store-giftcard.png',  width: 681,
-  				height: 1024}
-  		];
+			console.log("uploadedImage is: ", uploadedImage);
 			return (
-        <div style = {{marginTop:"2%"}}>
-          <Row>
-            {this.renderThumbnails()}
+        <Grid style = {{marginTop: "1%", marginBottom: "1%"}}>
+          <Row className="show-grid">
+            <Col xs={12} md={12} style = {{textAlign: "center"}}>
+              <img src={uploadedImage["preview"]} alt="Mountain View" style={{width:"400px",height:"308px"}}/>
+            </Col>
+            <Col xs={12} md={12} style = {{textAlign: "center", marginTop: "1%"}}>
+              <Button bsStyle="danger" bsSize="large" onClick = {this.removeImage.bind(this)}>Remove Image</Button>
+            </Col>
           </Row>
-        </div>
+        </Grid>
       );
 		}
 	}
@@ -92,16 +96,14 @@ export default class UploadImages extends Component {
     	<div>
     		<form>
   				<div className="FileUpload" style = {{cursor:"pointer"}}>
-  					<Dropzone style = {textAlign}
-  						onDrop={this.onImageDrop.bind(this)}
-  						multiple={true}
-  						accept="image/*">
-  						<div><span className="glyphicon glyphicon-plus"></span> Upload pictures of food item!</div>
+  					<Dropzone style = {textAlign} onDrop={this.onImageDrop.bind(this)}
+  						multiple={false} accept="image/*">
+  						<div><span className="glyphicon glyphicon-plus"></span> {this.state.message}</div>
   					</Dropzone>
   				</div>
         </form>
     		<div>
-          {this.renderImages()}
+          {this.renderImage()}
         </div>
   	  </div>
     );

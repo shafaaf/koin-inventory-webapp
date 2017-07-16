@@ -10,12 +10,6 @@ import {
 // Importing other page sections
 import Navbar from './components/myNavBar.js';
 import Routes from './components/routes.js';
-import DashboardIntro from './sections/dashboardIntro.js';
-import ListInventory from './sections/inventory/listInventory/listInventory';
-import AddInventory from './sections/inventory/addInventory/addInventory';
-import Transactions from './sections/transactions/transactions.js';
-import Settings from './sections/settings/settings.js';
-import ContactUs from './sections/contactUs/contactUs.js';
 
 // Importing styles
 import './dashboard.css';

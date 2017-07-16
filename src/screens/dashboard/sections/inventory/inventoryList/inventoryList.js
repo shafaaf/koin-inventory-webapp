@@ -4,7 +4,7 @@ export default class InventoryList extends Component {
   render() {
     return (
     	<div>
-			<h1>InventoryList for Koin</h1>
+			<h2 style = {{textAlign: "center"}}>Inventory List</h2>
 		</div>
     );
   }
