@@ -27,22 +27,20 @@ export default class UploadImages extends Component {
     super(props);
     this.state = {
       message: "Upload picture of food item!",
-    	uploadedImage: null,
-      uploadedImageCloudinaryUrl: ''
+    	uploadedImageCloudinaryUrl: ''
     };
   }
 
   onImageDrop(files) {
 		console.log("onImageDrop: files is: ", files);
 		var filesLength = files.length;
-		var uploadedImage = this.state.uploadedImage;
 		this.setState({
-			uploadedImage: files[0],
-      message: "Change item image"
-		});
+			message: "Change item image"
+		}), this.props.setUploadedImage(files[0]);
     // this.handleImageUpload(files[0]);
   }
 
+  // Todo: Upload image somewhere like Cloudinary etc
   handleImageUpload(file){
     console.log("At handleImageUpload: file is: ", file);
     let upload = request.post(CLOUDINARY_UPLOAD_URL)
@@ -64,13 +62,12 @@ export default class UploadImages extends Component {
   removeImage(){
     console.log("removeImage called");
     this.setState({
-      uploadedImage: null,
       message: "Upload picture of food item!"
-    });
+    }, this.props.setUploadedImage(null));
   }
 
 	renderImage(){
-		var uploadedImage = this.state.uploadedImage;
+		var uploadedImage = this.props.uploadedImage;
 		if(uploadedImage == null){
 			return <h3 style = {{textAlign: "center"}}>No image uploaded</h3>;
 		}

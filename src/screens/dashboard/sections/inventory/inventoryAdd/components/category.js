@@ -7,11 +7,13 @@ export default class Category extends Component {
     	super(props);
 		this.state = {
       		loading: true,
+      		categoryList : [], 
       		dropDownTitle: "Select Category",
       		newCategorySelected: false
 		};
 	}
 
+	// Fetching list of categories already submitted
 	componentDidMount() {
 		console.log("category - componentDidMount() method called. Fetching category list");
 		
@@ -35,10 +37,26 @@ export default class Category extends Component {
 	        	// Examine the text in the response from Koin server
 	        	response.json().then(function(data) {  
 	          		console.log("componentDidMount: category data from server is: ", data);
+	          		console.log("server category list is: ", data["categories"]);
+	          		var categoryList = thisContext.state.categoryList;
+	          		categoryList.splice(0,categoryList.length);
+
+	          		// Filling in category list
+	          		var i;
+	          		var categoryListLength = data["categories"].length;
+	          		for(i = 0; i<categoryListLength;i++){
+	          			categoryList.push(data["categories"][i]["category_name"]);
+	          		}
+	          		console.log("categoryList is: ", categoryList);
+	          		thisContext.setState({
+	      				categoryList: categoryList,
+	      				loading: false
+    				});
 	          	});
 	        }
 	   );
 	}
+
 
 	processCategoryInput(category){
 		console.log("processCategoryInput- category is: ", category);
@@ -46,22 +64,27 @@ export default class Category extends Component {
 			this.setState({
       			dropDownTitle: category,
       			newCategorySelected: true
-    		});
+    		}, this.props.setCategory(null));
 		}
-		else{
+		else {
 			console.log("processCategoryInput: at else");
 			this.setState({
       			dropDownTitle: category,
       			newCategorySelected: false
-    		});
+    		}, this.props.setCategory(category));
 		}
+	}
+
+	categoryHandleChange(event){
+		console.log("categoryHandleChange called. event is: ", event);
+		this.props.setCategory(event.target.value);
 	}
 
 	renderCategoryInputField(){
 		if(this.state.newCategorySelected){
 			return (
 				<FormGroup controlId="formBasicText" style = {{marginTop: "3%"}}>
-				<FormControl type="text" placeholder="Enter new category"/>
+				<FormControl type="text" placeholder="Enter new category" onChange={this.categoryHandleChange.bind(this)}/>
 				<FormControl.Feedback/>
 				</FormGroup>
 			);
@@ -70,18 +93,28 @@ export default class Category extends Component {
 
 	renderCategorySelection(){
 		if(this.state.loading){
-			return <h3>Loading previous categories ...</h3>;
+			return <p>Loading previous categories ...</p>;
 		}
 		else{
+
+			var menuItems = [];
+			menuItems.push(<MenuItem key = "New Category" eventKey="New Category">New Category</MenuItem>);
+			menuItems.push(<MenuItem key = "divider" divider />);
+			// console.log("menuItems is: ", menuItems);
+
+			var categoryList = this.state.categoryList;
+			var categoryItems = categoryList.map((category, index) =>
+  				<MenuItem key = {index} eventKey={category}>{category}</MenuItem>
+  			);
+  			console.log("categoryItems is: ", categoryItems);
+  			menuItems = menuItems.concat(categoryItems);
+  			console.log("menuItems is: ", menuItems);
+
 			return (
 				<div>
 					<DropdownButton title = {this.state.dropDownTitle} id="dropdown-size-medium" 
 						onSelect={(category)=>this.processCategoryInput(category)}>
-						<MenuItem eventKey="New Category">New Category</MenuItem>
-						<MenuItem divider />
-						<MenuItem eventKey="Action">Action</MenuItem>
-						<MenuItem eventKey="Another action">Another action</MenuItem>
-						<MenuItem eventKey="Active Item">Active Item</MenuItem>
+							{menuItems}
 					</DropdownButton>
 					{this.renderCategoryInputField()}
 				</div>
