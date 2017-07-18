@@ -2,6 +2,9 @@ import React,{Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
+function multilineCell(cell, row) {
+    return "<textarea class='form-control cell' rows='3'>" + cell +"</textarea>";
+} 
 
 export default class InventoryList extends Component {
   	constructor(props) {
@@ -45,6 +48,7 @@ export default class InventoryList extends Component {
 	          			tablesData[categoryName] = categoryTable;
 	          			for(j = 0; j<categories[i]["inventory_items"].length; j++){
 	          				var inventoryEntry = {}; // This table for each inventory item
+	          				inventoryEntry["inventory_item_id"] = categories[i]["inventory_items"][j]["inventory_item_id"];
 	          				inventoryEntry["description"] = categories[i]["inventory_items"][j]["description"];
 	          				inventoryEntry["image_url"] = categories[i]["inventory_items"][j]["image_url"];
 	          				inventoryEntry["name"] = categories[i]["inventory_items"][j]["name"];
@@ -64,7 +68,7 @@ export default class InventoryList extends Component {
 	        }
 	   );
     }
-    renderTransactionsTable(){
+    renderInventoryTables(){
     	if(this.state.loading){ // Show loading screen when getting data
       		return <h3>Loading your inventory ...</h3>;
     	}
@@ -74,19 +78,23 @@ export default class InventoryList extends Component {
 				expandRowBgColor: 'rgb(242, 255, 163)',
 				clearSearch: true
 			};
+			const cellEditProp = {
+				mode: 'dbclick'
+			};
 			var tablesData = this.state.tablesData;
 			var tableDisplayData = [];
 			console.log("tablesData is: ", tablesData);
 			for (var category in tablesData) {
-    			console.log("category is: ", category);
+    			// console.log("category is: ", category);
     			var tableElement = (
-    				<div>
-    					<h1>{category}</h1>
-    					<BootstrapTable data={tablesData[category]} hover options={ options }>
-						<TableHeaderColumn dataField="name" isKey={true} dataAlign="center" dataSort>Name</TableHeaderColumn>
-						<TableHeaderColumn dataField="image_url" dataAlign="center" dataSort>Image_url</TableHeaderColumn>
-						<TableHeaderColumn dataField="price" dataSort>Price</TableHeaderColumn>
-						<TableHeaderColumn dataField="description" dataAlign="center">Description</TableHeaderColumn>
+    				<div key = {category}>
+    					<h3 style = {{textAlign: "center"}}>{category}&nbsp;&nbsp;<span className="glyphicon glyphicon-edit"></span></h3>
+    					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover>
+							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
+							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
+							<TableHeaderColumn dataField="image_url" dataAlign="center" dataSort tdStyle={ { whiteSpace: 'normal' } }>Image_url</TableHeaderColumn>
+							<TableHeaderColumn dataField="price" dataAlign="center" width='80' dataSort>Price</TableHeaderColumn>
+							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}} dataFormat={multilineCell}>Description</TableHeaderColumn>
 						</BootstrapTable>
 					</div>
     			);
@@ -94,16 +102,6 @@ export default class InventoryList extends Component {
     			tableDisplayData.push(tableElement);
 			}
 			return tableDisplayData;
-
-    // 		return (
-    // 			<BootstrapTable data={tableData} hover options={ options }>
-				// <TableHeaderColumn dataField="name" isKey={true} dataAlign="center" dataSort>Name</TableHeaderColumn>
-				// <TableHeaderColumn dataField="image_url" dataAlign="center" dataSort>Image_url</TableHeaderColumn>
-				// <TableHeaderColumn dataField="price" dataSort>Price</TableHeaderColumn>
-				// <TableHeaderColumn dataField="description" dataAlign="center">Description</TableHeaderColumn>
-				// </BootstrapTable>
-    // 		);
-
     	}
     }
 
@@ -111,8 +109,8 @@ export default class InventoryList extends Component {
   		console.log("Rendering InventoryList component.");
     	return (
 	    	<div>
-				<h2 style = {{textAlign: "center"}}>Inventory List</h2>
-				{this.renderTransactionsTable()}
+				<h2>Inventory List</h2>
+				{this.renderInventoryTables()}
 			</div>
 	    );
   }
