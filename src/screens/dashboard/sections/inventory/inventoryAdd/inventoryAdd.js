@@ -15,14 +15,47 @@ export default class InventoryAdd extends Component {
 			price : null,
 			description : null,
 			category : null,
-			uploadedImage: null
+			uploadedImage: null,
+			newCategoryForDropdown : null //pass down this new submitted cateogry
 		};
 	}
 
 	handleSubmit(){
 		console.log("InventoryAdd submission triggered");
+		// return;
+		// // First create category if doesnt exist
+		var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category';
+		var body = JSON.stringify({
+			"category_name": this.state.category
+		});
+		var request = new Request(url, {
+			method: 'POST',
+			mode: 'cors',
+			headers: new Headers({
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+			}),
+			body: body
+		});
+		var thisContext = this; // To keep track of this context within promise callback
+		fetch(request).then(
+	      	function(response) {
+		        if (response.status !== 200) {   
+		          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+		          return;  
+		        }
+	        	// Examine the text in the response from Koin server
+	        	response.json().then(function(data) {  
+	          		console.log("handleSubmit: data from server is: ", data);
+	          		// Need to add the new category to dropdown list
+	          		thisContext.setState({
+	      				newCategoryForDropdown: thisContext.state.category
+    				});
+	          	});
+	        }
+	   );
 	}
-
+	
 	// Handler for any keyboard input changes
 	productNameHandleChange(event){	
 		console.log("productNameHandleChange called. event is: ", event);
@@ -85,13 +118,13 @@ export default class InventoryAdd extends Component {
 						</Col>
 						<Col md={6} style = {{textAlign: "center", marginTop: "3%"}}>
 							{/* Category */}
-							<Category setCategory = {this.setCategory.bind(this)}/>
+							<Category newCategoryForDropdown = {this.state.newCategoryForDropdown} setCategory = {this.setCategory.bind(this)}/>
 						</Col>
 					</Row>        
 				</form>
 				{/*  Image upload */}
 				<UploadImages uploadedImage = {this.state.uploadedImage} setUploadedImage = {this.setUploadedImage.bind(this)} style = {{textAlign: "center"}}/>
-				<Button bsStyle="primary" bsSize="large" block onClick = {this.handleSubmit}>Submit</Button>
+				<Button bsStyle="primary" bsSize="large" block onClick = {this.handleSubmit.bind(this)}>Submit</Button>
 			</div>
 		);
 	}

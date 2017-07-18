@@ -1,22 +1,22 @@
 import React,{Component} from 'react';
 import {Grid, Row, Col, Button, DropdownButton, MenuItem, FormControl, FormGroup} from 'react-bootstrap';
 
+import {createNewCategory} from '../../requests.js';
 
 export default class Category extends Component {
  	constructor(props) {
     	super(props);
 		this.state = {
       		loading: true,
-      		categoryList : [], 
+      		categoryList : [],	// Always updated list of categories
       		dropDownTitle: "Select Category",
-      		newCategorySelected: false
+      		newCategorySelected: false	// Decides whether to show input box for new category
 		};
 	}
 
-	// Fetching list of categories already submitted
+	// Fetching intiial list of categories already submitted before
 	componentDidMount() {
 		console.log("category - componentDidMount() method called. Fetching category list");
-		
 		var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/merchant';
 		var request = new Request(url, {
 			method: 'GET',
@@ -27,7 +27,6 @@ export default class Category extends Component {
 			})
 		});
 		var thisContext = this; // To keep track of this context within promise callback
-		
 		fetch(request).then(
 	      	function(response) {
 		        if (response.status !== 200) {   
@@ -36,8 +35,8 @@ export default class Category extends Component {
 		        }
 	        	// Examine the text in the response from Koin server
 	        	response.json().then(function(data) {  
-	          		console.log("componentDidMount: category data from server is: ", data);
-	          		console.log("server category list is: ", data["categories"]);
+	          		console.log("componentDidMount: raw data from server is: ", data);
+	          		// console.log("server category list is: ", data["categories"]);
 	          		var categoryList = thisContext.state.categoryList;
 	          		categoryList.splice(0,categoryList.length);
 
@@ -47,7 +46,7 @@ export default class Category extends Component {
 	          		for(i = 0; i<categoryListLength;i++){
 	          			categoryList.push(data["categories"][i]["category_name"]);
 	          		}
-	          		console.log("categoryList is: ", categoryList);
+	          		// console.log("categoryList is: ", categoryList);
 	          		thisContext.setState({
 	      				categoryList: categoryList,
 	      				loading: false
@@ -57,9 +56,43 @@ export default class Category extends Component {
 	   );
 	}
 
+	// After submission of an item, update the dropdown if new item
+	componentWillReceiveProps(newProps){
+		console.log("category: componentWillReceiveProps called.");
+		console.log("category: newProps is: ", newProps);
+		console.log("category: oldProps is: ", this.props);
+
+		if(newProps.newCategoryForDropdown != this.props.newCategoryForDropdown){//different item selected than previous submission
+			var categoryList = this.state.categoryList;
+			var i;
+			var categoryListLength = categoryList.length;
+			var flag = 0;
+			for(i=0; i<categoryListLength; i++){
+				if(categoryList[i] == newProps.newCategoryForDropdown){
+					flag = 1;
+					break;
+				}
+			}
+			if(flag == 0){
+				categoryList.push(newProps.newCategoryForDropdown);
+				this.setState({
+					categoryList: categoryList
+				});	
+			}
+		}
+	}
+
+	// After user submits a category, it also needs to be shown on the client side
+	addCategoryToDropdown(category){
+		var categoryList = this.state.categoryList;
+		categoryList.push(category);
+		this.setState({
+			categoryList: categoryList
+		});
+	}
 
 	processCategoryInput(category){
-		console.log("processCategoryInput- category is: ", category);
+		// console.log("processCategoryInput- category is: ", category);
 		if(category == "New Category"){
 			this.setState({
       			dropDownTitle: category,
@@ -67,7 +100,7 @@ export default class Category extends Component {
     		}, this.props.setCategory(null));
 		}
 		else {
-			console.log("processCategoryInput: at else");
+			// console.log("processCategoryInput: at else");
 			this.setState({
       			dropDownTitle: category,
       			newCategorySelected: false
@@ -76,7 +109,7 @@ export default class Category extends Component {
 	}
 
 	categoryHandleChange(event){
-		console.log("categoryHandleChange called. event is: ", event);
+		// console.log("categoryHandleChange called. event is: ", event);
 		this.props.setCategory(event.target.value);
 	}
 
@@ -106,9 +139,9 @@ export default class Category extends Component {
 			var categoryItems = categoryList.map((category, index) =>
   				<MenuItem key = {index} eventKey={category}>{category}</MenuItem>
   			);
-  			console.log("categoryItems is: ", categoryItems);
+  			// console.log("categoryItems is: ", categoryItems);
   			menuItems = menuItems.concat(categoryItems);
-  			console.log("menuItems is: ", menuItems);
+  			// console.log("menuItems is: ", menuItems);
 
 			return (
 				<div>
@@ -123,7 +156,7 @@ export default class Category extends Component {
 	}
 
  	render() {
- 		console.log("category: render mehthod called.");
+ 		console.log("category: render method called.");
     	return (
 	    	<div>
 				{this.renderCategorySelection()}
