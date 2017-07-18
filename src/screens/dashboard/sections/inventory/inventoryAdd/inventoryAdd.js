@@ -19,6 +19,10 @@ export default class InventoryAdd extends Component {
 		};
 	}
 
+	handleSubmit(){
+		console.log("InventoryAdd submission triggered");
+	}
+
 	// Handler for any keyboard input changes
 	productNameHandleChange(event){	
 		console.log("productNameHandleChange called. event is: ", event);
@@ -87,7 +91,7 @@ export default class InventoryAdd extends Component {
 				</form>
 				{/*  Image upload */}
 				<UploadImages uploadedImage = {this.state.uploadedImage} setUploadedImage = {this.setUploadedImage.bind(this)} style = {{textAlign: "center"}}/>
-				<Button bsStyle="primary" bsSize="large" block>Submit</Button>
+				<Button bsStyle="primary" bsSize="large" block onClick = {this.handleSubmit}>Submit</Button>
 			</div>
 		);
 	}
