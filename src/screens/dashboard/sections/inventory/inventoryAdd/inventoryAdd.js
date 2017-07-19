@@ -24,6 +24,8 @@ export default class InventoryAdd extends Component {
 		};
 	}
 
+
+
 	handleSubmit(){
 		console.log("InventoryAdd submission triggered");
 		
@@ -47,9 +49,14 @@ export default class InventoryAdd extends Component {
 		fetch(request).then(	// Category create request
 	      	function(response) {
 		        if (response.status !== 200) {
-		          console.log('Looks like there was a problem at category create. Status Code: ' +  response.status);
-
-		          return;  
+		        	console.log('Looks like there was a problem at category create. Status Code: ' +  response.status);
+		        	
+		        	// Todo: Imp - Verify if can run code after setState
+		        	thisContext.setState({
+						submit: "error"
+					});
+		        	console.log('After setState in getting error for category');  
+					return;  
 		        }
 	        	// Examine the text in the response from Koin server
 	        	response.json().then(function(data) {  
@@ -83,8 +90,13 @@ export default class InventoryAdd extends Component {
 					fetch(request).then( // Item add request
 				      	function(response) {
 					        if (response.status !== 200) {   
-					          console.log('Looks like there was a problem at item create. Status Code: ' +  response.status);  
-					          return;  
+					        	console.log('Looks like there was a problem at item create. Status Code: ' +  response.status);  
+					        	// Todo: Imp - Verify if can run code after setState		        	
+					        	thisContext.setState({
+									submit: "error"
+								});
+								console.log('After setState in getting error for item');
+					        	return;  
 					        }
 				        	// Examine the text in the response from Koin server
 				        	response.json().then(function(data) {  
@@ -143,6 +155,13 @@ export default class InventoryAdd extends Component {
 			return (
 				<Alert bsStyle="success">
 					<strong>Submission complete</strong>
+				</Alert>
+			);
+		}
+		else if(this.state.submit == "error"){
+			return (
+				<Alert bsStyle="danger">
+					<strong>Submission error</strong>
 				</Alert>
 			);
 		}
