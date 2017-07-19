@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
+
+// Using to make nmultiline ediing for description
 function multilineCell(cell, row) {
     return "<textarea class='form-control cell' rows='3'>" + cell +"</textarea>";
 } 
@@ -11,14 +13,40 @@ function onAfterSaveCell(row, cellName, cellValue) {
 	console.log("row is: ", row);
 	console.log("cellName is: ", cellName);
 	console.log("cellValue is: ", cellValue);
+}
+
+// Todo: Do validation here
+// Todo: Need to make the call synchronous to avoid clash with local version.
+// return true on sucess, and false on failure
+// Save to database here and return false if doesnt work
+function onBeforeSaveCell(row, cellName, cellValue) {
+	console.log("At onBeforeSaveCell");
+	console.log("row is: ", row);
+	console.log("cellName is: ", cellName);
+	console.log("cellValue is: ", cellValue);
+	// Todo: Do some validation here
 	
-	// Save to database
+	// Update item atttributes in database
 	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/items/' + row["inventory_item_id"];
+		
+	// Note: Doing all this since, need old values also as updates only with whatever passed in.
+	// Other values get deleted.
+
+	var name = row["name"];
+	var price = row["price"];
+	var description = row["description"];
+
+	if(cellName == "name"){name = cellValue;}
+	else if (cellName == "price"){price = cellValue;}
+	else if(cellName == "description"){description = cellValue;}
+	else{console.log("onBeforeSaveCell error now.");}
+
 	var inventoryItemDetails = {
-		"name": row["name"],
-		"price": row["price"],
-		"description": row["description"]
+		"name": name,
+		"price": price,
+		"description": description
 	};
+	console.log("onBeforeSaveCell: inventoryItemDetails is: ", inventoryItemDetails);
 	var body = JSON.stringify({
 		"inventory_item": inventoryItemDetails
 	});
@@ -32,7 +60,6 @@ function onAfterSaveCell(row, cellName, cellValue) {
 		body: body
 	});
 	var thisContext = this;
-
 	console.log("onBeforeSaveCell: Sending request to update inventory item.");					
 	fetch(request).then(
 		function(response) {
@@ -46,17 +73,8 @@ function onAfterSaveCell(row, cellName, cellValue) {
 			});
 		}
 	);
-}
 
-function onBeforeSaveCell(row, cellName, cellValue) {
-	// You can do any validation on here for editing value,
-	// return false for reject the editing
-	console.log("At onBeforeSaveCell");
-	console.log("row is: ", row);
-	console.log("cellName is: ", cellName);
-	console.log("cellValue is: ", cellValue);
-	// Todo: Do some validation here
- 	return true;	//todo: make this condintional
+ 	return true;	// Todo: make this condintional
 }
 
 export default class InventoryList extends Component {
@@ -65,9 +83,11 @@ export default class InventoryList extends Component {
     	this.state = {
       		loading: true,
       		inventoryList: [],
-      		tablesData: {}
+      		tablesData: {}	// formatted server data fed in into table
       	}
     }
+
+    // Fetch whole initial inventory
     componentDidMount() {
     	console.log("componentDidMount here. Going to fetch initial InventoryList");
     	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/merchant';
@@ -80,11 +100,11 @@ export default class InventoryList extends Component {
 			})
 		});
 		var thisContext = this; // To keep track of this context within promise callback
-		
+		console.log("componentDidMount: fetching initial inventory.");
 		fetch(request).then(
 	      	function(response) {
 		        if (response.status !== 200) {   
-		          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+		          console.log('componentDidMount: Looks like there was a problem. Status Code: ' +  response.status);  
 		          return;  
 		        }
 	        	// Examine the text in the response from Koin server
@@ -122,6 +142,7 @@ export default class InventoryList extends Component {
 	        }
 	   );
     }
+
     renderInventoryTables(){
     	if(this.state.loading){ // Show loading screen when getting data
       		return <h3>Loading your inventory ...</h3>;
@@ -137,8 +158,8 @@ export default class InventoryList extends Component {
 				beforeSaveCell: onBeforeSaveCell, // a hook for before saving cell
   				afterSaveCell: onAfterSaveCell  // a hook for after saving cell
 			};
+			var tableDisplayData = [];	// final array of tables to display whole inventory
 			var tablesData = this.state.tablesData;
-			var tableDisplayData = [];
 			console.log("tablesData is: ", tablesData);
 			for (var category in tablesData) {
     			// console.log("category is: ", category);
@@ -152,7 +173,6 @@ export default class InventoryList extends Component {
 							<TableHeaderColumn dataField="image_url" dataAlign="center" dataSort tdStyle={ { whiteSpace: 'normal' } }>Image_url</TableHeaderColumn>
 							<TableHeaderColumn dataField="price" dataAlign="center" width='80' dataSort>Price</TableHeaderColumn>
 							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
-						
 						</BootstrapTable>
 					</div>
     			);
@@ -167,9 +187,9 @@ export default class InventoryList extends Component {
     	return (
 	    	<div>
 				<h2>Inventory List</h2>
-				<p>Can edit item categories and attribues by double clicking.</p>
+				<p>Can edit item categories and attribues by double clicking any item attribute.</p>
 				{this.renderInventoryTables()}
 			</div>
 	    );
-  }
+  	}
 }
