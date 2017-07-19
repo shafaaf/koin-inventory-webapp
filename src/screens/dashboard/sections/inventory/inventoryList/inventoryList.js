@@ -6,6 +6,59 @@ function multilineCell(cell, row) {
     return "<textarea class='form-control cell' rows='3'>" + cell +"</textarea>";
 } 
 
+function onAfterSaveCell(row, cellName, cellValue) {
+	console.log("At onAfterSaveCell");
+	console.log("row is: ", row);
+	console.log("cellName is: ", cellName);
+	console.log("cellValue is: ", cellValue);
+	
+	// Save to database
+	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/items/' + row["inventory_item_id"];
+	var inventoryItemDetails = {
+		"name": row["name"],
+		"price": row["price"],
+		"description": row["description"]
+	};
+	var body = JSON.stringify({
+		"inventory_item": inventoryItemDetails
+	});
+	var request = new Request(url, {
+		method: 'PUT',
+		mode: 'cors',
+		headers: new Headers({
+			'Content-Type': 'application/json',
+			'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+		}),
+		body: body
+	});
+	var thisContext = this;
+
+	console.log("onBeforeSaveCell: Sending request to update inventory item.");					
+	fetch(request).then(
+		function(response) {
+			if (response.status !== 200) {   
+				console.log('onBeforeSaveCell: Looks like there was a problem. Status Code: ' +  response.status);  
+				return;  
+			}
+			// Examine the text in the response from Koin server
+			response.json().then(function(data) {
+				console.log("onBeforeSaveCell: data from server is: ", data);
+			});
+		}
+	);
+}
+
+function onBeforeSaveCell(row, cellName, cellValue) {
+	// You can do any validation on here for editing value,
+	// return false for reject the editing
+	console.log("At onBeforeSaveCell");
+	console.log("row is: ", row);
+	console.log("cellName is: ", cellName);
+	console.log("cellValue is: ", cellValue);
+	// Todo: Do some validation here
+ 	return true;	//todo: make this condintional
+}
+
 export default class InventoryList extends Component {
   	constructor(props) {
     	super(props);
@@ -53,6 +106,7 @@ export default class InventoryList extends Component {
 	          				inventoryEntry["image_url"] = categories[i]["inventory_items"][j]["image_url"];
 	          				inventoryEntry["name"] = categories[i]["inventory_items"][j]["name"];
 	          				inventoryEntry["price"] = categories[i]["inventory_items"][j]["price"];
+	          				inventoryEntry["category_name"] = categoryName;
 	          				categoryTable.push(inventoryEntry);
 	          			}
 	          			// console.log("categoryTable is: ", categoryTable);	
@@ -79,7 +133,9 @@ export default class InventoryList extends Component {
 				clearSearch: true
 			};
 			const cellEditProp = {
-				mode: 'dbclick'
+				mode: 'dbclick',
+				beforeSaveCell: onBeforeSaveCell, // a hook for before saving cell
+  				afterSaveCell: onAfterSaveCell  // a hook for after saving cell
 			};
 			var tablesData = this.state.tablesData;
 			var tableDisplayData = [];
@@ -88,17 +144,18 @@ export default class InventoryList extends Component {
     			// console.log("category is: ", category);
     			var tableElement = (
     				<div key = {category}>
-    					<h3 style = {{textAlign: "center"}}>{category}&nbsp;&nbsp;<span className="glyphicon glyphicon-edit"></span></h3>
+    					<h3 style = {{textAlign: "center"}}>{category}</h3>
     					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover>
 							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
+							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
 							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
 							<TableHeaderColumn dataField="image_url" dataAlign="center" dataSort tdStyle={ { whiteSpace: 'normal' } }>Image_url</TableHeaderColumn>
 							<TableHeaderColumn dataField="price" dataAlign="center" width='80' dataSort>Price</TableHeaderColumn>
-							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}} dataFormat={multilineCell}>Description</TableHeaderColumn>
+							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
+						
 						</BootstrapTable>
 					</div>
     			);
-
     			tableDisplayData.push(tableElement);
 			}
 			return tableDisplayData;
@@ -110,6 +167,7 @@ export default class InventoryList extends Component {
     	return (
 	    	<div>
 				<h2>Inventory List</h2>
+				<p>Can edit item categories and attribues by double clicking.</p>
 				{this.renderInventoryTables()}
 			</div>
 	    );
