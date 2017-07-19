@@ -38,24 +38,62 @@ export default class InventoryAdd extends Component {
 			body: body
 		});
 		var thisContext = this; // To keep track of this context within promise callback
+		// Todo: Show loading screen
 		fetch(request).then(
 	      	function(response) {
-		        if (response.status !== 200) {   
+		        if (response.status !== 200) {
 		          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
 		          return;  
 		        }
 	        	// Examine the text in the response from Koin server
 	        	response.json().then(function(data) {  
-	          		console.log("handleSubmit: data from server is: ", data);
-	          		// Need to add the new category to dropdown list
-	          		thisContext.setState({
-	      				newCategoryForDropdown: thisContext.state.category
-    				});
+	          		console.log("handleSubmit for category: data from server is: ", data);
+	          		var categoryId = data["category"]["category_id"];
+					
+					// Need to actually create the product now after creating category.
+	          		var url = "http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/" + categoryId + "/items"
+					var inventoryData = [];
+	          		var inventoryItem = {};
+	          		inventoryItem["name"] = thisContext.state.productName;
+					inventoryItem["price"] = thisContext.state.price;
+	          		inventoryItem["description"] = thisContext.state.description;
+	          		inventoryData.push(inventoryItem);
+					var body = JSON.stringify({
+						"inventory_items": inventoryData
+					});
+					var request = new Request(url, {
+						method: 'POST',
+						mode: 'cors',
+						headers: new Headers({
+							'Content-Type': 'application/json',
+							'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+						}),
+						body: body
+					});
+
+					fetch(request).then(
+				      	function(response) {
+					        if (response.status !== 200) {   
+					          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+					          return;  
+					        }
+				        	// Examine the text in the response from Koin server
+				        	response.json().then(function(data) {  
+				          		console.log("handleSubmit for item: data from server is:", data);
+				          		// Need to add the new category to dropdown list and remove loading screen here
+	          					thisContext.setState({
+	      							newCategoryForDropdown: thisContext.state.category
+    							});
+				          	});
+				        }
+				   );
+
+	          		
 	          	});
 	        }
 	   );
 	}
-	
+
 	// Handler for any keyboard input changes
 	productNameHandleChange(event){	
 		console.log("productNameHandleChange called. event is: ", event);
