@@ -5,12 +5,16 @@ import React,{Component} from 'react';
 import UploadImages from './components/uploadImages.js';
 //import ItemInfo from './components/itemInfo.js';
 import Category from './components/category.js';
-import {Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
+import {Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl, Alert} from 'react-bootstrap';
+
+import ReactLoading from 'react-loading';
+import Loadable from 'react-loading-overlay';
 
 export default class InventoryAdd extends Component {
 	constructor(props) {
     	super(props);
 		this.state = {
+			submit: null,
 			productName : null,
 			price : null,
 			description : null,
@@ -22,8 +26,8 @@ export default class InventoryAdd extends Component {
 
 	handleSubmit(){
 		console.log("InventoryAdd submission triggered");
-		// return;
-		// // First create category if doesnt exist
+		
+		// First create category if doesnt exist
 		var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category';
 		var body = JSON.stringify({
 			"category_name": this.state.category
@@ -39,10 +43,12 @@ export default class InventoryAdd extends Component {
 		});
 		var thisContext = this; // To keep track of this context within promise callback
 		// Todo: Show loading screen
-		fetch(request).then(
+		console.log("Sending first request to make the category if doesnt exist.");					
+		fetch(request).then(	// Category create request
 	      	function(response) {
 		        if (response.status !== 200) {
-		          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+		          console.log('Looks like there was a problem at category create. Status Code: ' +  response.status);
+
 		          return;  
 		        }
 	        	// Examine the text in the response from Koin server
@@ -70,11 +76,14 @@ export default class InventoryAdd extends Component {
 						}),
 						body: body
 					});
-
-					fetch(request).then(
+					console.log("Sending second request to make the inventory item.");
+					console.log("url is: ", url, ", body is: ", body);
+					console.log("Sending second request to make the inventory item. url is: ", url);
+						
+					fetch(request).then( // Item add request
 				      	function(response) {
 					        if (response.status !== 200) {   
-					          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+					          console.log('Looks like there was a problem at item create. Status Code: ' +  response.status);  
 					          return;  
 					        }
 				        	// Examine the text in the response from Koin server
@@ -82,13 +91,13 @@ export default class InventoryAdd extends Component {
 				          		console.log("handleSubmit for item: data from server is:", data);
 				          		// Need to add the new category to dropdown list and remove loading screen here
 	          					thisContext.setState({
-	      							newCategoryForDropdown: thisContext.state.category
+	      							newCategoryForDropdown: thisContext.state.category,
+	      							submit: "submitted"
     							});
+    							// Todo: Remove loading screen.
 				          	});
 				        }
-				   );
-
-	          		
+				   );	          		
 	          	});
 	        }
 	   );
@@ -119,6 +128,27 @@ export default class InventoryAdd extends Component {
 	setUploadedImage(uploadedImage){
 		console.log("setUploadedImage called. uploadedImage is: ", uploadedImage);
 		this.setState({ uploadedImage: uploadedImage});
+	}
+
+	// Todo: Fisnish this
+	renderSubmitMessage(){
+		if(this.state.submit == "submitting"){
+			return (
+				<Alert bsStyle="info">
+					<strong>Trying to submit!</strong> Best check yo self, you are not looking too good.
+				</Alert>
+			);	
+		}
+		else if(this.state.submit == "submitted"){
+			return (
+				<Alert bsStyle="success">
+					<strong>Submission complete</strong>
+				</Alert>
+			);
+		}
+		else{
+			return null;
+		}
 	}
 
 	render() {
@@ -163,6 +193,7 @@ export default class InventoryAdd extends Component {
 				{/*  Image upload */}
 				<UploadImages uploadedImage = {this.state.uploadedImage} setUploadedImage = {this.setUploadedImage.bind(this)} style = {{textAlign: "center"}}/>
 				<Button bsStyle="primary" bsSize="large" block onClick = {this.handleSubmit.bind(this)}>Submit</Button>
+				{this.renderSubmitMessage()}
 			</div>
 		);
 	}
