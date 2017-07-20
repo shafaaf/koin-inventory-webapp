@@ -2,23 +2,17 @@ import React,{Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
-
 // Using to make nmultiline ediing for description
 function multilineCell(cell, row) {
     return "<textarea class='form-control cell' rows='3'>" + cell +"</textarea>";
 } 
 
 function onAfterSaveCell(row, cellName, cellValue) {
-	console.log("At onAfterSaveCell");
-	console.log("row is: ", row);
-	console.log("cellName is: ", cellName);
-	console.log("cellValue is: ", cellValue);
 }
 
 // Todo: Do validation here
-// Todo: Need to make the call synchronous to avoid clash with local version.
-// return true on sucess, and false on failure
-// Save to database here and return false if doesnt work
+// Do not do synchronous as it will block the browser
+// Save item to database here and then setState to reflect changes on client side
 function onBeforeSaveCell(row, cellName, cellValue) {
 	console.log("At onBeforeSaveCell");
 	console.log("row is: ", row);
@@ -31,16 +25,13 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 		
 	// Note: Doing all this since, need old values also as updates only with whatever passed in.
 	// Other values get deleted.
-
 	var name = row["name"];
 	var price = row["price"];
 	var description = row["description"];
-
 	if(cellName == "name"){name = cellValue;}
 	else if (cellName == "price"){price = cellValue;}
 	else if(cellName == "description"){description = cellValue;}
 	else{console.log("onBeforeSaveCell error now.");}
-
 	var inventoryItemDetails = {
 		"name": name,
 		"price": price,
@@ -61,20 +52,41 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 	});
 	var thisContext = this;
 	console.log("onBeforeSaveCell: Sending request to update inventory item.");					
+	// Todo: Need a loading here.
 	fetch(request).then(
 		function(response) {
 			if (response.status !== 200) {   
-				console.log('onBeforeSaveCell: Looks like there was a problem. Status Code: ' +  response.status);  
-				return;  
+				console.log('onBeforeSaveCell: Looks like there was a problem. Status Code: ' +  response.status); 
+				alert("onBeforeSaveCell: Some error saving data. Try again later. Status Code: ", response.status);
+				return;
 			}
-			// Examine the text in the response from Koin server
+			// Get response from Koin server and update table data to reflect change in client view
 			response.json().then(function(data) {
 				console.log("onBeforeSaveCell: data from server is: ", data);
+				
+				// Update tablesData state to reload new date onto client side.
+				var tablesData = thisContext.state.tablesData;
+				console.log("onBeforeSaveCell: tablesData is: ", tablesData);
+				var i;
+				var catgeory = row["category_name"];
+				for(i = 0;i<tablesData[catgeory].length; i++){
+					if(tablesData[catgeory][i]["inventory_item_id"] == data["inventory_item"]["inventory_item_id"]){
+						console.log("onBeforeSaveCell: Item updated is: ", tablesData[catgeory][i]);
+						tablesData[catgeory][i]["name"] = data["inventory_item"]["name"];
+						tablesData[catgeory][i]["price"] = data["inventory_item"]["price"];
+						tablesData[catgeory][i]["description"] = data["inventory_item"]["description"];
+						break;
+					}
+				}
+				console.log("onBeforeSaveCell: Setting state for tablesData.");
+				thisContext.setState({
+					tablesData: tablesData
+				});
 			});
 		}
 	);
-
- 	return true;	// Todo: make this condintional
+	console.log("onBeforeSaveCell: Afer fetch just before return.");
+	return false;
 }
 
 export default class InventoryList extends Component {
@@ -82,14 +94,12 @@ export default class InventoryList extends Component {
     	super(props);
     	this.state = {
       		loading: true,
-      		inventoryList: [],
       		tablesData: {}	// formatted server data fed in into table
       	}
     }
 
     // Fetch whole initial inventory
     componentDidMount() {
-    	console.log("componentDidMount here. Going to fetch initial InventoryList");
     	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/merchant';
 		var request = new Request(url, {
 			method: 'GET',
@@ -109,15 +119,15 @@ export default class InventoryList extends Component {
 		        }
 	        	// Examine the text in the response from Koin server
 	        	response.json().then(function(data) {  
-	          		console.log("componentDidMount for inventoryList: data from server is: ", data);
-	          		var inventoryList = thisContext.state.inventoryList;
+	          		console.log("componentDidMount: data from server is: ", data);
 	          		// Setup table data
+	          		var tablesData = {};	// Keep track of all catgory tables
 	          		var categories = data["categories"];
 	          		var i, j;
-	          		var tablesData = {};	// Keep track of all tables
 	          		for(i=0; i<categories.length; i++){
 	          			var categoryTable = [];	// 1 table for each category
 	          			var categoryName = categories[i]["category_name"];
+	          			var categoryId = categories[i]["category_id"];
 	          			tablesData[categoryName] = categoryTable;
 	          			for(j = 0; j<categories[i]["inventory_items"].length; j++){
 	          				var inventoryEntry = {}; // This table for each inventory item
@@ -127,17 +137,16 @@ export default class InventoryList extends Component {
 	          				inventoryEntry["name"] = categories[i]["inventory_items"][j]["name"];
 	          				inventoryEntry["price"] = categories[i]["inventory_items"][j]["price"];
 	          				inventoryEntry["category_name"] = categoryName;
+	          				inventoryEntry["category_id"] = categoryId;
 	          				categoryTable.push(inventoryEntry);
 	          			}
 	          			// console.log("categoryTable is: ", categoryTable);	
 	          		}
-	          		console.log("tablesData is: ", tablesData);	
+	          		console.log("tablesData is: ", tablesData);
 	          		thisContext.setState({
 						loading: false,
-						inventoryList: data["categories"],
 						tablesData: tablesData
 					});
-
 	          	});
 	        }
 	   );
@@ -155,12 +164,12 @@ export default class InventoryList extends Component {
 			};
 			const cellEditProp = {
 				mode: 'dbclick',
-				beforeSaveCell: onBeforeSaveCell, // a hook for before saving cell
-  				afterSaveCell: onAfterSaveCell  // a hook for after saving cell
+				beforeSaveCell: onBeforeSaveCell.bind(this), // a hook for before saving cell
+  				afterSaveCell: onAfterSaveCell.bind(this)  // a hook for after saving cell
 			};
 			var tableDisplayData = [];	// final array of tables to display whole inventory
 			var tablesData = this.state.tablesData;
-			console.log("tablesData is: ", tablesData);
+			console.log("renderInventoryTables: tablesData is: ", tablesData);
 			for (var category in tablesData) {
     			// console.log("category is: ", category);
     			var tableElement = (
