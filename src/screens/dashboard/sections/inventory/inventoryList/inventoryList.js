@@ -1,5 +1,8 @@
 import React,{Component} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import InlineEdit from 'react-edit-inline';
+
+
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
 // Using to make nmultiline ediing for description
@@ -94,6 +97,7 @@ export default class InventoryList extends Component {
     	super(props);
     	this.state = {
       		loading: true,
+      		tablesCategoryOrder: [],
       		tablesData: {}	// formatted server data fed in into table
       	}
     }
@@ -121,7 +125,9 @@ export default class InventoryList extends Component {
 	        	response.json().then(function(data) {  
 	          		console.log("componentDidMount: data from server is: ", data);
 	          		// Setup table data
-	          		var tablesData = {};	// Keep track of all catgory tables
+	          		var tablesData = thisContext.state.tablesData;	// Keep track of all catgory tables
+	          		var tablesCategoryOrder = thisContext.state.tablesCategoryOrder;	// Keep track of all catgory tables' order for rendering view
+	          		
 	          		var categories = data["categories"];
 	          		var i, j;
 	          		for(i=0; i<categories.length; i++){
@@ -129,6 +135,7 @@ export default class InventoryList extends Component {
 	          			var categoryName = categories[i]["category_name"];
 	          			var categoryId = categories[i]["category_id"];
 	          			tablesData[categoryName] = categoryTable;
+	          			tablesCategoryOrder.push(categoryName);
 	          			for(j = 0; j<categories[i]["inventory_items"].length; j++){
 	          				var inventoryEntry = {}; // This table for each inventory item
 	          				inventoryEntry["inventory_item_id"] = categories[i]["inventory_items"][j]["inventory_item_id"];
@@ -143,13 +150,63 @@ export default class InventoryList extends Component {
 	          			// console.log("categoryTable is: ", categoryTable);	
 	          		}
 	          		console.log("tablesData is: ", tablesData);
+	          		console.log("tablesCategoryOrder is: ", tablesCategoryOrder);
 	          		thisContext.setState({
 						loading: false,
-						tablesData: tablesData
+						tablesData: tablesData,
+						tablesCategoryOrder: tablesCategoryOrder
 					});
 	          	});
 	        }
 	   );
+    }
+
+    // Todo: Fix case where getting called twice
+    // Todo: Save to database
+    validateCategoryEdit(oldCategory, newCategory){
+    	console.log("validateCategoryEdit- oldCategory is: ", oldCategory);
+    	console.log("validateCategoryEdit- newCategory is: ", newCategory);
+    	// Todo: Send to server
+     	// Change local state
+     	var tablesData = this.state.tablesData;
+     	console.log("current tablesData is: ", tablesData);
+     	if(!(oldCategory in tablesData)){	//Todo: Hack - when called second time, the old category would be gone from tablesData
+     		console.log(oldCategory, " not found in tablesData so return");
+     		return false;
+     	}
+     	var oldCategoryTable = tablesData[oldCategory];
+     	console.log("oldCategoryTable is: ", oldCategoryTable);
+     	var i;
+		for(i=0; i<oldCategoryTable.length; i++){	// Replace old categoryName for all the items
+			oldCategoryTable[i]["category_name"] = newCategory;
+     	}
+     	// Making the new category
+     	tablesData[newCategory] = tablesData[oldCategory];
+     	delete tablesData[oldCategory];
+     	console.log("new tablesData is: ", tablesData);
+
+     	
+     	var tablesCategoryOrder = this.state.tablesCategoryOrder;
+     	console.log("current tablesCategoryOrder is: ", tablesCategoryOrder);
+     	for(i=0; i<tablesCategoryOrder.length; i++){
+     		if(tablesCategoryOrder[i] == oldCategory){
+     			tablesCategoryOrder[i] = newCategory;
+     			break;
+     		}
+     	}
+     	console.log("new tablesCategoryOrder is: ", tablesCategoryOrder);
+     	this.setState({
+			tablesData: tablesData,
+			tablesCategoryOrder: tablesCategoryOrder
+		});
+    	return false;
+    }
+
+
+
+
+    categoryNameChanged(oldCategory, newCategory) {
+        console.log("on categoryNameChanged");
     }
 
     renderInventoryTables(){
@@ -169,12 +226,21 @@ export default class InventoryList extends Component {
 			};
 			var tableDisplayData = [];	// final array of tables to display whole inventory
 			var tablesData = this.state.tablesData;
+			var tablesCategoryOrder = this.state.tablesCategoryOrder;
 			console.log("renderInventoryTables: tablesData is: ", tablesData);
-			for (var category in tablesData) {
+			console.log("renderInventoryTables: tablesCategoryOrder is: ", tablesCategoryOrder);
+			var tablesCategoryOrderLength = tablesCategoryOrder.length;
+			var i;
+			for (i = 0; i< tablesCategoryOrderLength; i++) {
+				var category = tablesCategoryOrder[i];
     			// console.log("category is: ", category);
     			var tableElement = (
     				<div key = {category}>
-    					<h3 style = {{textAlign: "center"}}>{category}</h3>
+    					
+    					<h3 style = {{textAlign: "center"}}>
+    						<InlineEdit validate={this.validateCategoryEdit.bind(this, category)} activeClassName="editing" text={category} 
+    						paramName="newCategory" change={this.categoryNameChanged.bind(this, category)}/>
+    					</h3>
     					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover>
 							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
 							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
