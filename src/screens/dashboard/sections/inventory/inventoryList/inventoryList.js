@@ -92,13 +92,16 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 	return false;
 }
 
+// ------------------------------------------------------------------------------------------------------------------
+
 export default class InventoryList extends Component {
   	constructor(props) {
     	super(props);
     	this.state = {
       		loading: true,
-      		tablesCategoryOrder: [],
-      		tablesData: {}	// formatted server data fed in into table
+      		tablesCategoryOrder: [],	// Used to maintain category names' order when rendering in table
+      		tablesData: {},	// server data formatted and fed into table
+      		categoryNameToId: {}	// Keep track of category name to Id
       	}
     }
 
@@ -127,15 +130,18 @@ export default class InventoryList extends Component {
 	          		// Setup table data
 	          		var tablesData = thisContext.state.tablesData;	// Keep track of all catgory tables
 	          		var tablesCategoryOrder = thisContext.state.tablesCategoryOrder;	// Keep track of all catgory tables' order for rendering view
+	          		var categoryNameToId = thisContext.state.categoryNameToId;	// To keep track of category name to id
 	          		
 	          		var categories = data["categories"];
 	          		var i, j;
-	          		for(i=0; i<categories.length; i++){
+	          		for(i=0; i<categories.length; i++){	// Looping through each category
 	          			var categoryTable = [];	// 1 table for each category
 	          			var categoryName = categories[i]["category_name"];
 	          			var categoryId = categories[i]["category_id"];
 	          			tablesData[categoryName] = categoryTable;
 	          			tablesCategoryOrder.push(categoryName);
+	          			categoryNameToId[categoryName] = categoryId;
+	          			
 	          			for(j = 0; j<categories[i]["inventory_items"].length; j++){
 	          				var inventoryEntry = {}; // This table for each inventory item
 	          				inventoryEntry["inventory_item_id"] = categories[i]["inventory_items"][j]["inventory_item_id"];
@@ -151,6 +157,8 @@ export default class InventoryList extends Component {
 	          		}
 	          		console.log("tablesData is: ", tablesData);
 	          		console.log("tablesCategoryOrder is: ", tablesCategoryOrder);
+	          		console.log("categoryNameToId is: ", categoryNameToId);
+	          		
 	          		thisContext.setState({
 						loading: false,
 						tablesData: tablesData,
@@ -161,49 +169,94 @@ export default class InventoryList extends Component {
 	   );
     }
 
+    // Called when editing category name
     // Todo: Fix case where getting called twice
-    // Todo: Save to database
     validateCategoryEdit(oldCategory, newCategory){
     	console.log("validateCategoryEdit- oldCategory is: ", oldCategory);
     	console.log("validateCategoryEdit- newCategory is: ", newCategory);
-    	// Todo: Send to server
-     	// Change local state
+    	
+
+    	// Getting old category table
      	var tablesData = this.state.tablesData;
      	console.log("current tablesData is: ", tablesData);
      	if(!(oldCategory in tablesData)){	//Todo: Hack - when called second time, the old category would be gone from tablesData
-     		console.log(oldCategory, " not found in tablesData so return");
+     		console.log(oldCategory, "is not found in tablesData so probably second time called bug so return.");
      		return false;
      	}
-     	var oldCategoryTable = tablesData[oldCategory];
-     	console.log("oldCategoryTable is: ", oldCategoryTable);
-     	var i;
-		for(i=0; i<oldCategoryTable.length; i++){	// Replace old categoryName for all the items
-			oldCategoryTable[i]["category_name"] = newCategory;
-     	}
-     	// Making the new category
-     	tablesData[newCategory] = tablesData[oldCategory];
-     	delete tablesData[oldCategory];
-     	console.log("new tablesData is: ", tablesData);
+    		
 
-     	
-     	var tablesCategoryOrder = this.state.tablesCategoryOrder;
-     	console.log("current tablesCategoryOrder is: ", tablesCategoryOrder);
-     	for(i=0; i<tablesCategoryOrder.length; i++){
-     		if(tablesCategoryOrder[i] == oldCategory){
-     			tablesCategoryOrder[i] = newCategory;
-     			break;
-     		}
-     	}
-     	console.log("new tablesCategoryOrder is: ", tablesCategoryOrder);
-     	this.setState({
-			tablesData: tablesData,
-			tablesCategoryOrder: tablesCategoryOrder
-		});
-    	return false;
+
+     	// Getting categoryId of the category that is selected
+     	var categoryNameToId = this.state.categoryNameToId;
+     	var categoryId = categoryNameToId[oldCategory];
+     	console.log("categoryNameToId is: ", categoryNameToId);
+     	console.log("categoryId selected is: ", categoryId);
+		
+    	// Send to server to update category name
+     	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/' + categoryId;
+	    var data = JSON.stringify({
+	    	"category_name": newCategory
+	    });
+	    var request = new Request(url, {
+	      method: 'PUT',
+	      body: data,
+	      mode: 'cors',
+	      headers: new Headers({
+	        'Content-Type': 'application/json',
+	        'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+	      })
+	    });
+	    var thisContext = this; // To keep track of this context within promise callback
+	    fetch(request).then(
+	      function(response) {
+	        if (response.status !== 200) {   
+	          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+	          return;  
+	        }
+	        // Update local state.
+		    response.json().then(function(data) {  
+		        console.log("validateCategoryEdit: data from server is: ", data);
+		        
+		        // Todo: Hack - when called second time, the old category would be gone from tablesData
+		        if(!(oldCategory in tablesData)){	
+		     		console.log(oldCategory, "is not found in tablesData so probably second time called bug so return.");
+		     		return false;
+		     	}
+		     	var oldCategoryTable = tablesData[oldCategory];
+		        var i;
+				for(i=0; i<oldCategoryTable.length; i++){	// Replace old categoryName for all the items
+					oldCategoryTable[i]["category_name"] = newCategory;
+				}
+				tablesData[newCategory] = tablesData[oldCategory]; // Making the new category table and deleting old one
+		     	delete tablesData[oldCategory];
+		     	console.log("new tablesData is: ", tablesData);
+
+		     	// Change tablesCategoryOrder to maintain ordering when rendering table
+		     	var tablesCategoryOrder = thisContext.state.tablesCategoryOrder;
+		     	console.log("current tablesCategoryOrder is: ", tablesCategoryOrder);
+		     	for(i=0; i<tablesCategoryOrder.length; i++){
+		     		if(tablesCategoryOrder[i] == oldCategory){
+		     			tablesCategoryOrder[i] = newCategory;
+		     			break;
+		     		}
+		     	}
+				
+				// Adding in new categoryName in categoryNameToId
+				categoryNameToId[newCategory] = categoryNameToId[oldCategory]; // Making the new category name entry in the dict
+		     	delete categoryNameToId[oldCategory];
+		     	console.log("new categoryNameToId is: ", categoryNameToId);
+		     	
+		     	console.log("new tablesCategoryOrder is: ", tablesCategoryOrder);
+		     	thisContext.setState({
+					tablesData: tablesData,
+					tablesCategoryOrder: tablesCategoryOrder,
+					categoryNameToId: categoryNameToId
+				});
+	        });
+	      }
+	    );     	
+    	return false; // Updating local state done after sending to server and setState
     }
-
-
-
 
     categoryNameChanged(oldCategory, newCategory) {
         console.log("on categoryNameChanged");
