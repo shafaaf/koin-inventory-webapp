@@ -1,9 +1,15 @@
 import React,{Component} from 'react';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { BootstrapTable, TableHeaderColumn, DeleteButton } from 'react-bootstrap-table';
 import InlineEdit from 'react-edit-inline';
 
-
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
+
+
+function onAfterDeleteRow(rowKeys, cellName) {
+	alert('The rowkey you drop: ' + rowKeys);
+	console.log("onAfterDeleteRow. rowKeys is: ", rowKeys);
+	console.log("onAfterDeleteRow. cellName is: ", cellName);
+}
 
 // Using to make nmultiline ediing for description
 function multilineCell(cell, row) {
@@ -245,7 +251,7 @@ export default class InventoryList extends Component {
 				categoryNameToId[newCategory] = categoryNameToId[oldCategory]; // Making the new category name entry in the dict
 		     	delete categoryNameToId[oldCategory];
 		     	console.log("new categoryNameToId is: ", categoryNameToId);
-		     	
+
 		     	console.log("new tablesCategoryOrder is: ", tablesCategoryOrder);
 		     	thisContext.setState({
 					tablesData: tablesData,
@@ -262,6 +268,32 @@ export default class InventoryList extends Component {
         console.log("on categoryNameChanged");
     }
 
+
+
+
+
+	handleDeleteButtonClick = (onClick) => {
+	// Custom your onClick event here,
+	// it's not necessary to implement this function if you have no any process before onClick
+	console.log('This is my custom function for DeleteButton click event');
+	//console.log('onClick is: ', onClick);
+	onClick();
+	}
+
+	createCustomDeleteButton = (onClick) => {
+		return (
+			<DeleteButton
+				btnText='Delete selected items'
+				btnContextual='btn-warning'
+				className='my-custom-class'
+				btnGlyphicon='glyphicon-edit'
+				onClick={ () => this.handleDeleteButtonClick(onClick) }/>
+		);
+	}
+
+
+
+
     renderInventoryTables(){
     	if(this.state.loading){ // Show loading screen when getting data
       		return <h3>Loading your inventory ...</h3>;
@@ -270,13 +302,21 @@ export default class InventoryList extends Component {
     	{
     		const options = {
 				expandRowBgColor: 'rgb(242, 255, 163)',
-				clearSearch: true
+				clearSearch: true,
+				deleteBtn: this.createCustomDeleteButton,
+				afterDeleteRow: onAfterDeleteRow,
 			};
+
 			const cellEditProp = {
 				mode: 'dbclick',
 				beforeSaveCell: onBeforeSaveCell.bind(this), // a hook for before saving cell
   				afterSaveCell: onAfterSaveCell.bind(this)  // a hook for after saving cell
 			};
+			// If you want to enable deleteRow, you must enable row selection also.
+			const selectRowProp = {
+			  mode: 'checkbox'
+			};
+
 			var tableDisplayData = [];	// final array of tables to display whole inventory
 			var tablesData = this.state.tablesData;
 			var tablesCategoryOrder = this.state.tablesCategoryOrder;
@@ -289,12 +329,11 @@ export default class InventoryList extends Component {
     			// console.log("category is: ", category);
     			var tableElement = (
     				<div key = {category}>
-    					
     					<h3 style = {{textAlign: "center"}}>
     						<InlineEdit validate={this.validateCategoryEdit.bind(this, category)} activeClassName="editing" text={category} 
     						paramName="newCategory" change={this.categoryNameChanged.bind(this, category)}/>
     					</h3>
-    					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover>
+    					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover deleteRow selectRow={ selectRowProp }>
 							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
 							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
 							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
