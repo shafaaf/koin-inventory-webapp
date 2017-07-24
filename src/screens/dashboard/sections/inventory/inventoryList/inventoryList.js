@@ -4,14 +4,49 @@ import InlineEdit from 'react-edit-inline';
 
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
-
-function onAfterDeleteRow(rowKeys, cellName) {
+function onAfterDeleteRow(rowKeys, row) {
 	alert('The rowkey you drop: ' + rowKeys);
 	console.log("onAfterDeleteRow. rowKeys is: ", rowKeys);
-	console.log("onAfterDeleteRow. cellName is: ", cellName);
+	console.log("onAfterDeleteRow. row is: ", row);
+
+	// Making promises for from rows selected
+	var numberOfItemsToDelete = row.length;
+	var deletePromises = [];
+	var i;
+	for(i=0; i<numberOfItemsToDelete; i++){
+		var itemId = row[i]["inventory_item_id"];
+		var url = `http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/items/${itemId}`;
+		if(i==0){
+			url = "sacs";
+		}
+		var request = new Request(url, {
+			method: 'DELETE',
+			mode: 'cors',
+			headers: new Headers({
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+			}),
+			body: {}
+		});
+		deletePromises.push(fetch(request));
+	}
+
+	console.log("onAfterDeleteRow- deletePromises is: ", deletePromises);
+	Promise.all(deletePromises)
+	.then(function (result) {
+		console.log("onAfterDeleteRow: result is: ", result);
+		// Give error messages for the ones not able to delete. Some may delete, some not.
+		/* Fetch promises only reject with a TypeError when a network error occurs. Since 4xx and 5xx responses aren't network errors, 
+		there's nothing to catch. You'll need to throw an error yourself to use Promise#catch.*/
+	})
 }
 
-// Using to make nmultiline ediing for description
+
+function delteRestOfItems(inventoryItemIds){
+	console.log("delteRestOfItems- inventoryItemIds is: ", inventoryItemIds);
+}
+
+// Using to make multiline ediing for description
 function multilineCell(cell, row) {
     return "<textarea class='form-control cell' rows='3'>" + cell +"</textarea>";
 } 
@@ -188,9 +223,7 @@ export default class InventoryList extends Component {
      	if(!(oldCategory in tablesData)){	//Todo: Hack - when called second time, the old category would be gone from tablesData
      		console.log(oldCategory, "is not found in tablesData so probably second time called bug so return.");
      		return false;
-     	}
-    		
-
+     	}    		
 
      	// Getting categoryId of the category that is selected
      	var categoryNameToId = this.state.categoryNameToId;
@@ -220,6 +253,7 @@ export default class InventoryList extends Component {
 	          return;  
 	        }
 	        // Update local state.
+	        console.log("validateCategoryEdit: response is: ", response);
 		    response.json().then(function(data) {  
 		        console.log("validateCategoryEdit: data from server is: ", data);
 		        
@@ -267,10 +301,6 @@ export default class InventoryList extends Component {
     categoryNameChanged(oldCategory, newCategory) {
         console.log("on categoryNameChanged");
     }
-
-
-
-
 
 	handleDeleteButtonClick = (onClick) => {
 	// Custom your onClick event here,
