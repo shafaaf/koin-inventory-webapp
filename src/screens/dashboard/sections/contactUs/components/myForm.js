@@ -1,12 +1,6 @@
-
 import React,{Component} from 'react';
-
-// Bootstrap components
 import { FormGroup, ControlLabel, FormControl, HelpBlock, Grid, Row, Col, Button } from 'react-bootstrap';
-
-// Form Validation components
 import { ButtonInput } from 'react-bootstrap';
-
 
 export default class myForm extends Component {
     constructor(props) {
@@ -29,7 +23,7 @@ export default class myForm extends Component {
     firstNameGetValidationState(){
         var firstNameError = this.state.firstNameError;
         if (firstNameError == '') {return 'success';}   //no error - success
-        else if(firstNameError == 'init') {return 'warning';}   //initial state - warning
+        else if(firstNameError == 'init') {return null;}   //initial state - warning
         else {return 'error';}  //error
     }
 
@@ -66,7 +60,7 @@ export default class myForm extends Component {
     lastNameGetValidationState(){
         var lastNameError = this.state.lastNameError;
         if (lastNameError == '') {return 'success';}   //no error - success
-        else if(lastNameError == 'init') {return 'warning';}   //initial state - warning
+        else if(lastNameError == 'init') {return null;}   //initial state - warning
         else {return 'error';}  //error
     }
 
@@ -103,7 +97,7 @@ export default class myForm extends Component {
     emailGetValidationState(){
         var emailError = this.state.emailError;
         if (emailError == '') {return 'success';}   //no error - success
-        else if(emailError == 'init') {return 'warning';}   //initial state - warning
+        else if(emailError == 'init') {return null;}   //initial state - warning
         else {return 'error';}  //error
     }
 

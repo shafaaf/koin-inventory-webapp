@@ -3,8 +3,8 @@ import Dropzone from 'react-dropzone';
 import {Grid, Row, Col, Image, Thumbnail, Button} from 'react-bootstrap';
 import request from 'superagent';
 
-const CLOUDINARY_UPLOAD_PRESET = 'ydrh63nt';
-const CLOUDINARY_UPLOAD_URL = ' https://api.cloudinary.com/v1_1/sendkoin/upload';
+// const CLOUDINARY_UPLOAD_PRESET = 'ydrh63nt';
+// const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/sendkoin/upload';
 
 var textAlign = {
 	textAlign: 'center',
@@ -14,12 +14,8 @@ var textAlign = {
 }
 
 var imageStyle = {
-  width: '250px', 
-  height: '250px',
-  //textAlign: "center",
-  display:"block",
-  margin:"auto",
-  paddingBottom:"7%"
+  width: '400px', 
+  height: '308px'
 }
 
 export default class UploadImages extends Component {
@@ -40,25 +36,6 @@ export default class UploadImages extends Component {
     // this.handleImageUpload(files[0]);
   }
 
-  // Todo: Upload image somewhere like Cloudinary etc
-  handleImageUpload(file){
-    console.log("At handleImageUpload: file is: ", file);
-    let upload = request.post(CLOUDINARY_UPLOAD_URL)
-      .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-      .field('file', file);
-    
-    upload.end((err, response) => {
-      if (err) {
-        console.error(err);
-      }
-      if (response.body.secure_url !== '') {
-        this.setState({
-          uploadedImageCloudinaryUrl: response.body.secure_url
-        });
-      }
-    });
-  }
-
   removeImage(){
     console.log("removeImage called");
     this.setState({
@@ -77,7 +54,7 @@ export default class UploadImages extends Component {
         <Grid style = {{marginTop: "1%", marginBottom: "1%"}}>
           <Row className="show-grid">
             <Col xs={12} md={12} style = {{textAlign: "center"}}>
-              <img src={uploadedImage["preview"]} alt="Mountain View" style={{width:"400px",height:"308px"}}/>
+              <img src={uploadedImage["preview"]} alt="Mountain View" style={imageStyle}/>
             </Col>
             <Col xs={12} md={12} style = {{textAlign: "center", marginTop: "1%"}}>
               <Button bsStyle="danger" bsSize="large" onClick = {this.removeImage.bind(this)}>Remove Image</Button>

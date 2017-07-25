@@ -9,19 +9,14 @@ export default class ContactUs extends Component {
 		console.log("emailConactUs called.");
 		window.open('mailto:shafaaf.hossain@hotmail.com');
 	}
-
+	
 	render() {
 		return (
 			<div>
 				<h2>Contact Us!</h2>
-				
-
-				<p> 
-					You can send email using button here: &nbsp;&nbsp; 
-					<button onClick = {this.emailConactUs}>Click here</button>
-				</p>
-				<p> Or fill out the form below.</p>
+				<p> You can send email using button here: &nbsp; shafaaf.hossain@gmail.com </p>
 				<br/>
+				<p> Or fill out the form below.</p>
 				<MyForm/>
 			</div>
 		);

@@ -321,9 +321,6 @@ export default class InventoryList extends Component {
 		);
 	}
 
-
-
-
     renderInventoryTables(){
     	if(this.state.loading){ // Show loading screen when getting data
       		return <h3>Loading your inventory ...</h3>;
