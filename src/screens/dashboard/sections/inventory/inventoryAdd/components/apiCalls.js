@@ -9,7 +9,6 @@ export function test() {
 	return;
 }
 
-
 // Upload image somewhere like S3, Cloudinary etc
 export function handleImageUpload(file){
 	return new Promise((resolve, reject) => {
@@ -23,7 +22,7 @@ export function handleImageUpload(file){
 				reject(err);
 			}
 			if (response.body.secure_url !== '') {
-				// console.log("handleImageUpload: new uploadedImageCloudinaryUrl is:", response.body.secure_url);
+				console.log("handleImageUpload: new uploadedImageCloudinaryUrl is:", response.body.secure_url);
 				resolve(response.body.secure_url);
 			}
 		});
@@ -58,7 +57,6 @@ export function createCategory (category, that){
 			    {	
 			    	response.json().then(function(data) {
 			    		console.log("createCategory: data from server is: ", data);
-			    		console.log("createCategory: that is: ", that);
 			    		var categoryId = data["category"]["category_id"];
 						// console.log("createCategory: categoryId is: ", categoryId);
 						resolve(categoryId);			    		
@@ -69,6 +67,45 @@ export function createCategory (category, that){
 	});
 }
 
-export function createItem (categoryId){
-	console.log("At createItem, categoryId is: ", categoryId);
+export function createItem (categoryId, that){
+	return new Promise((resolve, reject)=> {
+		console.log("At createItem. categoryId is: ", categoryId);
+		var url = "http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/" + categoryId + "/items"
+		var inventoryData = [];
+  		var inventoryItem = {};
+  		inventoryItem["name"] = that.state.productName;
+		inventoryItem["price"] = that.state.price;
+  		inventoryItem["description"] = that.state.description;
+  		inventoryData.push(inventoryItem);
+	    var body = JSON.stringify({
+			"inventory_items": inventoryData
+		});    		
+
+		var request = new Request(url, {
+			method: 'POST',
+			mode: 'cors',
+			headers: new Headers({
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+			}),
+			body: body
+		});
+		console.log("Sending second request to make the inventory item.");
+
+		fetch(request).then(
+			function(response) {
+				if (response.status !== 200) {
+			    	console.log('Looks like there was a problem at item create. Status Code: ' +  response.status);
+			    	reject(response.status);	// Give proper error messgae
+			    }
+			    else
+			    {	
+			    	response.json().then(function(data) {
+			    		console.log("createItem: data from server is: ", data);
+			    		resolve(data);		    		
+			    	});
+			    }
+			}
+		);
+	});
 }

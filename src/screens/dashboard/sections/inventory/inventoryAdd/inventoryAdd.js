@@ -35,26 +35,28 @@ export default class InventoryAdd extends Component {
 		
 		// Todo: Show loading screen
 		// Todo: Make upload image and category create asynchronous
-		
-		// Upload image to data store and get url
-		handleImageUpload(this.state.uploadedImage)
-	        .then(function (uploadedImageCloudinaryUrl) {
-				console.log('uploadedImageCloudinaryUrl is: ', uploadedImageCloudinaryUrl)
-			})
-			.catch(function (error){
-				console.log('Error in uploading')
-			})
 
-		// Create category if needed and then the item itself
-	    createCategory(that.state.category, that)
-	        .then(function(categoryId){//create category for the item if needed
-	        	console.log("categoryId is: ", categoryId); 
-	        	createItem(categoryId);
-	        })
-	        .catch(function (error) {
-	        	console.log("promise error is: ", error.message);
-	        });
-		
+		// var handleImageUpload = handleImageUpload()
+		var setupPromises = [handleImageUpload(this.state.uploadedImage), createCategory(this.state.category, this)];	// Upload image and create category if needed
+		Promise.all(setupPromises)	// Todo: Fix possibility of case where category created but upload failed
+		.then(function (result) {
+			console.log("handleSubmit: result is: ", result);
+			var uploadedImageCloudinaryUrl = result[0];
+			var categoryId = result[1];
+			createItem(categoryId, that)
+			.then(function(result){
+				console.log("result of createItem is: ", result);
+				// Need to add the new category to dropdown list and remove loading screen here
+				that.setState({
+					newCategoryForDropdown: that.state.category,
+					submit: "submitted"
+				});
+			})
+		})
+		.catch(function(err) {	// Todo: Fix this here
+	  		console.log("error in upload or category create: ", err.message); // some coding error in handling happened
+		});
+
 		console.log("handleSubmit: ending statement");
 	}
 
