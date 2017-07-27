@@ -27,7 +27,9 @@ export default class FacebookButton extends Component {
     .then(
         function(response) {
           if (response.status !== 200) {   
-            console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+            console.log('Looks like there was a problem. Status Code: ' +  response.status);
+            localStorage.setItem("koinToken", "12345");  //Todo: only here cause Zen server wasnt working REMOVE THIS
+            thisContext.props.onChangeLoginStatus("12345"); //Todo: only here cause Zen server wasnt working REMOVE THIS
             return;  
           }
           // Examine the text in the response from Koin server
@@ -39,6 +41,7 @@ export default class FacebookButton extends Component {
             thisContext.props.onChangeLoginStatus(koinToken);
           });
         });
+
     console.log("After promise section.");
   }
 
