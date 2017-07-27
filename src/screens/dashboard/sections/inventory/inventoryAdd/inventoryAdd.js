@@ -8,7 +8,6 @@ import {Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl, Alert} fro
 import ReactLoading from 'react-loading';
 import Loadable from 'react-loading-overlay';
 
-
 import { handleImageUpload, createCategory, createItem} from './components/apiCalls.js';
 
 
@@ -17,13 +16,14 @@ export default class InventoryAdd extends Component {
     	super(props);
 
     	this.state = {
-			submit: null,
+			submit: null,	// todo: Do later
 			
 			productName : null,
 			price : null,
 			description : null,
 			category : null,
 			uploadedImage: null,
+			uploadedImageUrl: null,
 			
 			newCategoryForDropdown : null //pass down this new submitted cateogry
 		};
@@ -34,19 +34,17 @@ export default class InventoryAdd extends Component {
 		var that = this;
 		
 		// Todo: Show loading screen
-		// Todo: Make upload image and category create asynchronous
-
-		// var handleImageUpload = handleImageUpload()
 		var setupPromises = [handleImageUpload(this.state.uploadedImage), createCategory(this.state.category, this)];	// Upload image and create category if needed
 		Promise.all(setupPromises)	// Todo: Fix possibility of case where category created but upload failed
 		.then(function (result) {
 			console.log("handleSubmit: result is: ", result);
 			var uploadedImageCloudinaryUrl = result[0];
+			that.state.uploadedImageUrl = uploadedImageCloudinaryUrl;
 			var categoryId = result[1];
 			createItem(categoryId, that)
 			.then(function(result){
 				console.log("result of createItem is: ", result);
-				// Need to add the new category to dropdown list and remove loading screen here
+				// Add the new category to dropdown list and remove loading screen here
 				that.setState({
 					newCategoryForDropdown: that.state.category,
 					submit: "submitted"
@@ -56,38 +54,41 @@ export default class InventoryAdd extends Component {
 		.catch(function(err) {	// Todo: Fix this here
 	  		console.log("error in upload or category create: ", err.message); // some coding error in handling happened
 		});
-
 		console.log("handleSubmit: ending statement");
 	}
 
+	//--------------------------------------------------------------------------------------------------
+	
 	// Handler for any keyboard input changes
 	productNameHandleChange(event){	
-		console.log("productNameHandleChange called. event is: ", event);
-		this.setState({ productName: event.target.value});
+		// console.log("productNameHandleChange called. event is: ", event);
+		this.state.productName = event.target.value;
 	}
-
 	priceHandleChange(event){
-		console.log("priceHandleChange called. event is: ", event);
+		// console.log("priceHandleChange called. event is: ", event);
 		this.setState({ price: event.target.value});
 	}
-	
 	descriptionHandleChange(event){
-		console.log("descriptionHandleChange called. event is: ", event);
+		// console.log("descriptionHandleChange called. event is: ", event);
 		this.setState({ description: event.target.value});
 	}
 	
-	// These components passes back respective values here
+	// To set states from lower components
 	setCategory(category){
-		console.log("setCategory called. category is: ", category);
+		// console.log("setCategory called. category is: ", category);
 		this.setState({ category: category});
 	}
-
 	setUploadedImage(uploadedImage){
-		console.log("setUploadedImage called. uploadedImage is: ", uploadedImage);
-		this.setState({ uploadedImage: uploadedImage});
+		// console.log("setUploadedImage called. uploadedImage is: ", uploadedImage);
+		this.setState({ 
+			uploadedImage: uploadedImage,
+			uploadedImageUrl: null
+		});
 	}
 
-	// Todo: Fisnish this
+	//--------------------------------------------------------------------------------------------------
+
+	// Todo: Finish this
 	renderSubmitMessage(){
 		if(this.state.submit == "submitting"){
 			return (
@@ -115,6 +116,8 @@ export default class InventoryAdd extends Component {
 		}
 	}
 
+	//--------------------------------------------------------------------------------------------------
+	
 	render() {
 		return (
 			<div>	

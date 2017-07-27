@@ -76,10 +76,13 @@ export function createItem (categoryId, that){
   		inventoryItem["name"] = that.state.productName;
 		inventoryItem["price"] = that.state.price;
   		inventoryItem["description"] = that.state.description;
+  		console.log("that.state.uploadedImageUrl is: ", that.state.uploadedImageUrl);
+  		inventoryItem["image_url"] = that.state.uploadedImageUrl;
+
   		inventoryData.push(inventoryItem);
 	    var body = JSON.stringify({
 			"inventory_items": inventoryData
-		});    		
+		});
 
 		var request = new Request(url, {
 			method: 'POST',

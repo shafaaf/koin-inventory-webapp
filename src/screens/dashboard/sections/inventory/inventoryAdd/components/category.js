@@ -82,15 +82,6 @@ export default class Category extends Component {
 		}
 	}
 
-	// After user submits a category, it also needs to be shown on the client side
-	addCategoryToDropdown(category){
-		var categoryList = this.state.categoryList;
-		categoryList.push(category);
-		this.setState({
-			categoryList: categoryList
-		});
-	}
-
 	processCategoryInput(category){
 		// console.log("processCategoryInput- category is: ", category);
 		if(category == "New Category"){

@@ -33,7 +33,6 @@ export default class UploadImages extends Component {
 		this.setState({
 			message: "Change item image"
 		}), this.props.setUploadedImage(files[0]);
-    // this.handleImageUpload(files[0]);
   }
 
   removeImage(){
