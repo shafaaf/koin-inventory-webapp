@@ -4,21 +4,24 @@ import InlineEdit from 'react-edit-inline';
 
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
+function beforeDeleteRow(rowKeys, row) {
+	console.log("beforeDeleteRow. rowKeys is: ", rowKeys);
+	console.log("beforeDeleteRow. row is: ", row);
+	
+}
+
 function onAfterDeleteRow(rowKeys, row) {
 	alert('The rowkey you drop: ' + rowKeys);
 	console.log("onAfterDeleteRow. rowKeys is: ", rowKeys);
 	console.log("onAfterDeleteRow. row is: ", row);
 
-	// Making promises for from rows selected
+	// Making promises for rows selected
 	var numberOfItemsToDelete = row.length;
 	var deletePromises = [];
 	var i;
 	for(i=0; i<numberOfItemsToDelete; i++){
 		var itemId = row[i]["inventory_item_id"];
 		var url = `http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/items/${itemId}`;
-		if(i==0){
-			url = "sacs";
-		}
 		var request = new Request(url, {
 			method: 'DELETE',
 			mode: 'cors',
@@ -33,37 +36,25 @@ function onAfterDeleteRow(rowKeys, row) {
 
 	console.log("onAfterDeleteRow- deletePromises is: ", deletePromises);
 	Promise.all(deletePromises)
-	.then(function (result) {
-		console.log("onAfterDeleteRow: result is: ", result);
-		// Give error messages for the ones not able to delete. Some may delete, some not.
-		/* Fetch promises only reject with a TypeError when a network error occurs. Since 4xx and 5xx responses aren't network errors, 
-		there's nothing to catch. You'll need to throw an error yourself to use Promise#catch.*/
-	})
+		.then(function (result) {
+			console.log("onAfterDeleteRow: result is: ", result);
+			// Give error messages for the ones not able to delete. Some may delete, some not.
+			/* Fetch promises only reject with a TypeError when a network error occurs. Since 4xx and 5xx responses aren't network errors, 
+			there's nothing to catch. You'll need to throw an error yourself to use Promise#catch.*/
+		})
+		.catch(function(err) {
+			console.log("onAfterDeleteRow: err is: ", err);
+		})
 }
-
-
-function delteRestOfItems(inventoryItemIds){
-	console.log("delteRestOfItems- inventoryItemIds is: ", inventoryItemIds);
-}
-
-// Using to make multiline ediing for description
-function multilineCell(cell, row) {
-    return "<textarea class='form-control cell' rows='3'>" + cell +"</textarea>";
-} 
 
 function onAfterSaveCell(row, cellName, cellValue) {
 }
 
-// Todo: Do validation here
-// Do not do synchronous as it will block the browser
-// Save item to database here and then setState to reflect changes on client side
+// Allow edits in table row
 function onBeforeSaveCell(row, cellName, cellValue) {
-	console.log("At onBeforeSaveCell");
+	console.log("At onBeforeSaveCell. ");
 	console.log("row is: ", row);
-	console.log("cellName is: ", cellName);
-	console.log("cellValue is: ", cellValue);
-	// Todo: Do some validation here
-	
+
 	// Update item atttributes in database
 	var url = 'http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/items/' + row["inventory_item_id"];
 		
@@ -96,9 +87,8 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 	});
 	var thisContext = this;
 	console.log("onBeforeSaveCell: Sending request to update inventory item.");					
-	// Todo: Need a loading here.
-	fetch(request).then(
-		function(response) {
+	fetch(request)
+		.then(function(response) {
 			if (response.status !== 200) {   
 				console.log('onBeforeSaveCell: Looks like there was a problem. Status Code: ' +  response.status); 
 				alert("onBeforeSaveCell: Some error saving data. Try again later. Status Code: ", response.status);
@@ -108,9 +98,11 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 			response.json().then(function(data) {
 				console.log("onBeforeSaveCell: data from server is: ", data);
 				
-				// Update tablesData state to reload new date onto client side.
+				// Update tablesData state to reload new row values onto client side.
 				var tablesData = thisContext.state.tablesData;
 				console.log("onBeforeSaveCell: tablesData is: ", tablesData);
+				console.log("onBeforeSaveCell: current value is: ", tablesData["Popular Items"][0]["name"]);
+				
 				var i;
 				var catgeory = row["category_name"];
 				for(i = 0;i<tablesData[catgeory].length; i++){
@@ -127,8 +119,10 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 					tablesData: tablesData
 				});
 			});
-		}
-	);
+		})
+		.catch(function(err) {
+			console.log("onBeforeSaveCell: err is: ", err);
+		})
 	console.log("onBeforeSaveCell: Afer fetch just before return.");
 	return false;
 }
@@ -141,7 +135,7 @@ export default class InventoryList extends Component {
     	this.state = {
       		loading: true,
       		tablesCategoryOrder: [],	// Used to maintain category names' order when rendering in table
-      		tablesData: {},	// server data formatted and fed into table
+      		tablesData: {},	// inventory data formatted and fed into table. Mapping from category name to inventory items
       		categoryNameToId: {}	// Keep track of category name to Id
       	}
     }
@@ -172,7 +166,6 @@ export default class InventoryList extends Component {
 	          		var tablesData = thisContext.state.tablesData;	// Keep track of all catgory tables
 	          		var tablesCategoryOrder = thisContext.state.tablesCategoryOrder;	// Keep track of all catgory tables' order for rendering view
 	          		var categoryNameToId = thisContext.state.categoryNameToId;	// To keep track of category name to id
-	          		
 	          		var categories = data["categories"];
 	          		var i, j;
 	          		for(i=0; i<categories.length; i++){	// Looping through each category
@@ -183,7 +176,7 @@ export default class InventoryList extends Component {
 	          			tablesCategoryOrder.push(categoryName);
 	          			categoryNameToId[categoryName] = categoryId;
 	          			
-	          			for(j = 0; j<categories[i]["inventory_items"].length; j++){
+	          			for(j = 0; j<categories[i]["inventory_items"].length; j++){ // Looping through each item for thid specific category
 	          				var inventoryEntry = {}; // This table for each inventory item
 	          				inventoryEntry["inventory_item_id"] = categories[i]["inventory_items"][j]["inventory_item_id"];
 	          				inventoryEntry["description"] = categories[i]["inventory_items"][j]["description"];
@@ -210,16 +203,20 @@ export default class InventoryList extends Component {
 	   );
     }
 
-    // Called when editing category name
+    // Called when editing category names
     // Todo: Fix case where getting called twice
     validateCategoryEdit(oldCategory, newCategory){
     	console.log("validateCategoryEdit- oldCategory is: ", oldCategory);
     	console.log("validateCategoryEdit- newCategory is: ", newCategory);
-    	
+    	if(oldCategory == newCategory){	// No change in value
+    		return false;
+    	}
 
     	// Getting old category table
      	var tablesData = this.state.tablesData;
      	console.log("current tablesData is: ", tablesData);
+     	console.log("current value is: ", tablesData[oldCategory]);
+     	
      	if(!(oldCategory in tablesData)){	//Todo: Hack - when called second time, the old category would be gone from tablesData
      		console.log(oldCategory, "is not found in tablesData so probably second time called bug so return.");
      		return false;
@@ -246,70 +243,74 @@ export default class InventoryList extends Component {
 	      })
 	    });
 	    var thisContext = this; // To keep track of this context within promise callback
-	    fetch(request).then(
-	      function(response) {
-	        if (response.status !== 200) {   
-	          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
-	          return;  
-	        }
-	        // Update local state.
-	        console.log("validateCategoryEdit: response is: ", response);
-		    response.json().then(function(data) {  
-		        console.log("validateCategoryEdit: data from server is: ", data);
-		        
-		        // Todo: Hack - when called second time, the old category would be gone from tablesData
-		        if(!(oldCategory in tablesData)){	
-		     		console.log(oldCategory, "is not found in tablesData so probably second time called bug so return.");
-		     		return false;
-		     	}
-		     	var oldCategoryTable = tablesData[oldCategory];
-		        var i;
-				for(i=0; i<oldCategoryTable.length; i++){	// Replace old categoryName for all the items
-					oldCategoryTable[i]["category_name"] = newCategory;
-				}
-				tablesData[newCategory] = tablesData[oldCategory]; // Making the new category table and deleting old one
-		     	delete tablesData[oldCategory];
-		     	console.log("new tablesData is: ", tablesData);
+	    fetch(request)
+		    .then(function(response) {
+		        if (response.status !== 200) {   
+		          console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+		          return;  
+		        }
+		        // Update local state.
+		        console.log("validateCategoryEdit: response is: ", response);
+			    response.json().then(function(data) {  
+			        console.log("validateCategoryEdit: data from server is: ", data);
+			        
+			        // Todo: Hack - when called second time, the old category would be gone from tablesData
+			        if(!(oldCategory in tablesData)){	
+			     		console.log(oldCategory, "is not found in tablesData so probably second time called bug so return.");
+			     		return false;
+			     	}
+			     	var oldCategoryTable = tablesData[oldCategory];
+			        var i;
+					for(i=0; i<oldCategoryTable.length; i++){	// Replace old categoryName for all the items
+						oldCategoryTable[i]["category_name"] = newCategory;
+					}
+					tablesData[newCategory] = tablesData[oldCategory]; // Making the new category table and deleting old one
+			     	delete tablesData[oldCategory];
+			     	console.log("new tablesData is: ", tablesData);
 
-		     	// Change tablesCategoryOrder to maintain ordering when rendering table
-		     	var tablesCategoryOrder = thisContext.state.tablesCategoryOrder;
-		     	console.log("current tablesCategoryOrder is: ", tablesCategoryOrder);
-		     	for(i=0; i<tablesCategoryOrder.length; i++){
-		     		if(tablesCategoryOrder[i] == oldCategory){
-		     			tablesCategoryOrder[i] = newCategory;
-		     			break;
-		     		}
-		     	}
-				
-				// Adding in new categoryName in categoryNameToId
-				categoryNameToId[newCategory] = categoryNameToId[oldCategory]; // Making the new category name entry in the dict
-		     	delete categoryNameToId[oldCategory];
-		     	console.log("new categoryNameToId is: ", categoryNameToId);
+			     	// Change tablesCategoryOrder to maintain ordering when rendering table
+			     	var tablesCategoryOrder = thisContext.state.tablesCategoryOrder;
+			     	console.log("current tablesCategoryOrder is: ", tablesCategoryOrder);
+			     	for(i=0; i<tablesCategoryOrder.length; i++){
+			     		if(tablesCategoryOrder[i] == oldCategory){
+			     			tablesCategoryOrder[i] = newCategory;
+			     			break;
+			     		}
+			     	}
+					
+					// Adding in new categoryName in categoryNameToId
+					categoryNameToId[newCategory] = categoryNameToId[oldCategory]; // Making the new category name entry in the dict
+			     	delete categoryNameToId[oldCategory];
+			     	console.log("new categoryNameToId is: ", categoryNameToId);
 
-		     	console.log("new tablesCategoryOrder is: ", tablesCategoryOrder);
-		     	thisContext.setState({
-					tablesData: tablesData,
-					tablesCategoryOrder: tablesCategoryOrder,
-					categoryNameToId: categoryNameToId
-				});
-	        });
-	      }
-	    );     	
-    	return false; // Updating local state done after sending to server and setState
+			     	console.log("new tablesCategoryOrder is: ", tablesCategoryOrder);
+			     	thisContext.setState({
+						tablesData: tablesData,
+						tablesCategoryOrder: tablesCategoryOrder,
+						categoryNameToId: categoryNameToId
+					});
+		        });
+		    })
+			.catch(function (error){
+    			console.log('validateCategoryEdit: error in editing category: ', error);
+  			})
+    	return false; // Updating local state done after sending to server using setState
     }
 
     categoryNameChanged(oldCategory, newCategory) {
-        console.log("on categoryNameChanged");
+        console.log("======on categoryNameChanged");
     }
 
-	handleDeleteButtonClick = (onClick) => {
-	// Custom your onClick event here,
-	// it's not necessary to implement this function if you have no any process before onClick
-	console.log('This is my custom function for DeleteButton click event');
-	//console.log('onClick is: ', onClick);
-	onClick();
+	handleItemsDelete = (onClick, row) => {
+		console.log('handleItemsDelete: row is: ', row);
+		
+		// return false;
+		onClick();
 	}
 
+
+
+	// Custom delete button
 	createCustomDeleteButton = (onClick) => {
 		return (
 			<DeleteButton
@@ -317,7 +318,7 @@ export default class InventoryList extends Component {
 				btnContextual='btn-warning'
 				className='my-custom-class'
 				btnGlyphicon='glyphicon-edit'
-				onClick={ () => this.handleDeleteButtonClick(onClick) }/>
+				onClick={ () => this.handleItemsDelete(onClick) }/>
 		);
 	}
 
@@ -331,7 +332,8 @@ export default class InventoryList extends Component {
 				expandRowBgColor: 'rgb(242, 255, 163)',
 				clearSearch: true,
 				deleteBtn: this.createCustomDeleteButton,
-				afterDeleteRow: onAfterDeleteRow,
+				beforeDeleteRow: beforeDeleteRow,
+				afterDeleteRow: onAfterDeleteRow
 			};
 
 			const cellEditProp = {

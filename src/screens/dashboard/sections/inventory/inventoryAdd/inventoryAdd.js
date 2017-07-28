@@ -4,20 +4,14 @@ import React,{Component} from 'react';
 import UploadImages from './components/uploadImages.js';
 import Category from './components/category.js';
 import {Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl, Alert} from 'react-bootstrap';
-
 import ReactLoading from 'react-loading';
 import Loadable from 'react-loading-overlay';
-
 import ModalPopup from './components/modal.js';
-
-
 import { handleImageUpload, createCategory, createItem} from './components/apiCalls.js';
-
 
 export default class InventoryAdd extends Component {
 	constructor(props) {
     	super(props);
-
     	this.state = {
 			submit: null,	// To show proper modals
 			submitErrorMessage: null,	// Error message to show on modal
