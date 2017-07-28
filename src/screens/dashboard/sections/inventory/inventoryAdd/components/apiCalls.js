@@ -13,13 +13,16 @@ export function test() {
 export function handleImageUpload(file){
 	return new Promise((resolve, reject) => {
 		console.log("At handleImageUpload: file is: ", file);
+		if(file == null){	// If no picture uploaded, set url to null
+			resolve(null);
+		}
 		let upload = request.post(CLOUDINARY_UPLOAD_URL)
 		.field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
 		.field('file', file);
 		upload.end((err, response) => {
 			if (err) {
 				console.error("handleImageUpload: err is: ", err);
-				reject(err);
+				reject("uploadImageError");
 			}
 			if (response.body.secure_url !== '') {
 				console.log("handleImageUpload: new uploadedImageCloudinaryUrl is:", response.body.secure_url);
@@ -47,11 +50,11 @@ export function createCategory (category, that){
 		});
 		console.log("Sending first request to make the category if doesnt exist.");
 
-		fetch(request).then(
-			function(response) {
+		fetch(request)
+			.then(function(response) {
 				if (response.status !== 200) {
-			    	console.log('Looks like there was a problem at category create. Status Code: ' +  response.status);
-			    	reject(response.status);	// Give proper error messgae
+			    	console.log('createCategory: Looks like there was a problem at category create. Status Code: ' +  response.status);
+			    	reject("createCategoryError");	// Give proper error messgae
 			    }
 			    else
 			    {	
@@ -62,8 +65,11 @@ export function createCategory (category, that){
 						resolve(categoryId);			    		
 			    	});
 			    }
-			}
-		);
+			})
+			.catch(function (error){
+    			console.log('createCategory: error in creating category: ', error);
+    			reject(error);
+  			})
 	});
 }
 
@@ -95,11 +101,11 @@ export function createItem (categoryId, that){
 		});
 		console.log("Sending second request to make the inventory item.");
 
-		fetch(request).then(
-			function(response) {
+		fetch(request)
+			.then(function(response) {
 				if (response.status !== 200) {
-			    	console.log('Looks like there was a problem at item create. Status Code: ' +  response.status);
-			    	reject(response.status);	// Give proper error messgae
+			    	console.log('createItem: Looks like there was a problem at item create. Status Code: ' +  response.status);
+			    	reject("createItemError");	// Give proper error messgae
 			    }
 			    else
 			    {	
@@ -108,7 +114,10 @@ export function createItem (categoryId, that){
 			    		resolve(data);		    		
 			    	});
 			    }
-			}
-		);
+			})
+			.catch(function (error){
+    			console.log('createItem: error in creating item: ', error);
+    			reject(error);
+  			})
 	});
 }

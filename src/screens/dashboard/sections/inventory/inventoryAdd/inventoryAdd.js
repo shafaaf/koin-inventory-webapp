@@ -8,6 +8,9 @@ import {Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl, Alert} fro
 import ReactLoading from 'react-loading';
 import Loadable from 'react-loading-overlay';
 
+import ModalPopup from './components/modal.js';
+
+
 import { handleImageUpload, createCategory, createItem} from './components/apiCalls.js';
 
 
@@ -16,8 +19,9 @@ export default class InventoryAdd extends Component {
     	super(props);
 
     	this.state = {
-			submit: null,	// todo: Do later
-			
+			submit: null,	// To show proper modals
+			submitErrorMessage: null,	// Error message to show on modal
+
 			productName : null,
 			price : null,
 			description : null,
@@ -29,19 +33,29 @@ export default class InventoryAdd extends Component {
 		};
 	}
 
+	// Called when click submit button
 	handleSubmit(){
-		console.log("InventoryAdd submission triggered");		
+		console.log("handleSubmit triggered");		
 		var that = this;
-		
-		// Todo: Show loading screen
-		var setupPromises = [handleImageUpload(this.state.uploadedImage), createCategory(this.state.category, this)];	// Upload image and create category if needed
+		this.setState({
+			newCategoryForDropdown: that.state.category,
+			submit: "submitting"
+		}, this.addItem);
+	}
+
+	// Add item to Merchant inventory
+	addItem(){
+		console.log("addItem called");		
+		var that = this;
+		// Upload image and create category. Both only if needed
+		var setupPromises = [handleImageUpload(this.state.uploadedImage), createCategory(this.state.category, this)];
 		Promise.all(setupPromises)	// Todo: Fix possibility of case where category created but upload failed
 		.then(function (result) {
-			console.log("handleSubmit: result is: ", result);
+			console.log("addItem: result is: ", result);
 			var uploadedImageCloudinaryUrl = result[0];
 			that.state.uploadedImageUrl = uploadedImageCloudinaryUrl;
 			var categoryId = result[1];
-			createItem(categoryId, that)
+			createItem(categoryId, that)	// Create item
 			.then(function(result){
 				console.log("result of createItem is: ", result);
 				// Add the new category to dropdown list and remove loading screen here
@@ -50,11 +64,39 @@ export default class InventoryAdd extends Component {
 					submit: "submitted"
 				});
 			})
+			.catch(function(err) { // Catch errors due to creating item
+	  			console.log("addItem: error in item create: ", err);
+	  			var submitErrorMessage;
+	  			if(err == "createItemError"){
+	  				submitErrorMessage = "Error in creating item.";
+	  			}
+		  		else{
+		  			console.log("WEIRD. Shouldnt come here.");
+		  		}
+	  			that.setState({
+					submit: "error",
+					submitErrorMessage: submitErrorMessage
+				});
+			});
 		})
-		.catch(function(err) {	// Todo: Fix this here
-	  		console.log("error in upload or category create: ", err.message); // some coding error in handling happened
+		.catch(function(err) {	// Catch errors due to uploading picture or creating category 
+	  		console.log("addItem: error in upload or category create: ", err);
+	  		var submitErrorMessage;
+	  		if(err == "createCategoryError") {
+	  			submitErrorMessage = "Error in creating/setting category.";
+	  		}
+	  		else if(err == "uploadImageError"){
+	  			submitErrorMessage = "Error in uploading picture.";
+	  		}
+	  		else{
+	  			console.log("WEIRD. Shouldnt come here.");
+	  		}
+			that.setState({
+				submit: "error",
+				submitErrorMessage: submitErrorMessage
+			});
 		});
-		console.log("handleSubmit: ending statement");
+		console.log("addItem: ending statement");
 	}
 
 	//--------------------------------------------------------------------------------------------------
@@ -87,40 +129,11 @@ export default class InventoryAdd extends Component {
 	}
 
 	//--------------------------------------------------------------------------------------------------
-
-	// Todo: Finish this
-	renderSubmitMessage(){
-		if(this.state.submit == "submitting"){
-			return (
-				<Alert bsStyle="info">
-					<strong>Trying to submit!</strong> Best check yo self, you are not looking too good.
-				</Alert>
-			);	
-		}
-		else if(this.state.submit == "submitted"){
-			return (
-				<Alert bsStyle="success">
-					<strong>Submission complete</strong>
-				</Alert>
-			);
-		}
-		else if(this.state.submit == "error"){
-			return (
-				<Alert bsStyle="danger">
-					<strong>Submission error</strong>
-				</Alert>
-			);
-		}
-		else{
-			return null;
-		}
-	}
-
-	//--------------------------------------------------------------------------------------------------
 	
 	render() {
 		return (
-			<div>	
+			<div>
+				<ModalPopup submit = {this.state.submit} submitErrorMessage = {this.state.submitErrorMessage}/>
 				<h2 style = {{textAlign: "center"}}>Add Item to Inventory</h2>
 				<form>
 					<Row className="show-grid">
@@ -160,7 +173,6 @@ export default class InventoryAdd extends Component {
 				{/*  Image upload */}
 				<UploadImages uploadedImage = {this.state.uploadedImage} setUploadedImage = {this.setUploadedImage.bind(this)} style = {{textAlign: "center"}}/>
 				<Button bsStyle="primary" bsSize="large" block onClick = {this.handleSubmit.bind(this)}>Submit</Button>
-				{this.renderSubmitMessage()}
 			</div>
 		);
 	}
