@@ -2,12 +2,65 @@ import React,{Component} from 'react';
 import { BootstrapTable, TableHeaderColumn, DeleteButton } from 'react-bootstrap-table';
 import InlineEdit from 'react-edit-inline';
 
+import { Button } from 'react-bootstrap';
+
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
-function beforeDeleteRow(rowKeys, row) {
-	console.log("beforeDeleteRow. rowKeys is: ", rowKeys);
-	console.log("beforeDeleteRow. row is: ", row);
-	
+// When selecting all rows to delete
+function onSelectAllRows(isSelected, rows) {
+	// console.log("onSelectAllRows: isSelected is: ", isSelected);
+	console.log("onSelectAllRows: rows is: ", rows);	
+	if(rows.length ==0){
+		return;
+	}
+	var itemsToDelete = this.itemsToDelete;
+	console.log("onSelectAllRows: itemsToDelete is: ", itemsToDelete);
+
+	var categoryName = rows[0]["category_name"];	// Todo: better way? Rest should be the same
+	var i;
+	if(isSelected){	//Add items itemsToDelete
+		for(i=0; i<rows.length; i++){
+			var inventoryItemId = rows[i]["inventory_item_id"];
+			if(categoryName in itemsToDelete){
+				itemsToDelete[categoryName][inventoryItemId] = rows[i];
+			}
+			else{
+				itemsToDelete[categoryName] = {};
+				itemsToDelete[categoryName][inventoryItemId] = rows[i];
+			}
+		}
+	}
+	else{
+		delete itemsToDelete[categoryName]; 
+	}
+	console.log("onSelectAllRows: itemsToDelete is: ", itemsToDelete);
+}
+
+// When selecting rows to delete
+function onRowSelect(row, isSelected, e) {
+	// console.log("onRowSelect: row is: ", row);
+	// console.log("onRowSelect: isSelected is: ", isSelected);
+	// console.log("onRowSelect: e is: ", e);
+
+	var itemsToDelete = this.itemsToDelete;
+	console.log("itemsToDelete is: ", itemsToDelete);
+
+	var inventoryItemId = row["inventory_item_id"];
+	var categoryName = row["category_name"];
+
+	if(isSelected){	// Add the row to delete to itemsToDelete 
+		if(categoryName in itemsToDelete){
+			itemsToDelete[categoryName][inventoryItemId] = row;
+		}
+		else{
+			itemsToDelete[categoryName] = {};
+			itemsToDelete[categoryName][inventoryItemId] = row;
+		}
+	}
+	else{ // Remove the row from itemsToDelete
+		delete itemsToDelete[categoryName][inventoryItemId];
+	}
+	console.log("onRowSelect: itemsToDelete is: ", itemsToDelete);
 }
 
 function onAfterDeleteRow(rowKeys, row) {
@@ -101,7 +154,7 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 				// Update tablesData state to reload new row values onto client side.
 				var tablesData = thisContext.state.tablesData;
 				console.log("onBeforeSaveCell: tablesData is: ", tablesData);
-				console.log("onBeforeSaveCell: current value is: ", tablesData["Popular Items"][0]["name"]);
+				// console.log("onBeforeSaveCell: current value is: ", tablesData["Popular Items"][0]["name"]);
 				
 				var i;
 				var catgeory = row["category_name"];
@@ -132,6 +185,7 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 export default class InventoryList extends Component {
   	constructor(props) {
     	super(props);
+    	this.itemsToDelete = {};
     	this.state = {
       		loading: true,
       		tablesCategoryOrder: [],	// Used to maintain category names' order when rendering in table
@@ -284,6 +338,7 @@ export default class InventoryList extends Component {
 			     	console.log("new categoryNameToId is: ", categoryNameToId);
 
 			     	console.log("new tablesCategoryOrder is: ", tablesCategoryOrder);
+			     	thisContext.itemsToDelete = {};	// Remove items selected already for delete
 			     	thisContext.setState({
 						tablesData: tablesData,
 						tablesCategoryOrder: tablesCategoryOrder,
@@ -299,27 +354,13 @@ export default class InventoryList extends Component {
 
     categoryNameChanged(oldCategory, newCategory) {
         console.log("======on categoryNameChanged");
-    }
+    }	
 
-	handleItemsDelete = (onClick, row) => {
-		console.log('handleItemsDelete: row is: ', row);
+	onDeleteButtonClick(category){
+		console.log("onDeleteButtonClick called for category: ", category);
+		var itemsToDelete = this.itemsToDelete;
+		console.log("itemsToDelete is: ", itemsToDelete);
 		
-		// return false;
-		onClick();
-	}
-
-
-
-	// Custom delete button
-	createCustomDeleteButton = (onClick) => {
-		return (
-			<DeleteButton
-				btnText='Delete selected items'
-				btnContextual='btn-warning'
-				className='my-custom-class'
-				btnGlyphicon='glyphicon-edit'
-				onClick={ () => this.handleItemsDelete(onClick) }/>
-		);
 	}
 
     renderInventoryTables(){
@@ -330,10 +371,7 @@ export default class InventoryList extends Component {
     	{
     		const options = {
 				expandRowBgColor: 'rgb(242, 255, 163)',
-				clearSearch: true,
-				deleteBtn: this.createCustomDeleteButton,
-				beforeDeleteRow: beforeDeleteRow,
-				afterDeleteRow: onAfterDeleteRow
+				clearSearch: true
 			};
 
 			const cellEditProp = {
@@ -341,9 +379,12 @@ export default class InventoryList extends Component {
 				beforeSaveCell: onBeforeSaveCell.bind(this), // a hook for before saving cell
   				afterSaveCell: onAfterSaveCell.bind(this)  // a hook for after saving cell
 			};
-			// If you want to enable deleteRow, you must enable row selection also.
+			
+			// Row selector type
 			const selectRowProp = {
-			  mode: 'checkbox'
+			  mode: 'checkbox',
+			  onSelect: onRowSelect.bind(this),
+			  onSelectAll: onSelectAllRows.bind(this)
 			};
 
 			var tableDisplayData = [];	// final array of tables to display whole inventory
@@ -362,7 +403,8 @@ export default class InventoryList extends Component {
     						<InlineEdit validate={this.validateCategoryEdit.bind(this, category)} activeClassName="editing" text={category} 
     						paramName="newCategory" change={this.categoryNameChanged.bind(this, category)}/>
     					</h3>
-    					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover deleteRow selectRow={ selectRowProp }>
+    					<Button onClick = {this.onDeleteButtonClick.bind(this, category)}>Delete Selected Items</Button>
+    					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover selectRow={ selectRowProp }>
 							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
 							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
 							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
