@@ -63,43 +63,6 @@ function onRowSelect(row, isSelected, e) {
 	console.log("onRowSelect: itemsToDelete is: ", itemsToDelete);
 }
 
-function onAfterDeleteRow(rowKeys, row) {
-	alert('The rowkey you drop: ' + rowKeys);
-	console.log("onAfterDeleteRow. rowKeys is: ", rowKeys);
-	console.log("onAfterDeleteRow. row is: ", row);
-
-	// Making promises for rows selected
-	var numberOfItemsToDelete = row.length;
-	var deletePromises = [];
-	var i;
-	for(i=0; i<numberOfItemsToDelete; i++){
-		var itemId = row[i]["inventory_item_id"];
-		var url = `http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/items/${itemId}`;
-		var request = new Request(url, {
-			method: 'DELETE',
-			mode: 'cors',
-			headers: new Headers({
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
-			}),
-			body: {}
-		});
-		deletePromises.push(fetch(request));
-	}
-
-	console.log("onAfterDeleteRow- deletePromises is: ", deletePromises);
-	Promise.all(deletePromises)
-		.then(function (result) {
-			console.log("onAfterDeleteRow: result is: ", result);
-			// Give error messages for the ones not able to delete. Some may delete, some not.
-			/* Fetch promises only reject with a TypeError when a network error occurs. Since 4xx and 5xx responses aren't network errors, 
-			there's nothing to catch. You'll need to throw an error yourself to use Promise#catch.*/
-		})
-		.catch(function(err) {
-			console.log("onAfterDeleteRow: err is: ", err);
-		})
-}
-
 function onAfterSaveCell(row, cellName, cellValue) {
 }
 
@@ -356,11 +319,75 @@ export default class InventoryList extends Component {
         console.log("======on categoryNameChanged");
     }	
 
+    // Called when delete button for a table clicked on
 	onDeleteButtonClick(category){
 		console.log("onDeleteButtonClick called for category: ", category);
 		var itemsToDelete = this.itemsToDelete;
-		console.log("itemsToDelete is: ", itemsToDelete);
+		console.log("onDeleteButtonClick: itemsToDelete is: ", itemsToDelete);
+		if(!(category in itemsToDelete)) {	// Todo: Still case of cateogry presnt with 0 items but handled as length would be 0
+			console.log("No item selected for: ", category);
+			return;
+		}
 		
+		// Making promises for rows selected
+		var categoryItemsToDelete = itemsToDelete[category];
+		console.log("onDeleteButtonClick: categoryItemsToDelete is: ", categoryItemsToDelete);
+		// var numberOfItemsToDelete = Object.keys(categoryItemsToDelete).length;
+		// console.log("onDeleteButtonClick: numberOfItemsToDelete is: ", numberOfItemsToDelete);
+		var deletePromises = [];
+		var i;
+		for(var itemId in categoryItemsToDelete){
+			console.log("item is: ", categoryItemsToDelete[itemId]);
+			var url = `http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/items/${itemId}`;
+			var request = new Request(url, {
+				method: 'DELETE',
+				mode: 'cors',
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+				}),
+				body: {}
+			});
+			deletePromises.push(fetch(request));
+		}
+		console.log("onDeleteButtonClick- deletePromises is: ", deletePromises);
+		var tablesData = this.state.tablesData;
+		console.log("onDeleteButtonClick- tablesData is: ", tablesData);
+		var that = this;
+		Promise.all(deletePromises)
+			.then(function (result) {
+				console.log("onDeleteButtonClick: result is: ", result);
+				// Give error messages for the ones not able to delete. Some may delete, some not.
+				/* Fetch promises only reject with a TypeError when a network error occurs. Since 4xx and 5xx responses aren't network errors, 
+				there's nothing to catch. You'll need to throw an error yourself to use Promise#catch.*/
+				
+				// Handle local state. Remove the items which were successfully deleted
+				var i, j;
+				for(i=0; i<result.length; i++){
+					if(result[i]["status"] != 200){	//Todo: Confirm what to check here
+						console.log("onDeleteButtonClick: result: ", i, " was not sucessful.");
+						continue;
+					}
+					console.log("onDeleteButtonClick: result: ", i, " was sucessful.");
+					var parts = result[i]["url"].split('/');
+					var itemId = parts.pop() || parts.pop();	// Todo: See if better way possible
+					console.log("onDeleteButtonClick: itemId is: ", itemId);
+					for(j = 0; j<tablesData[category].length; j++){
+						if(tablesData[category][j]["inventory_item_id"] == itemId){
+							tablesData[category].splice(j, 1);
+							delete itemsToDelete[category][itemId];	// Item deleted so remove from tracker
+						}
+					}
+				}
+				console.log("onDeleteButtonClick: itemsToDelete is: ", itemsToDelete);
+				that.setState({
+					tablesData: tablesData
+				});
+			})
+			.catch(function(err) {
+				console.log("onDeleteButtonClick: err is: ", err);
+			})
+		return;
 	}
 
     renderInventoryTables(){
