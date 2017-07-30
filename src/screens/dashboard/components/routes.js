@@ -33,7 +33,7 @@ export default class Routes extends Component {
 			<Route exact path='/dashboard/inventory/add' component={InventoryAdd}/>
 			<Route exact path='/dashboard/inventory/menu' component={InventoryMenu}/>
 			{/* Other sections */}
-			<Route exact path='/dashboard/profile' component={() => <Profile facebookAccessToken={this.props.facebookAccessToken}/>}/>
+			<Route exact path='/dashboard/profile' component={Profile}/>
 			<Route exact path='/dashboard/transactions' component={Transactions}/>
 			<Route exact path='/dashboard/settings' component={Settings}/>
 			<Route exact path='/dashboard/contactus' component={ContactUs}/>

@@ -66,7 +66,7 @@ export default class App extends Component {
     if(this.state.koinToken){
       console.log("dashboardPageVerification: logged in so sending to dashboard");
       return(
-        <Dashboard facebookAccessToken = {this.facebookAccessToken} onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
+        <Dashboard onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
       );
     }
     else{

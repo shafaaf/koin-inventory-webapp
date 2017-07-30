@@ -16,10 +16,11 @@ import './dashboard.css';
 
 export default class Dashboard extends Component {
 	facebookLogout(){
-		// 1. Remove koinToken from storage
+		// 1. Remove koinToken and facebookAccessToken from storage
 		// 2. Change state to null to render again
 		console.log("facebook logout called");
 		localStorage.removeItem("koinToken");
+		localStorage.removeItem("facebookAccessToken");
 		this.props.onChangeLoginStatus(null);
 	}
 
@@ -30,7 +31,7 @@ export default class Dashboard extends Component {
 					<Navbar onLogOut = {this.facebookLogout.bind(this)}/>
 				</div>
 				<div className = "container"> {/* Main content section here. Add sections like transations etc here.*/}
-					<Routes facebookAccessToken = {this.props.facebookAccessToken}/>
+					<Routes/>
 				</div>	
 			</div>
 		);
