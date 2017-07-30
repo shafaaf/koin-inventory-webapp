@@ -24,19 +24,28 @@ export default class App extends Component {
    
     // Load in Koin session token which say whether user logged in session or not.
     // Todo: Unsure when to acccess facebook access token
+    this.state = {
+      koinToken: null
+    };
     if (typeof(Storage) !== "undefined") {  // Check browser support
-      if ((localStorage.getItem("koinToken") === null) || (localStorage.getItem("koinToken") === "")) {
+      if ((localStorage.getItem("koinToken") == null) || (localStorage.getItem("koinToken") == "") || 
+          (!(localStorage.getItem("koinToken")))) {
         console.log("koinToken doesnt exist");
+        console.log("koinToken value computed is: ", localStorage.getItem("koinToken"));
         this.state = {
           koinToken: null
         };
       }
-      else { // Retrieve the Koin token
+      else if (localStorage.getItem("koinToken")){ // Retrieve the Koin token
         var koinToken = localStorage.getItem("koinToken");
         console.log("koinToken exists and is: ", koinToken);
         this.state = {
           koinToken: koinToken
         };
+      }
+      else{
+        console.log("Error: Some weird case in koin token checker.");
+        console.log("koinToken value computed is: ", localStorage.getItem("koinToken"));
       }
     } 
     else { // storage undefined
@@ -50,20 +59,21 @@ export default class App extends Component {
   // Change the login state based on Koin Token
   // To login the user, pass in the Koin server session token
   changeLoginStatus(stateKoinToken){
-    console.log("changeLoginStatus with a stateKoinToken of: ", stateKoinToken);
+    console.log("app.js: changeLoginStatus with a stateKoinToken of: ", stateKoinToken);
     this.setState({ koinToken: stateKoinToken});
   }
 
   // If user tries to visit dashboard, redirect user to login page
   dashboardPageVerification(){
+    console.log("dashboardPageVerification: koinToken is: ", this.state.koinToken);
     if(this.state.koinToken){
-      console.log("dashboardPageVerification: logged in so sending to dashboard");
+      console.log("dashboardPageVerification: logged in so sending to dashboard, koinToken is: ", this.state.koinToken);
       return(
         <Dashboard onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
       );
     }
     else{
-      console.log("dashboardPageVerification: not logged in so sending to login");
+      console.log("dashboardPageVerification: not logged in so sending to login. koinToken is: ", this.state.koinToken);
       return(
         <Redirect to="/login"/>
       );
@@ -73,19 +83,23 @@ export default class App extends Component {
   /* If user tries to visit login while logged, 
     redirect her/him to login page*/
   redirectToDashboard(){
+    console.log("redirectToDashboard: koinToken is: ", this.state.koinToken);
     if(this.state.koinToken){
+      console.log("redirectToDashboard: token exists and so redirecting to dashboard.");
       return (
         <Redirect to="/dashboard"/>
       );
     }
     else{
+      console.log("redirectToDashboard: not logged in so show login page");
       return (
         <Login onChangeLoginStatus = {this.changeLoginStatus.bind(this)}/>
       );
     }
   }
-
+  
   render() {
+    console.log("===Rendering from start. koinToken is: ", this.state.koinToken);
     return(
       <Router>
         <div>

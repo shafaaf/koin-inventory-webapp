@@ -47,7 +47,7 @@ export default class FacebookButton extends Component {
           });
         })
       .catch(function(err) {
-        console.log("onBeforeSaveCell: err is: ", err);
+        console.log("responseFacebook: err is: ", err);
       })
     console.log("After promise section.");
   }
