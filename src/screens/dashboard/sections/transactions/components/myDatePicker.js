@@ -60,7 +60,7 @@ export default class MyDatePicker extends React.Component {
           </div>
         </Col>
         <Col xs={12} md={3} style = {{textAlign: "center"}}>
-          <Button onClick = {this.props.setCustomTimes.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
+          <Button bsStyle="primary" onClick = {this.props.setCustomTimes.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
         </Col>       
       </div>
     );

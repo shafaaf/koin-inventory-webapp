@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
 import { BootstrapTable, TableHeaderColumn, DeleteButton } from 'react-bootstrap-table';
 import InlineEdit from 'react-edit-inline';
-
 import { Button } from 'react-bootstrap';
+import { imageFormatter } from './utils.js';
+
+
 
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
@@ -438,6 +440,7 @@ export default class InventoryList extends Component {
 							<TableHeaderColumn dataField="image_url" dataAlign="center" dataSort tdStyle={ { whiteSpace: 'normal' } }>Image_url</TableHeaderColumn>
 							<TableHeaderColumn dataField="price" dataAlign="center" width='80' dataSort>Price</TableHeaderColumn>
 							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
+							<TableHeaderColumn dataField="image_url" dataAlign="center" editable={ false } dataFormat={imageFormatter}>Preview</TableHeaderColumn>
 						</BootstrapTable>
 					</div>
     			);

@@ -1,11 +1,16 @@
 import React,{Component} from 'react';
+import {Button} from 'react-bootstrap';
+
 
 export default class NoPageFound extends Component {
-  render() {
-    return (
-    	<div>
-			<h1>No Page Found Bro!</h1>
-		</div>
-    );
-  }
+
+	render() {
+		return (
+			<div style = {{textAlign: "center"}}>
+				<h1>No page found at this url!</h1>
+				<Button href="/login" bsSize="large">Go back to home page</Button>
+			</div>
+		);
+	}
+
 }

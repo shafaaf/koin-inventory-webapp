@@ -18,8 +18,8 @@ import InventoryMenu from '../sections/inventory/inventoryMenu/inventoryMenu';
 
 import Profile from '../sections/profile/profile.js';
 import Transactions from '../sections/transactions/transactions';
-import Settings from '../sections/settings/settings';
 import ContactUs from '../sections/contactUs/contactUs';
+import NoPageFound from '../../noPageFound';
 
 
 
@@ -35,8 +35,8 @@ export default class Routes extends Component {
 			{/* Other sections */}
 			<Route exact path='/dashboard/profile' component={Profile}/>
 			<Route exact path='/dashboard/transactions' component={Transactions}/>
-			<Route exact path='/dashboard/settings' component={Settings}/>
 			<Route exact path='/dashboard/contactus' component={ContactUs}/>
+			<Route component ={NoPageFound}/>
 		</Switch>
     );
   }

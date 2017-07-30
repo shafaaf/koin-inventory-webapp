@@ -49,7 +49,7 @@ export default class Profile extends Component {
     	else
     	{
     		return (
-    			<div style = {{textAlign: "center"}}>
+    			<div style = {{marginTop: "3%"}}>
     				<p>{this.name}</p>
 	    			<p>{this.email}</p>
 	    			<img src = {this.picture["data"]["url"]}/>
@@ -60,7 +60,7 @@ export default class Profile extends Component {
 
   	render() {
 	  	return (
-	    	<div>
+	    	<div style = {{textAlign: "center"}}>
 				<h2>My Profile</h2>
 				{this.loadProfile()}
 			</div>
