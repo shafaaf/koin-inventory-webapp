@@ -26,23 +26,29 @@ export default class FacebookButton extends Component {
     var thisContext = this; // To keep track of this context within promise callback
     fetch(request)
       .then(
-          function(response) {
-            if (response.status !== 200) {   
-              console.log('Looks like there was a problem. Status Code: ' +  response.status);  
-              return;  
-            }
-            // Examine the text in the response from Koin server
-            response.json().then(function(data) {  
-              console.log("data from server is: ", data);
-              var koinToken = data["session_token"]
-              localStorage.setItem("koinToken", koinToken);
-              localStorage.setItem("facebookAccessToken", facebookResponse["accessToken"]);
-              // console.log("thisContext is: ", thisContext);
-              console.log("koinToken is: ", koinToken);
-              console.log("facebookResponse is: ", facebookResponse);
-              thisContext.props.onChangeLoginStatus(koinToken, facebookResponse["accessToken"]);
-            });
+        function(response) {
+          if (response.status !== 200) {   
+            console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+            return;  
+          }
+          // Store and return koin token and facebook access tokens
+          response.json().then(function(data) {  
+            console.log("data from server is: ", data);
+            var koinToken = data["session_token"];
+            localStorage.setItem("koinToken", koinToken);
+            var facebookToken = {};
+            facebookToken["accessToken"] = facebookResponse["accessToken"];
+            facebookToken["expiresIn"] = facebookResponse["expiresIn"];
+            localStorage.setItem("facebookAccessToken", JSON.stringify(facebookToken));
+            
+            console.log("koinToken is: ", koinToken);
+            console.log("facebookResponse is: ", facebookResponse);
+            thisContext.props.onChangeLoginStatus(koinToken, facebookResponse["accessToken"]);
           });
+        })
+      .catch(function(err) {
+        console.log("onBeforeSaveCell: err is: ", err);
+      })
     console.log("After promise section.");
   }
 

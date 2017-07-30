@@ -22,7 +22,6 @@ export default class App extends Component {
     console.log("app.js: On constructor");
     super(props);
    
-    this.facebookAccessToken = null; //info for merchant's profile
     // Load in Koin session token which say whether user logged in session or not.
     // Todo: Unsure when to acccess facebook access token
     if (typeof(Storage) !== "undefined") {  // Check browser support
@@ -35,9 +34,6 @@ export default class App extends Component {
       else { // Retrieve the Koin token
         var koinToken = localStorage.getItem("koinToken");
         console.log("koinToken exists and is: ", koinToken);
-        var facebookAccessToken = localStorage.getItem("facebookAccessToken");
-        console.log("facebookAccessToken exists and is: ", facebookAccessToken);
-        this.facebookAccessToken = facebookAccessToken;
         this.state = {
           koinToken: koinToken
         };
@@ -53,13 +49,10 @@ export default class App extends Component {
 
   // Change the login state based on Koin Token
   // To login the user, pass in the Koin server session token
-  changeLoginStatus(stateKoinToken, facebookAccessToken){
+  changeLoginStatus(stateKoinToken){
     console.log("changeLoginStatus with a stateKoinToken of: ", stateKoinToken);
-    console.log("changeLoginStatus with a facebookAccessToken of: ", facebookAccessToken);
-    this.facebookAccessToken = facebookAccessToken;
     this.setState({ koinToken: stateKoinToken});
   }
-
 
   // If user tries to visit dashboard, redirect user to login page
   dashboardPageVerification(){

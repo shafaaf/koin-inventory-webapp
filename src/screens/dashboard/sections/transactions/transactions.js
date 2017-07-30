@@ -340,7 +340,7 @@ export default class Transactions extends Component {
     return (
       <div>
         <h2>Your Transactions!</h2>
-        <p>Fell free to check out your transactions!</p>
+        <p>You can also search or sort for any time period.</p>
         <Row className="show-grid">
           <DropdownTimePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
           <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>

@@ -4,8 +4,6 @@ import InlineEdit from 'react-edit-inline';
 import { Button } from 'react-bootstrap';
 import { imageFormatter } from './utils.js';
 
-
-
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
 // When selecting all rows to delete
@@ -81,14 +79,18 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 	var name = row["name"];
 	var price = row["price"];
 	var description = row["description"];
+	var imageUrl = row["image_url"];
+	
 	if(cellName == "name"){name = cellValue;}
 	else if (cellName == "price"){price = cellValue;}
 	else if(cellName == "description"){description = cellValue;}
-	else{console.log("onBeforeSaveCell error now.");}
+	else if(cellName == "image_url"){imageUrl = cellValue;}
+	else{console.log("onBeforeSaveCell: ERROR now.");}
 	var inventoryItemDetails = {
 		"name": name,
 		"price": price,
-		"description": description
+		"description": description,
+		"image_url": imageUrl
 	};
 	console.log("onBeforeSaveCell: inventoryItemDetails is: ", inventoryItemDetails);
 	var body = JSON.stringify({
@@ -129,6 +131,7 @@ function onBeforeSaveCell(row, cellName, cellValue) {
 						tablesData[catgeory][i]["name"] = data["inventory_item"]["name"];
 						tablesData[catgeory][i]["price"] = data["inventory_item"]["price"];
 						tablesData[catgeory][i]["description"] = data["inventory_item"]["description"];
+						tablesData[catgeory][i]["image_url"] = data["inventory_item"]["image_url"];
 						break;
 					}
 				}
@@ -437,9 +440,9 @@ export default class InventoryList extends Component {
 							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
 							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
 							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
-							<TableHeaderColumn dataField="image_url" dataAlign="center" dataSort tdStyle={ { whiteSpace: 'normal' } }>Image_url</TableHeaderColumn>
 							<TableHeaderColumn dataField="price" dataAlign="center" width='80' dataSort>Price</TableHeaderColumn>
 							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
+							<TableHeaderColumn dataField="image_url" dataAlign="center" tdStyle={ { whiteSpace: 'normal' } }>Image Url</TableHeaderColumn>
 							<TableHeaderColumn dataField="image_url" dataAlign="center" editable={ false } dataFormat={imageFormatter}>Preview</TableHeaderColumn>
 						</BootstrapTable>
 					</div>
@@ -454,8 +457,8 @@ export default class InventoryList extends Component {
   		console.log("Rendering InventoryList component.");
     	return (
 	    	<div>
-				<h2>Inventory List</h2>
-				<p>Can edit item categories and attribues by double clicking any item attribute.</p>
+				<h2>Your Inventory</h2>
+				<p>Can edit item categories and attribues by double clicking on them.</p>
 				{this.renderInventoryTables()}
 			</div>
 	    );
