@@ -22,7 +22,10 @@ export default class MyNavBar extends Component {
 				</Navbar.Header>
 				<Navbar.Collapse>
 					<Nav>
-						<NavItem eventKey={1}>My Profile</NavItem>
+						{/* Profile tab */}
+						<LinkContainer to="/dashboard/profile">
+							<NavItem eventKey={1}>My Profile</NavItem>
+						 </LinkContainer>
 						{/* Transactions tab */}
 						<LinkContainer to="/dashboard/transactions">
 							<NavItem eventKey={2}>My Transactions</NavItem>

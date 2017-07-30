@@ -16,9 +16,12 @@ import InventoryList from '../sections/inventory/inventoryList/inventoryList';
 import InventoryAdd from '../sections/inventory/inventoryAdd/inventoryAdd';
 import InventoryMenu from '../sections/inventory/inventoryMenu/inventoryMenu';
 
+import Profile from '../sections/profile/profile.js';
 import Transactions from '../sections/transactions/transactions';
 import Settings from '../sections/settings/settings';
 import ContactUs from '../sections/contactUs/contactUs';
+
+
 
 export default class Routes extends Component {
   render() {
@@ -30,6 +33,7 @@ export default class Routes extends Component {
 			<Route exact path='/dashboard/inventory/add' component={InventoryAdd}/>
 			<Route exact path='/dashboard/inventory/menu' component={InventoryMenu}/>
 			{/* Other sections */}
+			<Route exact path='/dashboard/profile' component={() => <Profile facebookAccessToken={this.props.facebookAccessToken}/>}/>
 			<Route exact path='/dashboard/transactions' component={Transactions}/>
 			<Route exact path='/dashboard/settings' component={Settings}/>
 			<Route exact path='/dashboard/contactus' component={ContactUs}/>

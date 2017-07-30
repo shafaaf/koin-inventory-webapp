@@ -30,7 +30,7 @@ export default class Dashboard extends Component {
 					<Navbar onLogOut = {this.facebookLogout.bind(this)}/>
 				</div>
 				<div className = "container"> {/* Main content section here. Add sections like transations etc here.*/}
-					<Routes/>
+					<Routes facebookAccessToken = {this.props.facebookAccessToken}/>
 				</div>	
 			</div>
 		);

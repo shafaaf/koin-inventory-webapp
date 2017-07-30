@@ -4,8 +4,9 @@ import FacebookLogin from 'react-facebook-login';
 export default class FacebookButton extends Component {
 
   // Handle response from user when he decides to login
-  responseFacebook(response) {
-    var fbAccessToken = response.accessToken
+  responseFacebook(facebookResponse) {
+    console.log("responseFacebook: facebookResponse is: ", facebookResponse);
+    var fbAccessToken = facebookResponse.accessToken
     console.log("fbAccessToken is: ", fbAccessToken);
 
     //Requesting session token from Koin server
@@ -24,24 +25,24 @@ export default class FacebookButton extends Component {
     });
     var thisContext = this; // To keep track of this context within promise callback
     fetch(request)
-    .then(
-        function(response) {
-          if (response.status !== 200) {   
-            console.log('Looks like there was a problem. Status Code: ' +  response.status);
-            localStorage.setItem("koinToken", "12345");  //Todo: only here cause Zen server wasnt working REMOVE THIS
-            thisContext.props.onChangeLoginStatus("12345"); //Todo: only here cause Zen server wasnt working REMOVE THIS
-            return;  
-          }
-          // Examine the text in the response from Koin server
-          response.json().then(function(data) {  
-            console.log("data from server is: ", data);
-            var koinToken = data["session_token"]
-            localStorage.setItem("koinToken", koinToken);
-            console.log("thisContext is: ", thisContext);
-            thisContext.props.onChangeLoginStatus(koinToken);
+      .then(
+          function(response) {
+            if (response.status !== 200) {   
+              console.log('Looks like there was a problem. Status Code: ' +  response.status);  
+              return;  
+            }
+            // Examine the text in the response from Koin server
+            response.json().then(function(data) {  
+              console.log("data from server is: ", data);
+              var koinToken = data["session_token"]
+              localStorage.setItem("koinToken", koinToken);
+              localStorage.setItem("facebookAccessToken", facebookResponse["accessToken"]);
+              // console.log("thisContext is: ", thisContext);
+              console.log("koinToken is: ", koinToken);
+              console.log("facebookResponse is: ", facebookResponse);
+              thisContext.props.onChangeLoginStatus(koinToken, facebookResponse["accessToken"]);
+            });
           });
-        });
-
     console.log("After promise section.");
   }
 
