@@ -1,67 +1,18 @@
 import React,{Component} from 'react';
 import { BootstrapTable, TableHeaderColumn, DeleteButton } from 'react-bootstrap-table';
 import InlineEdit from 'react-edit-inline';
-import { Button } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
+
 import { imageFormatter } from './utils.js';
+
+import { onSelectAllRows, onRowSelect } from './utils.js';
+
 
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
-// When selecting all rows to delete
-function onSelectAllRows(isSelected, rows) {
-	// console.log("onSelectAllRows: isSelected is: ", isSelected);
-	console.log("onSelectAllRows: rows is: ", rows);	
-	if(rows.length ==0){
-		return;
-	}
-	var itemsToDelete = this.itemsToDelete;
-	console.log("onSelectAllRows: itemsToDelete is: ", itemsToDelete);
 
-	var categoryName = rows[0]["category_name"];	// Todo: better way? Rest should be the same
-	var i;
-	if(isSelected){	//Add items itemsToDelete
-		for(i=0; i<rows.length; i++){
-			var inventoryItemId = rows[i]["inventory_item_id"];
-			if(categoryName in itemsToDelete){
-				itemsToDelete[categoryName][inventoryItemId] = rows[i];
-			}
-			else{
-				itemsToDelete[categoryName] = {};
-				itemsToDelete[categoryName][inventoryItemId] = rows[i];
-			}
-		}
-	}
-	else{
-		delete itemsToDelete[categoryName]; 
-	}
-	console.log("onSelectAllRows: itemsToDelete is: ", itemsToDelete);
-}
 
-// When selecting rows to delete
-function onRowSelect(row, isSelected, e) {
-	// console.log("onRowSelect: row is: ", row);
-	// console.log("onRowSelect: isSelected is: ", isSelected);
-	// console.log("onRowSelect: e is: ", e);
 
-	var itemsToDelete = this.itemsToDelete;
-	console.log("itemsToDelete is: ", itemsToDelete);
-
-	var inventoryItemId = row["inventory_item_id"];
-	var categoryName = row["category_name"];
-
-	if(isSelected){	// Add the row to delete to itemsToDelete 
-		if(categoryName in itemsToDelete){
-			itemsToDelete[categoryName][inventoryItemId] = row;
-		}
-		else{
-			itemsToDelete[categoryName] = {};
-			itemsToDelete[categoryName][inventoryItemId] = row;
-		}
-	}
-	else{ // Remove the row from itemsToDelete
-		delete itemsToDelete[categoryName][inventoryItemId];
-	}
-	console.log("onRowSelect: itemsToDelete is: ", itemsToDelete);
-}
 
 function onAfterSaveCell(row, cellName, cellValue) {
 }
@@ -225,6 +176,8 @@ export default class InventoryList extends Component {
 	   );
     }
 
+	//--------------------------------------------------------------------------------------------------
+
     // Called when editing category names
     // Todo: Fix case where getting called twice
     validateCategoryEdit(oldCategory, newCategory){
@@ -233,7 +186,11 @@ export default class InventoryList extends Component {
     	if(oldCategory == newCategory){	// No change in value
     		return false;
     	}
-
+    	if((newCategory == null) || (newCategory == "") 
+    		|| (newCategory == undefined)){	// If put in nothing as category name
+    		alert("Not a proper category value.");
+    		return false;
+    	}
     	// Getting old category table
      	var tablesData = this.state.tablesData;
      	console.log("current tablesData is: ", tablesData);
@@ -242,7 +199,7 @@ export default class InventoryList extends Component {
      	if(!(oldCategory in tablesData)){	//Todo: Hack - when called second time, the old category would be gone from tablesData
      		console.log(oldCategory, "is not found in tablesData so probably second time called bug so return.");
      		return false;
-     	}    		
+     	}
 
      	// Getting categoryId of the category that is selected
      	var categoryNameToId = this.state.categoryNameToId;
@@ -395,6 +352,61 @@ export default class InventoryList extends Component {
 		return;
 	}
 
+
+	// Delete a whole category table
+	onDeleteCategory(category){
+		console.log("onDeleteCategory called. category is: ", category);
+
+      	var tablesCategoryOrder = this.state.tablesCategoryOrder;
+		var tablesData = this.state.tablesData;
+      	var categoryNameToId = this.state.categoryNameToId;
+      	console.log("onDeleteCategory: categoryNameToId is: ", categoryNameToId);
+      	var categoryId = categoryNameToId[category];
+      	console.log(`onDeleteCategory: categoryId for ${category} is: ${categoryId}`);
+      	
+      	// Request to delete whole category table
+      	var url = `http://custom-env-1.2tfxydg93p.us-west-2.elasticbeanstalk.com/api/v1/inventory/category/${categoryId}`;
+		var request = new Request(url, {
+			method: 'DELETE',
+			mode: 'cors',
+			headers: new Headers({
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
+			}),
+			body: {}
+		});
+		
+		var that = this;
+		console.log("onDeleteCategory: Sending request to delete whole category table.");					
+		fetch(request)
+			.then(function(response) {
+				if (response.status !== 200) {   
+					console.log('onDeleteCategory: Looks like there was a problem. Status Code: ' +  response.status); 
+					// alert("onDeleteCategory: Some error deleteing category table. Status Code: ", response.status);
+					return;
+				}
+				// Get response from Koin server and update table data to reflect change in client view
+				response.json().then(function(data) {
+					console.log("onDeleteCategory: data from server is: ", data);					
+				});
+			})
+			.catch(function(err) {
+				console.log("onDeleteCategory: err is: ", err);
+			})
+	}
+
+	// When an image is clicked on
+	onImageClick(cell, row){
+		console.log("onImageClick row is: ", row);
+		console.log("onImageClick cell is: ", cell);
+		if((cell == null) || (cell == "")){
+			console.log("No image present.");
+			return;
+		}
+	}
+
+	//--------------------------------------------------------------------------------------------------
+
     renderInventoryTables(){
     	if(this.state.loading){ // Show loading screen when getting data
       		return <h3>Loading your inventory ...</h3>;
@@ -404,6 +416,7 @@ export default class InventoryList extends Component {
     		const options = {
 				expandRowBgColor: 'rgb(242, 255, 163)',
 				clearSearch: true
+				// onRowClick: this.onRowClick
 			};
 
 			const cellEditProp = {
@@ -431,9 +444,10 @@ export default class InventoryList extends Component {
     			// console.log("category is: ", category);
     			var tableElement = (
     				<div key = {category}>
-    					<h3 style = {{textAlign: "center"}}>
+						<h3 style = {{textAlign: "center"}}>
     						<InlineEdit validate={this.validateCategoryEdit.bind(this, category)} activeClassName="editing" text={category} 
     						paramName="newCategory" change={this.categoryNameChanged.bind(this, category)}/>
+    						<Button style = {{marginLeft: "10px"}} onClick = {this.onDeleteCategory.bind(this, category)}><Glyphicon glyph="remove" /> Delete</Button>
     					</h3>
     					<Button onClick = {this.onDeleteButtonClick.bind(this, category)}>Delete Selected Items</Button>
     					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover selectRow={ selectRowProp }>
@@ -443,7 +457,7 @@ export default class InventoryList extends Component {
 							<TableHeaderColumn dataField="price" dataAlign="center" width='80' dataSort>Price</TableHeaderColumn>
 							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
 							<TableHeaderColumn dataField="image_url" dataAlign="center" tdStyle={ { whiteSpace: 'normal' } }>Image Url</TableHeaderColumn>
-							<TableHeaderColumn dataField="image_url" dataAlign="center" editable={ false } dataFormat={imageFormatter}>Preview</TableHeaderColumn>
+							<TableHeaderColumn dataField="image_url" dataAlign="center" editable={ false } dataFormat={imageFormatter.bind(this)}>Preview</TableHeaderColumn>
 						</BootstrapTable>
 					</div>
     			);
@@ -456,9 +470,9 @@ export default class InventoryList extends Component {
   	render() {
   		console.log("Rendering InventoryList component.");
     	return (
-	    	<div>
+	    	<div style = {{paddingBottom: "2%"}}>
 				<h2>Your Inventory</h2>
-				<p>Can edit item categories and attribues by double clicking on them.</p>
+				<p>Can edit item categories and attribues by <u>double clicking</u> on them.</p>
 				{this.renderInventoryTables()}
 			</div>
 	    );
