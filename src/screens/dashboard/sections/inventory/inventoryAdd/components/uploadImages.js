@@ -41,7 +41,7 @@ export default class UploadImages extends Component {
       message: "Upload picture of food item!"
     }, this.props.setUploadedImage(null));
   }
-
+  
 	renderImage(){
 		var uploadedImage = this.props.uploadedImage;
 		if(uploadedImage == null){
