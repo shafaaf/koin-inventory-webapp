@@ -7,6 +7,8 @@ import { imageFormatter } from './utils/dataFormatters';	// Data formatters
 import { onSelectAllRows, onRowSelect, onDeleteButtonClick, onDeleteCategory } from './utils/deleteFromInventory';	// For selecting rows to delete
 import { onAfterSaveCell, onBeforeSaveCell, categoryNameChanged, validateCategoryEdit } from './utils/editInventory';	// For selecting rows to delete
 
+import ImageModal from './components/imageModal';	// Image Modal when clicking on an image
+
 require('react-bootstrap-table/dist/react-bootstrap-table-all.min.css');
 
 // ------------------------------------------------------------------------------------------------------------------
@@ -17,11 +19,33 @@ export default class InventoryList extends Component {
     	this.itemsToDelete = {};
     	this.state = {
       		loading: true,
+      
       		tablesCategoryOrder: [],	// Used to maintain category names' order when rendering in table
       		tablesData: {},	// inventory data formatted and fed into table. Mapping from category name to inventory items
-      		categoryNameToId: {}	// Keep track of category name to Id
+      		categoryNameToId: {},	// Keep track of category name to Id
+
+      		showModal: false,
+      		modalItem: null
       	}
     }
+
+    // For modal screen
+    closeModal() {
+    	this.setState({ showModal: false });
+  	}
+  	openModal() {
+    	this.setState({ showModal: true });
+  	}
+
+  	onImageClick(cell, row){
+		console.log("onImageClickCalled.");
+		console.log("cell is: ", cell);
+		console.log("row is: ", row);
+		this.setState({
+	      	modalItem: row,
+	      	showModal: true
+    	});
+	}
 
     // Fetch whole initial inventory
     componentDidMount() {
@@ -86,18 +110,6 @@ export default class InventoryList extends Component {
 	   );
     }
 
-	//--------------------------------------------------------------------------------------------------	
-
-	// When an image is clicked on
-	onImageClick(cell, row){
-		console.log("onImageClick row is: ", row);
-		console.log("onImageClick cell is: ", cell);
-		if((cell == null) || (cell == "")){
-			console.log("No image present.");
-			return;
-		}
-	}
-
 	//--------------------------------------------------------------------------------------------------
 
     renderInventoryTables(){
@@ -140,7 +152,7 @@ export default class InventoryList extends Component {
 						<h3 style = {{textAlign: "center"}}>
     						<InlineEdit validate={validateCategoryEdit.bind(this, category)} activeClassName="editing" text={category} 
     						paramName="newCategory" change={categoryNameChanged.bind(this, category)}/>
-    						<Button style = {{marginLeft: "10px"}} onClick = {onDeleteCategory.bind(this, category)}><Glyphicon glyph="remove" /> Delete</Button>
+    						<Button style = {{marginLeft: "10px"}} onClick = {onDeleteCategory.bind(this, category)}><Glyphicon glyph="remove" /> Delete this category</Button>
     					</h3>
     					<Button onClick = {onDeleteButtonClick.bind(this, category)}>Delete Selected Items</Button>
     					<BootstrapTable data = {tablesData[category]} options={options} cellEdit={cellEditProp} search hover selectRow={ selectRowProp }>
@@ -164,6 +176,7 @@ export default class InventoryList extends Component {
   		console.log("Rendering InventoryList component.");
     	return (
 	    	<div style = {{paddingBottom: "2%"}}>
+	    		<ImageModal modalItem = {this.state.modalItem} showModal = {this.state.showModal} onHide = {this.closeModal.bind(this)}/>
 				<h2>Your Inventory</h2>
 				<p>Can edit item categories and attribues by <u>double clicking</u> on them.</p>
 				{this.renderInventoryTables()}

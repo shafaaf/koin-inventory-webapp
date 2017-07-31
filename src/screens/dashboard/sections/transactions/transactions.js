@@ -345,7 +345,7 @@ export default class Transactions extends Component {
           <DropdownTimePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
           <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
         </Row>
-        <h3 style = {{textAlign: "center"}}>{this.renderTimeWindow()}</h3>
+        <h4 style = {{textAlign: "center"}}>{this.renderTimeWindow()}</h4>
         {this.renderTransactionsTable()}
       </div>
     );

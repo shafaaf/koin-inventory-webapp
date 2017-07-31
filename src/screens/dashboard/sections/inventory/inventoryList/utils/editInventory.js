@@ -1,8 +1,8 @@
+// Allow edits in table row
 
 export function onAfterSaveCell(row, cellName, cellValue) {
 }
 
-// Allow edits in table row
 export function onBeforeSaveCell(row, cellName, cellValue) {
 	console.log("At onBeforeSaveCell. ");
 	console.log("row is: ", row);
@@ -87,6 +87,7 @@ export function onBeforeSaveCell(row, cellName, cellValue) {
 //-------------------------------------------------------------------------------------------------------------------
 
 // Editing category names
+
 export function categoryNameChanged(oldCategory, newCategory) {
 	console.log("======on categoryNameChanged");
 }

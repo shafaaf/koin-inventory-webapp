@@ -1,7 +1,6 @@
 // Functions to format values in table
 import React,{Component} from 'react';
 
-
 // Data Formatters
 export function imageFormatter(cell, row){
 	// console.log("cell is: ", cell);
