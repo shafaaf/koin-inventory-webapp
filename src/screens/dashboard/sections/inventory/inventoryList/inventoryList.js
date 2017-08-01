@@ -111,7 +111,12 @@ export default class InventoryList extends Component {
     }
 
 	//--------------------------------------------------------------------------------------------------
-
+	setTablesData(tablesData){
+		console.log("inventoryList.js: setTablesData called. New value is: ", tablesData);
+		this.setState({ tablesData: tablesData });
+	}
+	//--------------------------------------------------------------------------------------------------
+	
     renderInventoryTables(){
     	if(this.state.loading){ // Show loading screen when getting data
       		return <h3>Loading your inventory ...</h3>;
@@ -176,7 +181,8 @@ export default class InventoryList extends Component {
   		console.log("Rendering InventoryList component.");
     	return (
 	    	<div style = {{paddingBottom: "2%"}}>
-	    		<ImageModal modalItem = {this.state.modalItem} showModal = {this.state.showModal} onHide = {this.closeModal.bind(this)}/>
+	    		<ImageModal modalItem = {this.state.modalItem} tablesData = {this.state.tablesData} setTablesData = {this.setTablesData.bind(this)}
+	    			showModal = {this.state.showModal} onHide = {this.closeModal.bind(this)}/>
 				<h2>Your Inventory</h2>
 				<p>Can edit item categories and attribues by <u>double clicking</u> on them.</p>
 				{this.renderInventoryTables()}

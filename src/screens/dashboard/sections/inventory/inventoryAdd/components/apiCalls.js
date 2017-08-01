@@ -12,7 +12,7 @@ export function test() {
 // Upload image somewhere like S3, Cloudinary etc
 export function handleImageUpload(file){
 	return new Promise((resolve, reject) => {
-		console.log("At handleImageUpload: file is: ", file);
+		console.log("At handleImageUpload. Will upload now- file is: ", file);
 		if(file == null){	// If no picture uploaded, set url to null
 			resolve(null);
 		}
