@@ -66,23 +66,31 @@ export default class ImageModal extends Component {
   		});
   	}
 
-  	renderSaveRemoveButtonformat(){
-  		if(this.state.itemImage){	// An image exists so 2 buttons
+  	saveImage(){
+  		console.log("saveImage: image to save is: ", this.state.itemImage);
+  		if((this.state.itemImage ==  "") || (this.state.itemImage ==  null) || 
+  			(this.state.itemImage ==  undefined)) {
+  			console.log("saveImage: No need to upload to cloudinary.")
+  		}
+  	}
+
+  	renderSaveRemoveButtonsformat(){
+  		if(this.state.itemImage){	// An image exists so 2 buttons for save and remove image
   			return(
 	  			<Row className="show-grid" style = {{marginTop: "2%"}}>
 					<Col md={6} mdPush={6} style = {{textAlign: "center"}}>
 						<Button onClick = {this.onImageRemoveClick.bind(this)} style = {{ margin: "auto"}} bsStyle="danger" bsSize="large">Remove Image</Button>
 					</Col>
 					<Col md={6} mdPull={6} style = {{textAlign: "center"}}>
-						<Button bsStyle="success" bsSize="large">Save this image</Button>
+						<Button onClick = {this.saveImage.bind(this)} bsStyle="success" bsSize="large">Save this image</Button>
 					</Col>
 				</Row>
 			);			
   		}
-  		else{
+  		else{ // An image doesnt exist so 1 buttons for saving with no image
   			return(
   				<div style = {{marginTop: "2%", textAlign: "center"}}>
-  					<Button bsStyle="success" bsSize="large">Save with no image.</Button>
+  					<Button onClick = {this.saveImage.bind(this)} bsStyle="success" bsSize="large">Save with no image.</Button>
   				</div>
   			);
   		}
@@ -99,7 +107,7 @@ export default class ImageModal extends Component {
 					<Modal.Body>
 						{this.renderItemImage()}
 						<UploadImage itemImage = {this.state.itemImage} setUploadedImage = {this.setUploadedImage.bind(this)}/>
-						{this.renderSaveRemoveButtonformat()}
+						{this.renderSaveRemoveButtonsformat()}
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={this.props.onHide}>Cancel</Button>

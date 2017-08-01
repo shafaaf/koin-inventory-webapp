@@ -132,7 +132,7 @@ export function onRowSelect(row, isSelected, e) {
 	
 //-------------------------------------------------------------------------------------------------------
 
-	// Delete a whole category table. Todo: Some error on server maybe.
+	// Delete a whole category table.
 	export function onDeleteCategory(category){
 		console.log("onDeleteCategory called. category is: ", category);
 
@@ -161,12 +161,34 @@ export function onRowSelect(row, isSelected, e) {
 			.then(function(response) {
 				if (response.status !== 200) {   
 					console.log('onDeleteCategory: Looks like there was a problem. Status Code: ' +  response.status); 
-					// alert("onDeleteCategory: Some error deleteing category table. Status Code: ", response.status);
+					alert("onDeleteCategory: Some error deleteing category table. Status Code: ", response.status);
 					return;
 				}
 				// Get response from Koin server and update table data to reflect change in client view
 				response.json().then(function(data) {
-					console.log("onDeleteCategory: data from server is: ", data);					
+					console.log("onDeleteCategory: data from server is: ", data);
+					
+					// Handle local state. Remove the items which were successfully deleted
+					console.log("onDeleteCategory: tablesData is: ", tablesData);
+					console.log("onDeleteCategory: tablesCategoryOrder is: ", tablesCategoryOrder);
+					console.log("onDeleteCategory: categoryNameToId is: ", categoryNameToId);
+
+					delete tablesData[category];
+					delete categoryNameToId[category];
+					var i;
+					for(i=0; i<tablesCategoryOrder.length; i++){
+						if(tablesCategoryOrder[i] == category){
+							console.log("onDeleteCategory: category to delete on tablesCategoryOrder index: ", i);
+							tablesCategoryOrder.splice(i, 1);
+							break;
+						}
+					}
+					that.setState({
+						tablesData: tablesData,
+						categoryNameToId: categoryNameToId,
+						tablesCategoryOrder: tablesCategoryOrder
+					});
+
 				});
 			})
 			.catch(function(err) {
