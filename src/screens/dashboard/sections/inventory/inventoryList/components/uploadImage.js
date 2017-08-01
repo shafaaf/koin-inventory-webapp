@@ -20,18 +20,24 @@ export default class UploadImage extends Component {
 	componentWillReceiveProps(newProps){
 		console.log("UploadImage: componentWillReceiveProps called.");
 		console.log("UploadImage: newProps is: ", newProps);
-		if(newProps.itemImage){
+		// Todo: If no picture uploaded initially, this is undefined.
+		if(newProps.itemImage){	// Some image already present regardless uploaded intially or now
 			this.setState({
 				uploadButtonMessage: "Change item image"
 			});
 		}
+		else if(newProps.itemImage == undefined){	// Some image already present regardless uploaded intially or now
+			this.setState({
+				uploadButtonMessage: "Upload first ever image"
+			});
+		}
 		else{
 			this.setState({
-				uploadButtonMessage: "Upload an image"
+				uploadButtonMessage: "Upload new image"
 			});
 		}
 	}
-	
+
 	onImageDrop(file){
 		console.log("onImageDrop- file is: ", file);
 		this.props.setUploadedImage(file[0]["preview"]);

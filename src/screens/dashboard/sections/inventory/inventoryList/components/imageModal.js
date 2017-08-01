@@ -17,10 +17,10 @@ export default class ImageModal extends Component {
 		console.log("ImageModal: componentWillReceiveProps called.");
 		console.log("ImageModal: oldProps is: ", this.props);
 		console.log("ImageModal: newProps is: ", newProps);
-		if ((newProps.modalItem == null) || (newProps.modalItem == "") || (newProps.modalItem == undefined)) {
+		if (newProps.modalItem == null) {
 			return;
 		}
-		// Could be undefined when no image uploaded when item added
+		// Could be undefined when no image uploaded when item added first time
 		this.setState({ itemImage: newProps.modalItem["image_url"] });
 	}
 
@@ -37,8 +37,8 @@ export default class ImageModal extends Component {
 		if(this.props.modalItem == null){ // Happens first time when rendering page
 			return <p>Nothing there bro</p>
 		}
-		else if ((this.state.itemImage == null) || (this.state.itemImage == "")	// When edit image url and set to "" or null
-			|| (this.state.itemImage == undefined)){	//No image uploaded initially for this item
+		else if ((this.state.itemImage == null) || (this.state.itemImage == "")	// When edited image url and set to "" or null
+			|| (this.state.itemImage == undefined)){	// No image uploaded initially for this item
 			console.log("renderItemImage: image not found. this.state.itemImage is: ", this.state.itemImage);
 			return <h3 style = {{textAlign: "center"}}>No Image uploaded.</h3>
 		}
@@ -100,8 +100,6 @@ export default class ImageModal extends Component {
 						{this.renderItemImage()}
 						<UploadImage itemImage = {this.state.itemImage} setUploadedImage = {this.setUploadedImage.bind(this)}/>
 						{this.renderSaveRemoveButtonformat()}
-							
-
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={this.props.onHide}>Cancel</Button>
