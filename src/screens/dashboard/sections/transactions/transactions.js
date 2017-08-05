@@ -287,6 +287,7 @@ export default class Transactions extends Component {
   }
 
   expandComponent(row) {
+    // console.log("expandComponent: row is: ", row);
     return (
       <ExpandedRow exactTime = {row.dateTime} storeName={ row.storeName } storeLocation={ row.storeLocation } 
         storeType = {row.storeType} state = {row.state}/>

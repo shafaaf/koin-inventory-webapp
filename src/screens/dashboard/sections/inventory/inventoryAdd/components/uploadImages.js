@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import Dropzone from 'react-dropzone';
 import {Grid, Row, Col, Image, Thumbnail, Button} from 'react-bootstrap';
+import PropTypes from 'prop-types'; // ES6 
 import request from 'superagent';
 
 // const CLOUDINARY_UPLOAD_PRESET = 'ydrh63nt';
@@ -81,5 +82,9 @@ export default class UploadImages extends Component {
   	  </div>
     );
   }
+}
 
+UploadImages.propTypes = {
+    setUploadedImage: PropTypes.func.isRequired,
+    uploadedImage: PropTypes.object
 }

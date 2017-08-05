@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import moment from 'moment';
 import {Grid, Row, Col, Button, ButtonToolbar, DropdownButton, MenuItem, SplitButton} from 'react-bootstrap';
+import PropTypes from 'prop-types'; // ES6 
 
 export default class DropdownTimePicker extends Component {
 	constructor(props) {
@@ -75,6 +76,11 @@ export default class DropdownTimePicker extends Component {
 					</ButtonToolbar>
 				</Col>
 			</div>
-    );
-  }
+    	);
+  	}
 }
+
+DropdownTimePicker.propTypes = {
+    setCustomTimes: PropTypes.func.isRequired
+}
+

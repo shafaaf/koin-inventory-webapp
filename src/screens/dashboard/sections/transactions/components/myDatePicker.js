@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import PropTypes from 'prop-types'; // ES6 
 import {Grid, Row, Col, Button, ButtonToolbar, DropdownButton, MenuItem, SplitButton} from 'react-bootstrap';
 
 // Importing styles
@@ -66,3 +66,8 @@ export default class MyDatePicker extends React.Component {
     );
   }
 }
+
+MyDatePicker.propTypes = {
+    setCustomTimes: PropTypes.func.isRequired
+}
+

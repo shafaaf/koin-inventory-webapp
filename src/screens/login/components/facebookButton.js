@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
+import PropTypes from 'prop-types'; // ES6 
 
 export default class FacebookButton extends Component {
-
   // Handle response from user when he decides to login
   responseFacebook(facebookResponse) {
     console.log("responseFacebook: facebookResponse is: ", facebookResponse);
@@ -64,4 +64,8 @@ export default class FacebookButton extends Component {
       </div>
     );
   }
+}
+
+FacebookButton.propTypes = {
+    onChangeLoginStatus: PropTypes.func.isRequired
 }

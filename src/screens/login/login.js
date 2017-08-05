@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types'; // ES6 
 import { Grid, Row, Col } from 'react-bootstrap';
 
-// Importing components
+// Importing other components
 import FacebookButton from './components/facebookButton';
 import ModalPopup from './components/modal.js';
 
-// Importing CSS files
 import './login.css';
 
 console.log("Running login.js right now.");
@@ -14,7 +14,8 @@ console.log("Running login.js right now.");
 export default class Login extends Component {
     
     render() {
-    	return(
+    	console.log("Rendering login.js");
+        return(
     		<div className = "container">
     			<img id = "koinLogo"  src = {require('./images/logo2.svg')}  alt="Image here"/>
 				<Grid id = "socialButtonsGrid">
@@ -26,4 +27,8 @@ export default class Login extends Component {
     		</div>
     	)
 	}
+}
+
+Login.propTypes = {
+    onChangeLoginStatus: PropTypes.func.isRequired
 }

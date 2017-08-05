@@ -23,11 +23,10 @@ export default class App extends Component {
     super(props);
    
     // Load in Koin session token which say whether user logged in session or not.
-    // Todo: Unsure when to acccess facebook access token
     this.state = {
       koinToken: null
     };
-    if (typeof(Storage) !== "undefined") {  // Check browser support
+    if (typeof(Storage) !== 'undefined') {  // Check browser support
       if ((localStorage.getItem("koinToken") == null) || (localStorage.getItem("koinToken") == "") || 
           (!(localStorage.getItem("koinToken")))) {
         console.log("koinToken doesnt exist");
@@ -57,7 +56,6 @@ export default class App extends Component {
   }
 
   // Change the login state based on Koin Token
-  // To login the user, pass in the Koin server session token
   changeLoginStatus(stateKoinToken){
     console.log("app.js: changeLoginStatus with a stateKoinToken of: ", stateKoinToken);
     this.setState({ koinToken: stateKoinToken});
@@ -80,8 +78,8 @@ export default class App extends Component {
     }
   }
 
-  /* If user tries to visit login while logged, 
-    redirect her/him to login page*/
+  /* If user tries to visit login while logged in, 
+    redirect them to login page */
   redirectToDashboard(){
     console.log("redirectToDashboard: koinToken is: ", this.state.koinToken);
     if(this.state.koinToken){
@@ -115,4 +113,3 @@ export default class App extends Component {
   }
 }
 
-ReactDOM.render(<App/>, document.getElementById('app'));

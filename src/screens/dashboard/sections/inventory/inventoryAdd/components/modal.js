@@ -9,15 +9,15 @@ export default class View extends React.Component {
       isShowingModal: true
     }
   }
+
+  // Handle opening and closing
   handleClick = () => this.setState({isShowingModal: true})
   handleClose = () => this.setState({isShowingModal: false})
-  
 
-  // If different props received, need to show the modal
+  // Show the modal when component called again.
+  // Todo: Unsure about this
   componentWillReceiveProps(newProps){
-    if(newProps.submit != this.props.submit){
-      this.setState({isShowingModal: true})
-    }
+    this.setState({isShowingModal: true})
   }
 
   render() {
@@ -76,4 +76,9 @@ export default class View extends React.Component {
       return null;
     }
   }
+}
+
+View.propTypes = {
+    submit: PropTypes.string,
+    submitErrorMessage: PropTypes.string
 }

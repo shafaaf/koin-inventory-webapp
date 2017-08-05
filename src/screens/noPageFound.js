@@ -1,3 +1,8 @@
+/* 
+This component rendered when going to a link 
+which is not registered.
+*/
+
 import React,{Component} from 'react';
 import {Button} from 'react-bootstrap';
 

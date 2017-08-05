@@ -5,7 +5,7 @@ import {
   Redirect,
   Link
 } from 'react-router-dom'
-
+import PropTypes from 'prop-types';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Button} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -59,4 +59,8 @@ export default class MyNavBar extends Component {
 		</div>
     );
   }
+}
+
+MyNavBar.propTypes = {
+    onLogOut: PropTypes.func.isRequired
 }

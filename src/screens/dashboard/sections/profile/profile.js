@@ -17,7 +17,6 @@ export default class Profile extends Component {
 		};	
 	}
 
-
 	// Todo: this access token may expire before koin server token
 	componentDidMount() {
 	    var fetchPromises = [getMerchantInfo(), getFacebookInfo()];

@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import Moment from 'react-moment';
+import PropTypes from 'prop-types'; // ES6 
 var moment = require('moment');
 
 export default class ExpandedRow extends React.Component {
@@ -22,4 +23,12 @@ export default class ExpandedRow extends React.Component {
 			return (<p>What!? Some data missing.</p>);
 		}
 	}
+}
+
+ExpandedRow.propTypes = {
+	exactTime: PropTypes.number.isRequired,
+	storeName: PropTypes.string.isRequired,
+    storeLocation: PropTypes.string.isRequired,
+ 	storeType: PropTypes.string.isRequired,
+ 	state:  PropTypes.string.isRequired
 }

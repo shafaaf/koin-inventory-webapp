@@ -1,4 +1,6 @@
 import React,{Component} from 'react';
+import PropTypes from 'prop-types'; // ES6 
+
 import {
   BrowserRouter as Router,
   Route,
@@ -36,4 +38,8 @@ export default class Dashboard extends Component {
 			</div>
 		);
 	}
+}
+
+Dashboard.propTypes = {
+    onChangeLoginStatus: PropTypes.func.isRequired
 }

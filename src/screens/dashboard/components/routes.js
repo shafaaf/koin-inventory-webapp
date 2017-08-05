@@ -10,24 +10,22 @@ import {
 } from 'react-router-dom';
 
 // Importing other page sections
-import DashboardIntro from '../sections/dashboardIntro';
-
+import Home from '../sections/home/home';
+// Inventory pages
 import InventoryList from '../sections/inventory/inventoryList/inventoryList';
 import InventoryAdd from '../sections/inventory/inventoryAdd/inventoryAdd';
 import InventoryMenu from '../sections/inventory/inventoryMenu/inventoryMenu';
-
+// Other pages
 import Profile from '../sections/profile/profile.js';
 import Transactions from '../sections/transactions/transactions';
 import ContactUs from '../sections/contactUs/contactUs';
 import NoPageFound from '../../noPageFound';
 
-
-
 export default class Routes extends Component {
   render() {
     return (
 		<Switch> {/*Content for each different section*/}
-			<Route exact path='/dashboard' component={DashboardIntro}/>
+			<Route exact path='/dashboard' component={Home}/>
 			{/* Inventory Sections */}
 			<Route exact path='/dashboard/inventory/list' component={InventoryList}/>
 			<Route exact path='/dashboard/inventory/add' component={InventoryAdd}/>

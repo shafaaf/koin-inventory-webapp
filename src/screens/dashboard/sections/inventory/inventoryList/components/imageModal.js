@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Button, Modal, Image, Row, Col} from 'react-bootstrap';
 import UploadImage from './uploadImage';
-
+import PropTypes from 'prop-types'; // ES6 
 import {handleImageUpload} from '../../inventoryAdd/components/apiCalls';
 
 export default class ImageModal extends Component {
@@ -202,4 +202,12 @@ export default class ImageModal extends Component {
 			</div>
 		);
 	}
+}
+
+ImageModal.propTypes = {
+    modalItem: PropTypes.object,
+    tablesData: PropTypes.object.isRequired,
+    setTablesData: PropTypes.func.isRequired,
+    showModal: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired
 }

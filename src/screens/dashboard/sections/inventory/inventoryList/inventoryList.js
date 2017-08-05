@@ -118,6 +118,17 @@ export default class InventoryList extends Component {
 	//--------------------------------------------------------------------------------------------------
 	
     renderInventoryTables(){
+    	var tableResponsiveSpecs = {
+    		"display": true,
+    		"width": null
+    	};
+    	var screenWidth = window.innerWidth;
+    	if(screenWidth < 992){
+    		tableResponsiveSpecs["display"] = false;
+    	}
+    	console.log("tableResponsiveSpecs is: ", tableResponsiveSpecs);
+    	
+    	console.log("renderInventoryTables: screenWidth is: ", screenWidth);
     	if(this.state.loading){ // Show loading screen when getting data
       		return <h3>Loading your inventory ...</h3>;
     	}
@@ -164,10 +175,10 @@ export default class InventoryList extends Component {
 							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
 							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
 							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
-							<TableHeaderColumn dataField="price" dataAlign="center" width='80' dataSort>Price</TableHeaderColumn>
+							<TableHeaderColumn dataField="price" width="60" dataAlign="center" dataSort>Price</TableHeaderColumn>
 							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
 							<TableHeaderColumn dataField="image_url" dataAlign="center" tdStyle={ { whiteSpace: 'normal' } }>Image Url</TableHeaderColumn>
-							<TableHeaderColumn dataField="image_url" dataAlign="center" editable={ false } dataFormat={imageFormatter.bind(this)}>Preview</TableHeaderColumn>
+							<TableHeaderColumn dataField="image_url" dataAlign="center" hidden={ !tableResponsiveSpecs["display"] } editable={ false } dataFormat={imageFormatter.bind(this)}>Preview</TableHeaderColumn>
 						</BootstrapTable>
 					</div>
     			);

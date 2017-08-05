@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Grid, Row, Col, Button, DropdownButton, MenuItem, FormControl, FormGroup} from 'react-bootstrap';
+import PropTypes from 'prop-types'; // ES6 
 
 import {createNewCategory} from '../../requests.js';
 
@@ -154,5 +155,10 @@ export default class Category extends Component {
 			</div>
     	);
   	}
+}
 
+
+Category.propTypes = {
+    newCategoryForDropdown: PropTypes.string,
+    setCategory: PropTypes.func.isRequired
 }

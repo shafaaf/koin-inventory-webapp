@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
 import Dropzone from 'react-dropzone';
+import PropTypes from 'prop-types'; // ES6 
 
 var imageUploadButton = {
 	border: '2px dotted #000000',
 	padding: '20px',
 	backgroundColor: '#f6f5f5'
 }
-
 
 export default class UploadImage extends Component {
 	constructor(props) {
@@ -53,3 +53,9 @@ export default class UploadImage extends Component {
     	);
   	}
 }
+
+UploadImage.propTypes = {
+    itemImageUrl: PropTypes.string,
+ 	setUploadedImage: PropTypes.func.isRequired
+}
+
