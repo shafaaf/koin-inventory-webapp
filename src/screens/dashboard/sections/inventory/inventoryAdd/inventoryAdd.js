@@ -166,7 +166,7 @@ export default class InventoryAdd extends Component {
 				</form>
 				{/*  Image upload */}
 				<UploadImages uploadedImage = {this.state.uploadedImage} setUploadedImage = {this.setUploadedImage.bind(this)} style = {{textAlign: "center"}}/>
-				<Button bsStyle="primary" bsSize="large" block onClick = {this.handleSubmit.bind(this)}>Submit</Button>
+				<Button bsStyle="primary" style = {{marginBottom: "5%"}} bsSize="large" block onClick = {this.handleSubmit.bind(this)}>Submit</Button>
 			</div>
 		);
 	}

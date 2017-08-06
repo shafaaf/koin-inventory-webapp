@@ -185,7 +185,7 @@ export default class myForm extends Component {
                     <ControlLabel>My Message</ControlLabel>
                     <FormControl componentClass="textarea" rows="4" placeholder="Message" />
                 </FormGroup>
-                <Button bsStyle="primary" bsSize="large" block>Submit</Button>                 
+                <Button style = {{marginBottom: "5%"}} bsStyle="primary" bsSize="large" block>Submit</Button>                 
             </form>
         );
     }

@@ -176,9 +176,9 @@ export default class InventoryList extends Component {
 							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
 							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
 							<TableHeaderColumn dataField="price" width="60" dataAlign="center" dataSort>Price</TableHeaderColumn>
-							<TableHeaderColumn dataField="description" dataAlign="center" tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
-							<TableHeaderColumn dataField="image_url" dataAlign="center" tdStyle={ { whiteSpace: 'normal' } }>Image Url</TableHeaderColumn>
-							<TableHeaderColumn dataField="image_url" dataAlign="center" hidden={ !tableResponsiveSpecs["display"] } editable={ false } dataFormat={imageFormatter.bind(this)}>Preview</TableHeaderColumn>
+							<TableHeaderColumn dataField="description" dataAlign="center"  hidden={ !tableResponsiveSpecs["display"] } tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
+							<TableHeaderColumn dataField="image_url" dataAlign="center" hidden={ !tableResponsiveSpecs["display"] } tdStyle={ { whiteSpace: 'normal' } }>Image Url</TableHeaderColumn>
+							<TableHeaderColumn dataField="image_url" dataAlign="center" editable={ false } dataFormat={imageFormatter.bind(this)}>Preview</TableHeaderColumn>
 						</BootstrapTable>
 					</div>
     			);
