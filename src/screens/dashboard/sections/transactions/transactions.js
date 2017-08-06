@@ -64,47 +64,46 @@ export default class Transactions extends Component {
         'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
       })
     });
-    var thisContext = this; // To keep track of this context within promise callback
-    fetch(request).then(
-      function(response) {
+    fetch(request)
+      .then(response => {  
         if (response.status !== 200) {   
           console.log('Looks like there was a problem. Status Code: ' +  response.status);  
           return;  
         }
         // Examine the text in the response from Koin server
-        response.json().then(function(data) {  
-          console.log("componentDidMount: Transaction data from server is: ", data);
-                  
-          // Setup table data
-          console.log("Setting table for transactions now.");
-          var tableData = thisContext.state.tableData;
-          var dataListLength = data["transactions"].length;
-          var i;
-          for(i = 0; i < dataListLength; i++){
-            var myEntry = {};
-            // To show in table view
-            myEntry["dateTime"] = data["transactions"][i]["created_at"];
-            myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
-            myEntry["amount"] = data["transactions"][i]["amount"];
-            myEntry["state"] = data["transactions"][i]["state"];
-            // To show in expandable row
-            myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
-            myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
-            myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
-            tableData.push(myEntry);
-          }
-          console.log("componentDidMount: tableData is: ", tableData);
-          console.log("componentDidMount: Setting state for transactions now.");
-          thisContext.setState({
-            loading: false,
-            transactionsList: data["transactions"],
-            tableData: tableData,
-            hasNextPage: data["has_next_page"],
-            currentTransactionPage: 1
-           });
-        });
-      }
-    );
+        response.json()
+          .then(data => {
+            console.log("componentDidMount: Transaction data from server is: ", data);
+                    
+            // Setup table data
+            console.log("Setting table for transactions now.");
+            var tableData = this.state.tableData;
+            var dataListLength = data["transactions"].length;
+            var i;
+            for(i = 0; i < dataListLength; i++){
+              var myEntry = {};
+              // To show in table view
+              myEntry["dateTime"] = data["transactions"][i]["created_at"];
+              myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
+              myEntry["amount"] = data["transactions"][i]["amount"];
+              myEntry["state"] = data["transactions"][i]["state"];
+              // To show in expandable row
+              myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
+              myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
+              myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
+              tableData.push(myEntry);
+            }
+            console.log("componentDidMount: tableData is: ", tableData);
+            console.log("componentDidMount: Setting state for transactions now.");
+            this.setState({
+              loading: false,
+              transactionsList: data["transactions"],
+              tableData: tableData,
+              hasNextPage: data["has_next_page"],
+              currentTransactionPage: 1
+             });
+          })
+      })
     console.log("After promise section in componentDidMount transactions fetch.");
   }
 
@@ -138,52 +137,52 @@ export default class Transactions extends Component {
         'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'
       })
     });
-    var thisContext = this; // To keep track of this context within promise callback
-    fetch(request).then(
-      function(response) {
+    fetch(request)
+      .then( response => {
         if (response.status !== 200) {   
           console.log('fetchRestTransactions: Looks like there was a problem. Status Code: ' +  response.status);  
           return;  
         }
         // Examine the text in the response from Koin server
-        response.json().then(function(data) {  
-          console.log("fetchRestTransactions: transaction data from server is: ", data);
-          
-          // Setup table data
-          console.log("fetchRestTransactions: Setting table for transactions now.");
-          var tableData = thisContext.state.tableData;
-          var dataListLength = data["transactions"].length;
-          var i = 0;
-          for(i = 0; i < dataListLength; i++){
-            var myEntry = {};
-            // To show in table view
-            myEntry["dateTime"] = data["transactions"][i]["created_at"];
-            myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
-            myEntry["amount"] = data["transactions"][i]["amount"];
-            myEntry["state"] = data["transactions"][i]["state"];
-            // To show in expandable row
-            myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
-            myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
-            myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
-            tableData.push(myEntry);
-          }
+        response.json()
+          .then(data => {  
+            console.log("fetchRestTransactions: transaction data from server is: ", data);
+            
+            // Setup table data
+            console.log("fetchRestTransactions: Setting table for transactions now.");
+            var tableData = this.state.tableData;
+            var dataListLength = data["transactions"].length;
+            var i = 0;
+            for(i = 0; i < dataListLength; i++){
+              var myEntry = {};
+              // To show in table view
+              myEntry["dateTime"] = data["transactions"][i]["created_at"];
+              myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
+              myEntry["amount"] = data["transactions"][i]["amount"];
+              myEntry["state"] = data["transactions"][i]["state"];
+              // To show in expandable row
+              myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
+              myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
+              myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
+              tableData.push(myEntry);
+            }
 
-          console.log("fetchRestTransactions: Setting state for transactions now.");
-          thisContext.setState({
-            loading: false,
-            transactionsList: data["transactions"],
-            tableData: tableData,
-            hasNextPage: data["has_next_page"],
-            currentTransactionPage: currentIndex
-          });
-        });
+            console.log("fetchRestTransactions: Setting state for transactions now.");
+            this.setState({
+              loading: false,
+              transactionsList: data["transactions"],
+              tableData: tableData,
+              hasNextPage: data["has_next_page"],
+              currentTransactionPage: currentIndex
+            });
+          })
         console.log("fetchRestTransactions: after then statement");
-      }
-    );
+      })
     console.log("fetchRestTransactions: after fetch");
   }
 
-  fetchSpecificDatesTransactions(startTime, endTime){
+
+  fetchSpecificDatesTransactions(startTime, endTime) {
     console.log("In fetchSpecificDatesTransactions");
     console.log("fetchSpecificDatesTransactions: startTime is: ", startTime);
     console.log("fetchSpecificDatesTransactions: endTime is: ", endTime);
@@ -211,48 +210,46 @@ export default class Transactions extends Component {
         'Authorization': 'Bearer 6849c19749955194e6f51c5a69ac28b2aac08ade'  // Zen's token hardcoded in
       })
     });
-    var thisContext = this; // To keep track of this context within promise callback
-    fetch(request).then(
-      function(response) {
+    fetch(request)
+      .then(response => {
         if (response.status !== 200) {   
           console.log('Looks like there was a problem. Status Code: ' +  response.status);  
           return;  
         }
         // Examine the text in the response from Koin server
-        response.json().then(function(data) {  
-          console.log("fetchSpecificDatesTransactions: Transaction data from server is: ", data);
-                  
-          // Setup table data
-          console.log("fetchSpecificDatesTransactions: Setting table for transactions now.");
-          var tableData = thisContext.state.tableData;
-          tableData.splice(0,tableData.length);
-          var dataListLength = data["transactions"].length;
-          var i;
-          for(i = 0; i < dataListLength; i++){
-            var myEntry = {};
-            // To show in table view
-            myEntry["dateTime"] = data["transactions"][i]["created_at"];
-            myEntry["amount"] = data["transactions"][i]["amount"];
-            myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
-            myEntry["state"] = data["transactions"][i]["state"];
-            // To show in expandable row
-            myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
-            myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
-            myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
-            tableData.push(myEntry);
-          }
-          console.log("fetchSpecificDatesTransactions: tableData is: ", tableData);
-          console.log("fetchSpecificDatesTransactions: Setting state for transactions now.");
-          thisContext.setState({
-            loading: false,
-            transactionsList: data["transactions"],
-            tableData: tableData,
-            hasNextPage: data["has_next_page"],
-            currentTransactionPage: 1
-           });
-        });
-      }
-    );
+        response.json()
+          .then(data => { 
+            console.log("fetchSpecificDatesTransactions: Transaction data from server is: ", data);
+            // Setup table data
+            console.log("fetchSpecificDatesTransactions: Setting table for transactions now.");
+            var tableData = this.state.tableData;
+            tableData.splice(0,tableData.length);
+            var dataListLength = data["transactions"].length;
+            var i;
+            for(i = 0; i < dataListLength; i++){
+              var myEntry = {};
+              // To show in table view
+              myEntry["dateTime"] = data["transactions"][i]["created_at"];
+              myEntry["amount"] = data["transactions"][i]["amount"];
+              myEntry["dateTimeString"] = milliEpochToString(data["transactions"][i]["created_at"]); //hiddin in table but used to search by date
+              myEntry["state"] = data["transactions"][i]["state"];
+              // To show in expandable row
+              myEntry["storeName"] = data["transactions"][i]["merchant"]["store_name"];
+              myEntry["storeLocation"] = data["transactions"][i]["merchant"]["store_location"];
+              myEntry["storeType"] = data["transactions"][i]["merchant"]["store_type"];
+              tableData.push(myEntry);
+            }
+            console.log("fetchSpecificDatesTransactions: tableData is: ", tableData);
+            console.log("fetchSpecificDatesTransactions: Setting state for transactions now.");
+            this.setState({
+              loading: false,
+              transactionsList: data["transactions"],
+              tableData: tableData,
+              hasNextPage: data["has_next_page"],
+              currentTransactionPage: 1
+             });
+          })
+      })
     console.log("After promise section in fetchSpecificDatesTransactions transactions fetch.");
   }
 
