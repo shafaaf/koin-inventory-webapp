@@ -68,6 +68,7 @@ export default class FacebookButton extends Component {
 
   render() {
     return (
+      console.log("Rendering facebookButon.");
       <div>
         <FacebookLogin
           appId="1706534352977056" //Mine - 1830088130643938, Koin - 1706534352977056
