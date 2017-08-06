@@ -322,8 +322,8 @@ export default class Transactions extends Component {
               expandableRow={ this.isExpandableRow }
               expandComponent={ this.expandComponent}
               expandColumnOptions={{expandColumnVisible: true}}>
-                <TableHeaderColumn width='35%' dataField="dateTime" dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
-                <TableHeaderColumn dataField="amount" dataFormat={priceFormatter} dataAlign="center" dataSort={true}>Amount</TableHeaderColumn>
+                <TableHeaderColumn dataField="dateTime" width='35%' dataFormat={timeFormatter} isKey={true} dataAlign="center" dataSort={true}>DateTime</TableHeaderColumn>
+                <TableHeaderColumn dataField="amount" width='25%' dataFormat={priceFormatter} dataAlign="center" dataSort={true}>Amount</TableHeaderColumn>
                 <TableHeaderColumn dataField="state" dataAlign="center" dataSort={true}>State</TableHeaderColumn>
                 <TableHeaderColumn dataField="dateTimeString" hidden>Date Time String</TableHeaderColumn>
             </BootstrapTable>
@@ -339,8 +339,8 @@ export default class Transactions extends Component {
       <div>
         <h2>Your Transactions!</h2>
         <p>You can also search or sort for any time period.</p>
-        <Row className="show-grid">
-          <DropdownTimePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
+        <Row className="show-grid" style = {{textAlign: "center"}}>
+          <DropdownTimePicker style = {{textAlign: "center"}} setCustomTimes = {this.setCustomTimes.bind(this)}/>
           <MyDatePicker setCustomTimes = {this.setCustomTimes.bind(this)}/>
         </Row>
         <h4 style = {{textAlign: "center"}}>{this.renderTimeWindow()}</h4>

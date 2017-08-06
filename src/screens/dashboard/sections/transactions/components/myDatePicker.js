@@ -41,8 +41,8 @@ export default class MyDatePicker extends React.Component {
   render() {
     return (
       <div>
-        <Col xs={12} md={3} style = {{textAlign: "center"}}>
-          <p style = {{display:"inline-block"}}>Or show from:&nbsp;&nbsp;</p>
+        <Col xs={12} md={3}>
+          <p style = {{display:"inline-block"}}>Or from:&nbsp;&nbsp;</p>
           <div style = {{display:"inline-block"}}>
             <DatePicker selected={this.state.startDate}
               onChange={this.handleStartDateChange.bind(this)}
@@ -50,7 +50,7 @@ export default class MyDatePicker extends React.Component {
                   dateFormat="DD/MM/YYYY"  maxDate={moment().add(0, "days")}/>
           </div>
         </Col>
-        <Col xs={12} md={3} style = {{textAlign: "center"}}>
+        <Col xs={12} md={3}>
           <p style = {{display:"inline-block"}}>to:&nbsp;&nbsp;</p>
           <div style = {{display:"inline-block"}}>
             <DatePicker selected={this.state.endDate}
@@ -59,7 +59,7 @@ export default class MyDatePicker extends React.Component {
                   dateFormat="DD/MM/YYYY"  minDate={this.state.startDate} maxDate={moment().add(0, "days")}/>
           </div>
         </Col>
-        <Col xs={12} md={3} style = {{textAlign: "center"}}>
+        <Col xs={12} md={3}>
           <Button bsStyle="primary" onClick = {this.props.setCustomTimes.bind(this, this.state.startDate, this.state.endDate)}>Submit dates</Button>
         </Col>       
       </div>

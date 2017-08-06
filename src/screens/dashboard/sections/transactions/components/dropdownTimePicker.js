@@ -60,7 +60,7 @@ export default class DropdownTimePicker extends Component {
 		);
 		// console.log("menuItems is: ", menuItems);
 		return (
-			<DropdownButton bsSize="small" title={this.state.dropdownButtonTitle} id="dropdown-size-medium" 
+			<DropdownButton style = {{textAlign: "center"}} bsSize="small" title={this.state.dropdownButtonTitle} id="dropdown-size-medium" 
 				onSelect={(timeWindow)=>this.handleDropdownSelection(timeWindow)}>
 					{menuItems}
 			</DropdownButton>
@@ -69,9 +69,9 @@ export default class DropdownTimePicker extends Component {
 
   	render() {
     	return (
-	    	<div>
-				<Col xs={12} md={3}>
-					<ButtonToolbar>
+	    	<div style = {{textAlign: "center"}}>
+				<Col xs={12} md={3} style = {{textAlign: "center"}}>
+					<ButtonToolbar style = {{textAlign: "center"}}>
 						{this.renderDropdownTimes()}
 					</ButtonToolbar>
 				</Col>

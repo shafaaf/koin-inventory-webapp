@@ -13,7 +13,7 @@ export default class ExpandedRow extends React.Component {
 	    			<div> <p>Exact Time is: 0{this.props.exactTime}</p></div>
 	    			<div> <p>Exact Time is: {a.format("MMMM Do YYYY, h:mm:ss a")}</p></div>
 	    			<div> <p>Transaction state is: {this.props.state}</p></div>
-	      			<div> <p>Store Location is: {this.props.storeLocation}</p></div>
+	      			{/*<div> <p>Store Location is: {this.props.storeLocation}</p></div>*/}
 	      			<div> <p>Store Type is: {this.props.storeType}</p></div>
 	      			<div> Store Name is: {this.props.storeName}</div>
 	      		</div>

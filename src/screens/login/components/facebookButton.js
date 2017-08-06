@@ -23,16 +23,30 @@ export default class FacebookButton extends Component {
         'Content-Type': 'application/json'
       })
     });
-    var thisContext = this; // To keep track of this context within promise callback
     fetch(request)
-      .then(
-        function(response) {
-          if (response.status !== 200) {   
-            console.log('Looks like there was a problem. Status Code: ' +  response.status);  
-            return;  
+      .then( response => {
+        if (response.status !== 200) {
+          console.log('Looks like there was a problem. Status Code: ' +  response.status);
+          console.log("So removing old access token if exists");
+          if (typeof(Storage) !== 'undefined') { // Check browser support
+            if (localStorage.getItem("koinToken")){ // See if old one exists and remove if there.
+              var koinToken = localStorage.getItem("koinToken");
+              console.log("old koinToken exists and is: ", koinToken);
+              localStorage.removeItem("koinToken");
+              console.log("Removed old koinToken.");
+            }
+            else{
+              console.log("Old Koin token was not there to delete");
+            }
           }
-          // Store and return koin token and facebook access tokens
-          response.json().then(function(data) {  
+          else{
+            alert("Browser does not support local storage.");
+            console.log("Sorry, your browser does not support Web Storage...");
+          }
+          return;  
+        }
+        response.json()  // Store and return koin token and facebook access tokens
+          .then(data => {
             console.log("data from server is: ", data);
             var koinToken = data["session_token"];
             localStorage.setItem("koinToken", koinToken);
@@ -40,13 +54,13 @@ export default class FacebookButton extends Component {
             facebookToken["accessToken"] = facebookResponse["accessToken"];
             facebookToken["expiresIn"] = facebookResponse["expiresIn"];
             localStorage.setItem("facebookAccessToken", JSON.stringify(facebookToken));
-            
             console.log("koinToken is: ", koinToken);
             console.log("facebookResponse is: ", facebookResponse);
-            thisContext.props.onChangeLoginStatus(koinToken, facebookResponse["accessToken"]);
-          });
-        })
+            this.props.onChangeLoginStatus(koinToken, facebookResponse["accessToken"]);
+          })
+      })
       .catch(function(err) {
+        alert("Problem in getting koin access token. err is: ", err);
         console.log("responseFacebook: err is: ", err);
       })
     console.log("After promise section.");
