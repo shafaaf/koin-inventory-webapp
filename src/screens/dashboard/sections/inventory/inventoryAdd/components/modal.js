@@ -16,8 +16,11 @@ export default class View extends React.Component {
 
   // Show the modal when component called again.
   // Todo: Unsure about this
+  // If different props received, need to show the modal
   componentWillReceiveProps(newProps){
-    this.setState({isShowingModal: true})
+    if(newProps.submit != this.props.submit){
+      this.setState({isShowingModal: true})
+    }
   }
 
   render() {
