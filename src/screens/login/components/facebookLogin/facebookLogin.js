@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
 import PropTypes from 'prop-types'; // ES6 
+import FacebookButton from './facebookButton.js';
 
-export default class FacebookButton extends Component {
+export default class MyFacebookLogin extends Component {
   // Handle response from user when he decides to login
   responseFacebook(facebookResponse) {
     console.log("responseFacebook: facebookResponse is: ", facebookResponse);
@@ -70,17 +71,12 @@ export default class FacebookButton extends Component {
     console.log("Rendering facebookButon.");
     return (
       <div>
-        <FacebookLogin
-          appId="1706534352977056" //Mine - 1830088130643938, Koin - 1706534352977056
-          autoLoad={false}
-          fields="name,email,picture"
-          callback={this.responseFacebook.bind(this)}
-          icon="fa-facebook"/>
+        <FacebookButton responseFacebook = {this.responseFacebook.bind(this)}/>
       </div>
     );
   }
 }
 
-FacebookButton.propTypes = {
+MyFacebookLogin.propTypes = {
     onChangeLoginStatus: PropTypes.func.isRequired
 }

@@ -21,21 +21,18 @@ import Transactions from '../sections/transactions/transactions';
 import ContactUs from '../sections/contactUs/contactUs';
 import NoPageFound from '../../noPageFound/noPageFound';
 
-export default class Routes extends Component {
-  render() {
-    return (
-		<Switch> {/*Content for each different section*/}
-			<Route exact path='/dashboard' component={Home}/>
-			{/* Inventory Sections */}
-			<Route exact path='/dashboard/inventory/list' component={InventoryList}/>
-			<Route exact path='/dashboard/inventory/add' component={InventoryAdd}/>
-			<Route exact path='/dashboard/inventory/menu' component={InventoryMenu}/>
-			{/* Other sections */}
-			<Route exact path='/dashboard/profile' component={Profile}/>
-			<Route exact path='/dashboard/transactions' component={Transactions}/>
-			<Route exact path='/dashboard/contactus' component={ContactUs}/>
-			<Route component ={NoPageFound}/>
-		</Switch>
-    );
-  }
-}
+const Routes = () =>
+    <Switch> {/*Content for each different section*/}
+		<Route exact path='/dashboard' component={Home}/>
+		{/* Inventory Sections */}
+		<Route exact path='/dashboard/inventory/list' component={InventoryList}/>
+		<Route exact path='/dashboard/inventory/add' component={InventoryAdd}/>
+		<Route exact path='/dashboard/inventory/menu' component={InventoryMenu}/>
+		{/* Other sections */}
+		<Route exact path='/dashboard/profile' component={Profile}/>
+		<Route exact path='/dashboard/transactions' component={Transactions}/>
+		<Route exact path='/dashboard/contactus' component={ContactUs}/>
+		<Route component ={NoPageFound}/>
+	</Switch>
+
+export default Routes;

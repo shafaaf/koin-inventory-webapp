@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 // Importing other page sections
-import Navbar from './components/myNavBar.js';
+import MyNavBar from './components/myNavBar.js';
 import Routes from './components/routes.js';
 
 // Importing styles
@@ -30,9 +30,9 @@ export default class Dashboard extends Component {
 		return (
 			<div>
 				<div className = "container">
-					<Navbar onLogOut = {this.facebookLogout.bind(this)}/>
+					<MyNavBar onLogOut = {this.facebookLogout.bind(this)}/>
 				</div>
-				<div className = "container"> {/* Main content section here. Add sections like transations etc here.*/}
+				<div className = "container"> {/* Main content section here. Add sections like transations, inventory listing etc here.*/}
 					<Routes/>
 				</div>	
 			</div>
