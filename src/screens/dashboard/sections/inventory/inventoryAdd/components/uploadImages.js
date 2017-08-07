@@ -15,8 +15,7 @@ var textAlign = {
 }
 
 var imageStyle = {
-  width: '400px', 
-  height: '308px'
+  width: '100%'
 }
 
 export default class UploadImages extends Component {

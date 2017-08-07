@@ -9,11 +9,10 @@ import {
   Link
 } from 'react-router-dom'
 
-// Importing different screen components
 import Home from './screens/home/home';
 import Login from './screens/login/login';
 import Dashboard from './screens/dashboard/dashboard';
-import NoPageFound from './screens/noPageFound';
+import NoPageFound from './screens/noPageFound/noPageFound';
 
 // ----------------------------------------------------------------
 

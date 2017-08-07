@@ -163,11 +163,11 @@ export default class ImageModal extends Component {
   	renderSaveRemoveButtonsformat(){
   		if(this.state.itemImageUrl){	// An image exists so 2 buttons for save and remove image
   			return(
-	  			<Row className="show-grid" style = {{marginTop: "2%"}}>
-					<Col md={6} mdPush={6} style = {{textAlign: "center"}}>
+	  			<Row className="show-grid" style = {{textAlign: "center", marginTop: "4%"}}>
+					<Col md={6} mdPush={6} style = {{marginTop: "2%"}}>
 						<Button onClick = {this.onImageRemoveClick.bind(this)} style = {{ margin: "auto"}} bsStyle="danger" bsSize="large">Remove Image</Button>
 					</Col>
-					<Col md={6} mdPull={6} style = {{textAlign: "center"}}>
+					<Col md={6} mdPull={6} style = {{marginTop: "2%"}} >
 						<Button onClick = {this.onSaveImageClick.bind(this)} bsStyle="success" bsSize="large">Save this image</Button>
 					</Col>
 				</Row>

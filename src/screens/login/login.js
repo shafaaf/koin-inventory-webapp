@@ -3,16 +3,11 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types'; // ES6 
 import { Grid, Row, Col } from 'react-bootstrap';
 
-// Importing other components
 import FacebookButton from './components/facebookButton';
 import ModalPopup from './components/modal.js';
-
 import './login.css';
 
-console.log("Running login.js right now.");
-
-export default class Login extends Component {
-    
+export default class Login extends Component {    
     render() {
     	console.log("Rendering login.js");
         return(

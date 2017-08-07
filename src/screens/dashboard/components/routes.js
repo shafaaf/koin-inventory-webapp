@@ -19,7 +19,7 @@ import InventoryMenu from '../sections/inventory/inventoryMenu/inventoryMenu';
 import Profile from '../sections/profile/profile.js';
 import Transactions from '../sections/transactions/transactions';
 import ContactUs from '../sections/contactUs/contactUs';
-import NoPageFound from '../../noPageFound';
+import NoPageFound from '../../noPageFound/noPageFound';
 
 export default class Routes extends Component {
   render() {

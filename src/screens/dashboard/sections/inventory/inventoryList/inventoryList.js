@@ -175,7 +175,7 @@ export default class InventoryList extends Component {
 							<TableHeaderColumn dataField="inventory_item_id" dataAlign="center" isKey hidden dataSort>inventory_item_id</TableHeaderColumn>
 							<TableHeaderColumn dataField="category_name" dataAlign="center" hidden dataSort>Category</TableHeaderColumn>
 							<TableHeaderColumn dataField="name" dataAlign="center" dataSort>Name</TableHeaderColumn>
-							<TableHeaderColumn dataField="price" width="60" dataAlign="center" dataSort>Price</TableHeaderColumn>
+							<TableHeaderColumn dataField="price" width="64" dataAlign="center" dataSort>Price</TableHeaderColumn>
 							<TableHeaderColumn dataField="description" dataAlign="center"  hidden={ !tableResponsiveSpecs["display"] } tdStyle={{whiteSpace: 'normal'}}>Description</TableHeaderColumn>
 							<TableHeaderColumn dataField="image_url" dataAlign="center" hidden={ !tableResponsiveSpecs["display"] } tdStyle={ { whiteSpace: 'normal' } }>Image Url</TableHeaderColumn>
 							<TableHeaderColumn dataField="image_url" dataAlign="center" editable={ false } dataFormat={imageFormatter.bind(this)}>Preview</TableHeaderColumn>
